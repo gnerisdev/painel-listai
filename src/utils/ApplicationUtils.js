@@ -1,5 +1,3 @@
-import { createTheme } from '@mui/material';
-
 export class ApplicationUtils {
   static getStatusColor(status) {
     switch (status) {

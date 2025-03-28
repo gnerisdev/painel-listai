@@ -1,10 +1,11 @@
 import styled from 'styled-components';
 
 export const WrapperInput = styled('div')({
-  padding: '3px',
+  padding: '3px 8px 3px 3px',
   background: '#fff',
   alignItems: 'center',
-  display: 'flex',
+  display: 'grid',
+  gridTemplateColumns: 'auto 1fr 18px',
   boxShadow: '1px 1px 10px #ccc5c5',
   width: '100%', 
   border: 'none',
@@ -41,10 +42,9 @@ export const WrapperIcons = styled('div')({
   gap: 8
 });
 
-
 export const Check = styled('img')({
   width: 18,
-  height: 18
+  height: 18,
 });
 
 export const MessageError = styled('p')({

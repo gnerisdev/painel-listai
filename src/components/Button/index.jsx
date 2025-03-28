@@ -1,9 +1,9 @@
 import * as S from './style';
 
-const Button = ({ text, color, margin, onClick }) => {
+const Button = ({ text, color, margin, onClick, isLoading }) => {
   return (
     <S.Button style={{ color, margin }} onClick={() => onClick()}>
-      { text }
+      {isLoading ? <S.Spinner /> : text}
     </S.Button>
   );
 };

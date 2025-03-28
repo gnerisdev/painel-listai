@@ -1,24 +1,24 @@
 import { useContext } from 'react';
 import { useRoutes, useLocation } from 'react-router-dom';
-import HostsAuth from 'routes/hosts/auth';
-import HostsMain from 'routes/hosts/main';
-import BackdropLoading from 'components/BackdropLoading';
-import { HostsProvider, HostsContext } from 'contexts/Hosts';
+import UsersAuth from 'routes/users/auth';
+import UsersMain from 'routes/users/main';
+import { UsersProvider, UsersContext } from 'contexts/Users';
 
-const HostsRoutes = {
-  Auth: () => (<>{useRoutes([...HostsAuth])}</>), 
-  Main: () => (<>{useRoutes([...HostsMain])}</>),
+const UsersRoutes = {
+  Auth: () => (<>{useRoutes([...UsersAuth])}</>), 
+  Main: () => (<>{useRoutes([...UsersMain])}</>),
 }
 
 const Routes = ({ module }) => {
-  const hostContext = useContext(HostsContext);
-  const authState = hostContext.authState;
+  const hostContext = useContext(UsersContext);
+  // const authState = hostContext.authState;
+  const authState = 'authenticated';
 
-  if (module === 'hosts') {
+  if (module === 'users') {
     return (
       <>
-        {authState === 'checking' && <BackdropLoading loading="Carregando" bgColor="#282a37" />}
-        {authState === 'authenticated' ? <HostsRoutes.Main /> : <HostsRoutes.Auth />}
+        {authState === 'checking' && 'Carregando...'}
+        {authState === 'authenticated' ? <UsersRoutes.Main /> : <UsersRoutes.Auth />}
       </>
     );
   }
@@ -28,14 +28,14 @@ const Routes = ({ module }) => {
 
 const App = () => {
   const location = useLocation();
-  const isHosts = location.pathname.startsWith('/hosts');
+  const isUsers = location.pathname.startsWith('/users');
 
   return (
     <>
-      {isHosts && (
-        <HostsProvider>
-          <Routes module="hosts" />
-        </HostsProvider>
+      {isUsers && (
+        <UsersProvider>
+          <Routes module="users" />
+        </UsersProvider>
       )}
     </>
   );

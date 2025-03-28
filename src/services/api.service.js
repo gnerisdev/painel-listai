@@ -4,13 +4,13 @@ export class ApiService {
   // #baseUrl = process.env.REACT_APP_API_URL;
   #baseUrl = 'http://127.0.0.1:3000/api';
   isAuth = false
-  #hostToken;
+  #userToken;
   #_id;
 
   constructor(routeAuth = true) {
     if (routeAuth) {
       this.isAuth = true
-      this.hostToken = localStorage.getItem('hostToken')?.toString()
+      this.userToken = localStorage.getItem('userToken')?.toString()
       this.id = localStorage.getItem('id')?.toString()
     }
   }
@@ -19,10 +19,10 @@ export class ApiService {
     const headers = {}
 
     if (this.isAuth) {
-      if (!this?.hostToken || !this?.id)
+      if (!this?.userToken || !this?.id)
         throw new Error('Dados de autentucação ausente!')
 
-      headers['Authorization'] = `Bearer ${this.hostToken.replace(/"/g, '')}`
+      headers['Authorization'] = `Bearer ${this.userToken.replace(/"/g, '')}`
       headers['providerId'] = this.id.replace(/"/g, '')
     }
 
