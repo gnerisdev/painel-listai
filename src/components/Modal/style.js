@@ -4,7 +4,7 @@ export const Modal = styled('div')({
   background: 'rgba(255,255,255,.6)', 
   height: '100vh',
   width: '100%',
-  position: 'absolute',
+  position: 'fixed',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -12,6 +12,7 @@ export const Modal = styled('div')({
   opacity: 0,
   visibility: 'hidden',
   transition: 'opacity 0.3s ease, visibility 0.3s ease',
+  zIndex: 10,
   
   '&.show': {
     opacity: 1,

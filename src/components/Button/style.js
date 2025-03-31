@@ -11,7 +11,7 @@ export const Button = styled('button')({
   fontSize: '0.94rem',
   textTransform: 'uppercase',
   border: 'none',
-  fontWeight: 700,
+  fontWeight: 500,
   cursor: 'pointer',
   '&:hover': {
     transform: 'scale(.96)'

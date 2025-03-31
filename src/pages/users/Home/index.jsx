@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UsersContext } from 'contexts/Users';
 import Container from 'components/Container';
@@ -10,7 +10,7 @@ import * as S from './style';
 
 const Home = () => {
   const navigate = useNavigate();
-  const { user } = useContext(UsersContext);
+  const { user, event } = useContext(UsersContext);
   
   const menuItems = [
     { icon: "fa-solid fa-house", label: "Home" },
@@ -27,7 +27,7 @@ const Home = () => {
       text: "Deixe o site do seu evento com a sua cara",
       icon: "fa-solid fa-pen-to-square",
       color: "#a0d468",
-      link: 'users/home/custom'
+      link: '/users/custom'
     },
     {
       title: "Galeria de Fotos e Vídeos",
@@ -40,6 +40,7 @@ const Home = () => {
       text: "Tudo em um só lugar para seu convidado",
       icon: "fa-regular fa-calendar",
       color: "#ac92eb",
+      link: '/users/info'
     },
     {
       title: "Lista de Presentes",
@@ -96,11 +97,13 @@ const Home = () => {
               alt="Imagem de perfil"
             />
           </S.Avatar>
-          <div>
-            <h2>Casamento do Biel</h2>
-            <h6>Venha comemorar conosco</h6>
-          </div>
-          <Button text="Visitar meu site" />
+          <S.AvatarTitle>
+            <h2>{event.title}</h2>
+            <h6>{event.subtitle}</h6>
+          </S.AvatarTitle>
+          <S.WrapperButton>
+            <Button text="Visitar meu site" background={event.color} />
+          </S.WrapperButton>
         </S.WrapperProfile>
 
         <S.Content>
@@ -130,7 +133,10 @@ const Home = () => {
           </div>
 
           <S.WrapperSidebar>
-            <SidebarMenu menuItems={menuItems} />
+            <SidebarMenu 
+              menuItems={menuItems} 
+              userName={user.first_name + " " + user.last_name}
+            />
           </S.WrapperSidebar>
         </S.Content>
       </Container>

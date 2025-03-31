@@ -1,11 +1,11 @@
 import * as S from './style';
 
-const SidebarMenu = ({ menuItems }) => {
+const SidebarMenu = ({ menuItems, userName, message }) => {
   return (
     <S.Sidebar>
       <S.UserSection>
         <S.Avatar>GN</S.Avatar>
-        <S.UserName>Gabriel Neris</S.UserName>
+        <S.UserName>{userName}</S.UserName>
         <S.WelcomeText>Bem-vindo!</S.WelcomeText>
       </S.UserSection>
       <S.MenuList>

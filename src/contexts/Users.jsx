@@ -7,25 +7,26 @@ export const UsersContext = createContext();
 export const UsersProvider = (props) => {
   const apiService = new ApiService();
   const [user, setUser] = useState({});
+  const [event, setEvent] = useState({});
   const [token, setToken] = useState('');
   const [alert, setAlert] = useState({ show: false, icon: '', title: '', text: '' });
   const [authState, setAuthState] = useState('checking');
-  
+
   // checking => Verifying provider status  
   // authenticated => Provider is authenticated  
   // unauthorized => Provider is not authorized
 
   const getUser = async () => {
     try {
-      const response = await apiService.get(`/users/data`);
-
-      const user = await response.data;
-      setUser(user);
+      const response = await apiService.get(`/users/me`);
+      const { user, event } = await response.data;
 
       if (response.status === 401 || response.status === 404) {
         return setAuthState('unauthorized');
       }
 
+      setUser(user);
+      setEvent(event);
       setAuthState('authenticated');
     } catch (e) {
       setAuthState('unauthorized');
@@ -41,6 +42,8 @@ export const UsersProvider = (props) => {
       value={{
         user,
         setUser,
+        event,
+        setEvent,
         token,
         setToken,
         authState,

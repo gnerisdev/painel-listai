@@ -1,15 +1,22 @@
 import { useNavigate } from 'react-router-dom';
 import Container from 'components/Container';
+import logo from 'assets/logo.png';
 import * as S from './style';
 
-const Header = (props) => {
+const Header = ({ background }) => {
   const navigate = useNavigate();
 
   return (
     <S.Header>
-      <Container>
-        <span className="" />
-      </Container>
+      <S.Nav style={{ background }}>
+        <Container>
+          <S.Icon 
+            onClick={() => navigate(-1)}
+            className="fa-solid fa-arrow-left" 
+          />
+          <S.Logo src={logo} />
+        </Container>
+      </S.Nav>
     </S.Header>
   );
 };

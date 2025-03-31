@@ -25,7 +25,6 @@ const Step3 = ({ data, isLoading, getData, next }) => {
       .substring(0, 15);
   };
 
-
   const validateFields = () => {
     const newLog = { ...log };
     let errorCount = 0;

@@ -10,15 +10,16 @@ const UsersRoutes = {
 }
 
 const Routes = ({ module }) => {
-  const hostContext = useContext(UsersContext);
-  // const authState = hostContext.authState;
-  const authState = 'authenticated';
+  const userContext = useContext(UsersContext);
+  const authState = userContext.authState;
+  // const authState = 'authenticated';
 
   if (module === 'users') {
     return (
       <>
         {authState === 'checking' && 'Carregando...'}
-        {authState === 'authenticated' ? <UsersRoutes.Main /> : <UsersRoutes.Auth />}
+        {authState === 'authenticated' && <UsersRoutes.Main />}
+        {authState === 'unauthorized' && <UsersRoutes.Auth />}
       </>
     );
   }
@@ -28,6 +29,7 @@ const Routes = ({ module }) => {
 
 const App = () => {
   const location = useLocation();
+  console.log(location)
   const isUsers = location.pathname.startsWith('/users');
 
   return (

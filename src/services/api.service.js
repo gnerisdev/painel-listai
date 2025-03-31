@@ -5,13 +5,13 @@ export class ApiService {
   #baseUrl = 'http://127.0.0.1:3000/api';
   isAuth = false
   #userToken;
-  #_id;
+  #userId;
 
   constructor(routeAuth = true) {
     if (routeAuth) {
       this.isAuth = true
       this.userToken = localStorage.getItem('userToken')?.toString()
-      this.id = localStorage.getItem('id')?.toString()
+      this.userId = localStorage.getItem('userId')?.toString()
     }
   }
 
@@ -19,11 +19,10 @@ export class ApiService {
     const headers = {}
 
     if (this.isAuth) {
-      if (!this?.userToken || !this?.id)
-        throw new Error('Dados de autentucação ausente!')
+      if (!this?.userToken || !this?.userId) throw new Error('Dados de autentucação ausente!')
 
       headers['Authorization'] = `Bearer ${this.userToken.replace(/"/g, '')}`
-      headers['providerId'] = this.id.replace(/"/g, '')
+      headers['user_id'] = this.userId.replace(/"/g, '')
     }
 
     multipart
@@ -70,6 +69,13 @@ export class ApiService {
       headers: this.getHeaders(),
     })
 
+    return response;
+  }
+
+  async externalQuery(url, method, data, headers) {
+    if (!url) throw new Error('A URL é obrigatória.');
+    const response = await axios({ method, url, headers: headers || {}, data });
+    
     return response;
   }
 }

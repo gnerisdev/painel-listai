@@ -19,6 +19,14 @@ export const Input = styled('input')({
   outline: 'none'
 });
 
+export const Textarea = styled('textarea')({
+  background: 'transparent',
+  width: '100%', 
+  height: 80,
+  border: 'none',
+  outline: 'none'
+});
+
 export const Label = styled('label')({
   color: '#000',
   width: '100%', 

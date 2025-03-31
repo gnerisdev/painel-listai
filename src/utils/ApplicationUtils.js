@@ -1,25 +1,4 @@
 export class ApplicationUtils {
-  static getStatusColor(status) {
-    switch (status) {
-      case 'OrderReceived':
-        return '#2196F3';
-      case 'Processing':
-        return '#00BCD4';
-      case 'WaitingForPaymentConfirmation':
-        return '#FFC107';
-      case 'Shipped':
-        return '#4CAF50';
-      case 'Concluded':
-        return '#4CAF50';
-      case 'Cancelled':
-        return '#FF3D00';
-      case 'WaitingForPickup':
-        return '#00BCD4';
-      default:
-        return '#808080';
-    }
-  }
-
   static formatPrice(price) {
     if (!price) return;
 
@@ -64,4 +43,8 @@ export class ApplicationUtils {
     const rgba = `rgba(${r}, ${g}, ${b}, ${clampedAlpha})`;
     return rgba;
   }
+
+  static getErrorMessage (error, defaultMessage = "Ocorreu um erro inesperado.") {  
+    return (error?.response?.data?.message || error?.message || defaultMessage);
+  };
 }

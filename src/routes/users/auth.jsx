@@ -11,7 +11,7 @@ const authRoutes = [
       { path: 'register', element: <Register /> },
     ],
   },
-  // { path: '*', element: <Navigate to="/login" /> },
+  { path: '*', element: <Navigate to="users/login" /> },
 ];
 
 export default authRoutes; 

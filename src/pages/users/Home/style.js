@@ -37,6 +37,18 @@ export const Avatar = styled('div')({
   }
 });
 
+export const AvatarTitle = styled('div')({
+  textAlign: 'start',
+  'h2': {
+    fontSize: '1.5rem',
+    fontWeight: 'bolder'
+  },
+  'h6': {
+    fontSize: '1rem',
+    fontWeight: 400
+  },
+});
+
 export const Content = styled('section')({
   display: 'grid',
   '@media(min-width: 1024px)': {
@@ -75,3 +87,9 @@ export const WrapperSidebar = styled('div')({
   },
 });
 
+export const WrapperButton = styled('div')({
+  marginTop: 8,
+  display: 'grid',
+  justifyContent: 'end',
+  gridTemplateColumns: 'minmax(0, 340px)'
+});

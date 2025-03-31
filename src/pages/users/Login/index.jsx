@@ -6,7 +6,9 @@ import Input from 'components/Input';
 import Button from 'components/Button';
 import * as S from './style';
 
-export default function Login() {
+export default function Login() {  
+  const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+
   const apiService = new ApiService(false);
   const { setAlert } = useContext(UsersContext);
   const [loading, setLoading] = useState(false);
@@ -15,53 +17,57 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     try {
-      // setAlert({ show: true, title: 'Login', text: 'Dados inválidos' });
-      console.log('okkk');
+      setLoading(true);
 
-      if (!data.email) {
-        return;
-      }
-
-      if (!data.password) {
-        return;
-      }
+      console.log(validateFields())
+      if (!data.email || !data.password) throw new Error('Preencha os dados corretamente!');
+      if (!validateFields()) throw new Error('Preencha os dados corretamente!');
 
       const response = await apiService.post('/users/login', data);
+      const { success, message, token, id } = response.data;
 
-      // if (!response.data.success) return toast.error(response.data.message);
+      if (!success) {
+        setAlert({ show: true, title: 'Login', text: message });
+        return;
+      }
 
-      localStorage.setItem('id', JSON.stringify(response.data.id));
-      localStorage.setItem('hostToken', JSON.stringify(response.data.token));
+      localStorage.setItem('userId', JSON.stringify(id));
+      localStorage.setItem('userToken', JSON.stringify(token));
 
-
-      console.log(response.data);
+      window.location.href = '/users/home';
     } catch (e) {
-      console.log(e);
-      // return toast.error(e.response.data?.message);
+      const message = e?.response?.data?.message || e?.message
+      setAlert({ show: true, title: 'Login', text: message });
     } finally {
       setLoading(false);
     }
   };
 
-  const validateInput = (name, text) => {
-    if (name === 'email') {
-      const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!regex.test(text)) {
-        setLog({ ...log, email: '* E-mail inválido' });
-        return;
-      }
+  const validateFields = () => {
+    console.log(data)
+    const newLog = { ...log };
+    let errorCount = 0;
 
-      setLog({ ...log, email: '' });
+    if (!data.email) {
+      newLog.email = '* Campo obrigatório';
+      errorCount++;
+    } else if (!emailRegex.test(data.email)) {
+      newLog.email = '* Formato de e-mail inválido';
+      errorCount++;
+    } else {
+      newLog.email = '';
     }
 
-    if (name === 'password') {
-      if (text?.length < 1) {
-        setLog({ ...log, password: '* Senha inválida' });
-        return;
-      }
-
-      setLog({ ...log, password: '' });
+    if (!data.password) {
+      newLog.password = '* Senha inválida';
+      errorCount++;
+    } else {
+      newLog.password = '';
     }
+
+    setLog(newLog);
+
+    return errorCount === 0 ? true : false;
   };
 
   return (
@@ -81,28 +87,39 @@ export default function Login() {
           <Input
             label="E-mail"
             type="email"
+            value={data.email}
             messageError={log.email}
             check={log.email === ''}
-            getData={(text) => {
-              setData({ ...data, email: text?.trim() });
-              validateInput('email', text?.trim());
+            onChange={(value) => {
+              setData({ ...data, email: value });
+              if (!emailRegex.test(value)) {
+                setLog({ ...log, email: '* E-mail inválido' });
+                return;
+              }
+              setLog({ ...log, email: '' });
             }}
           />
 
           <Input
             label="Senha"
             type="password"
+            value={data.password}
+            messageError={log.password}
             check={log.password === ''}
-            getData={(text) => {
-              setData({ ...data, password: text?.trim() });
-              validateInput('password', text?.trim());
+            onChange={(value) => {
+              setData({ ...data, password: value });
+              if (!value) {
+                setLog({ ...log, password: '* Senha inválido' });
+                return;
+              }
+              setLog({ ...log, password: '' });
             }}
           />
 
           <S.ForgetPass href="/">Redefinir senha</S.ForgetPass>
         </S.WrapperForm>
 
-        <Button text="Entrar" onClick={handleSubmit} />
+        <Button text="Entrar" isLoading={loading} onClick={handleSubmit} />
 
         <S.Line>
           <span></span>
@@ -112,8 +129,8 @@ export default function Login() {
 
         <S.TextSmall>
           Não possui conta? {" "}
-          <S.Link 
-            onClick={() => {}}
+          <S.Link
+            onClick={() => { }}
           >
             Clique
           </S.Link> {" "}
