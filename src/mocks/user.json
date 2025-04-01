@@ -1,0 +1,18 @@
+{
+    "code": 200,
+    "status": "success",
+    "total": 10,
+    "data":[
+        { "name": "Mariana", "email": "mariana@email.com", "status": "Ativo", "events": 8 },
+        { "name": "Bruno", "email": "bruno@email.com", "status": "Ativo", "events": 3 },
+        { "name": "Fernanda", "email": "fernanda@email.com", "status": "Inativo", "events": 1 },
+        { "name": "Ricardo", "email": "ricardo@email.com", "status": "Ativo", "events": 6 },
+        { "name": "Juliana", "email": "juliana@email.com", "status": "Ativo", "events": 4 },
+        { "name": "Paulo", "email": "paulo@email.com", "status": "Inativo", "events": 0 },
+        { "name": "Camila", "email": "camila@email.com", "status": "Ativo", "events": 7 },
+        { "name": "Gustavo", "email": "gustavo@email.com", "status": "Ativo", "events": 2 },
+        { "name": "Beatriz", "email": "beatriz@email.com", "status": "Ativo", "events": 5 },
+        { "name": "Thiago", "email": "thiago@email.com", "status": "Inativo", "events": 1 }
+    ]
+
+}
