@@ -1,15 +1,15 @@
 import * as S from './style'
-import Container from 'components/Container';
 
-const TitlePage = ({ title, subtitle }) => {
+const TitlePage = ({ title, subtitle, icon }) => {
   return (
-    <Container>
-      <S.Content>
-        <S.Title>{title}</S.Title>
-        <S.Subtitle>{subtitle}</S.Subtitle>
-      </S.Content>
-    </Container>
+    <S.Content>
+      <S.Title>
+        <S.Icon className={icon} />
+        {title}
+      </S.Title>
+      <S.Subtitle>{subtitle}</S.Subtitle>
+    </S.Content>
   )
 }
 
-export default TitlePage;
+export default TitlePage

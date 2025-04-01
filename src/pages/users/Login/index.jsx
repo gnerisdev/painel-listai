@@ -1,16 +1,13 @@
 import { useContext, useState } from 'react';
-import { ApiService } from 'services/api.service';
 import { UsersContext } from 'contexts/Users';
 import Container from 'components/Container';
 import Input from 'components/Input';
 import Button from 'components/Button';
 import * as S from './style';
 
-export default function Login() {  
+const Login = () => {  
   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-
-  const apiService = new ApiService(false);
-  const { setAlert } = useContext(UsersContext);
+  const { apiService, setAlert } = useContext(UsersContext);
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState({ email: '', password: '' });
   const [log, setLog] = useState({ email: null, password: null });
@@ -147,3 +144,5 @@ export default function Login() {
     </S.Main>
   );
 }
+
+export default Login;

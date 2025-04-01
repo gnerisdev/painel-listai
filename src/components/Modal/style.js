@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 export const Modal = styled('div')({
-  background: 'rgba(255,255,255,.6)', 
+  background: 'rgba(0, 0, 0, 0.6)', 
   height: '100vh',
   width: '100%',
   position: 'fixed',

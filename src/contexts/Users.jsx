@@ -1,30 +1,37 @@
-import Modal from 'components/Modal';
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useEffect, useState, useMemo } from 'react';
+import { useLocation } from 'react-router-dom';
 import { ApiService } from 'services/api.service';
-
-export const UsersContext = createContext();
+import Modal from 'components/Modal';
 
 export const UsersProvider = (props) => {
-  const apiService = new ApiService();
+  const location = useLocation();
+  const normalizedPathname = location.pathname.replace(/\/$/, '');
+  const isAuthPage = normalizedPathname === '/users/login' || normalizedPathname === '/users/register';
+  const apiService = useMemo(
+    () => new ApiService({ module: 'users', auth: !isAuthPage }),
+    [isAuthPage],
+  );
+
   const [user, setUser] = useState({});
   const [event, setEvent] = useState({});
-  const [token, setToken] = useState('');
-  const [alert, setAlert] = useState({ show: false, icon: '', title: '', text: '' });
+  const [token, setToken] = useState(localStorage.getItem('userToken') || '');
+  const [alert, setAlert] = useState({
+    show: false,
+    icon: '',
+    title: '',
+    text: '',
+  });
   const [authState, setAuthState] = useState('checking');
-
-  // checking => Verifying provider status  
-  // authenticated => Provider is authenticated  
-  // unauthorized => Provider is not authorized
 
   const getUser = async () => {
     try {
       const response = await apiService.get(`/users/me`);
-      const { user, event } = await response.data;
 
       if (response.status === 401 || response.status === 404) {
         return setAuthState('unauthorized');
       }
 
+      const { user, event } = response.data;
       setUser(user);
       setEvent(event);
       setAuthState('authenticated');
@@ -34,8 +41,10 @@ export const UsersProvider = (props) => {
   };
 
   useEffect(() => {
-    getUser();
-  }, []);
+    if (authState === 'checking') getUser();
+  }, [authState]);
+
+  if (authState === 'checking') return <div>Carregando...</div>;
 
   return (
     <UsersContext.Provider
@@ -48,14 +57,21 @@ export const UsersProvider = (props) => {
         setToken,
         authState,
         alert,
-        setAlert
+        setAlert,
+        apiService,
       }}
     >
       <Modal active={alert.show} updateShow={(e) => setAlert(e)}>
         <div style={{ textAlign: 'center' }}>
-          <span className="fa-regular fa-circle-question" style={{ fontSize: 40 }}></span>
+          <span
+            className="fa-regular fa-circle-question"
+            style={{ fontSize: 40 }}
+          ></span>
           <h3>{alert.title}</h3>
-          <small style={{ margin: 0 }} dangerouslySetInnerHTML={{ __html: alert.text }} />
+          <small
+            style={{ margin: 0 }}
+            dangerouslySetInnerHTML={{ __html: alert.text }}
+          />
         </div>
       </Modal>
 
@@ -63,3 +79,5 @@ export const UsersProvider = (props) => {
     </UsersContext.Provider>
   );
 };
+
+export const UsersContext = createContext();

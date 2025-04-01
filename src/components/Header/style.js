@@ -2,7 +2,8 @@ import styled from 'styled-components';
 
 export const Header = styled('header')({
   position: 'relative',
-  background: 'transparent'
+  background: 'transparent',
+  marginBottom: 72
 });
 
 export const Nav = styled('nav')({

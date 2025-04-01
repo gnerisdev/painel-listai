@@ -1,46 +1,34 @@
-import { useContext } from 'react';
-import { useRoutes, useLocation } from 'react-router-dom';
-import UsersAuth from 'routes/users/auth';
-import UsersMain from 'routes/users/main';
-import { UsersProvider, UsersContext } from 'contexts/Users';
+import { useLocation } from 'react-router-dom';
+import { UsersProvider } from 'contexts/Users';
+import { AdminProvider } from 'contexts/Admin';
+import { AdminRoutes } from 'routes/admin';
+import { UsersRoutes } from 'routes/users';
 
-const UsersRoutes = {
-  Auth: () => (<>{useRoutes([...UsersAuth])}</>), 
-  Main: () => (<>{useRoutes([...UsersMain])}</>),
-}
+const AdminRoutesProvider = () => {
+  return (
+    <AdminProvider>
+      <AdminRoutes />
+    </AdminProvider>
+  );
+};
 
-const Routes = ({ module }) => {
-  const userContext = useContext(UsersContext);
-  const authState = userContext.authState;
-  // const authState = 'authenticated';
-
-  if (module === 'users') {
-    return (
-      <>
-        {authState === 'checking' && 'Carregando...'}
-        {authState === 'authenticated' && <UsersRoutes.Main />}
-        {authState === 'unauthorized' && <UsersRoutes.Auth />}
-      </>
-    );
-  }
-
-  return <div>Página não encontrada</div>; 
+const UsersRoutesProvider = () => {
+  return (
+    <UsersProvider>
+      <UsersRoutes />
+    </UsersProvider>
+  );
 };
 
 const App = () => {
   const location = useLocation();
-  console.log(location)
   const isUsers = location.pathname.startsWith('/users');
+  const isAdmin = location.pathname.startsWith('/admin');
 
-  return (
-    <>
-      {isUsers && (
-        <UsersProvider>
-          <Routes module="users" />
-        </UsersProvider>
-      )}
-    </>
-  );
+  if (isUsers) return <UsersRoutesProvider />
+  if (isAdmin) return <AdminRoutesProvider />;
+
+  return <div>Página não encontrada</div>;
 };
 
 export default App;

@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import * as S from './style';
 
-const Modal = ({ children, active, updateShow, background }) => {
+const Modal = ({ children, active, updateShow, background, color }) => {
   const [visible, setVisible] = useState(active);
   const modalRef = useRef(null);
   const contentRef = useRef(null);
@@ -37,7 +37,7 @@ const Modal = ({ children, active, updateShow, background }) => {
           {children}
 
           <S.ButtonClose onClick={() => updateShow(false)}>
-            <span className="fa-solid fa-xmark"></span>
+            <span className="fa-solid fa-xmark" style={{ color }}></span>
           </S.ButtonClose>
         </S.Content>
       </S.Modal>

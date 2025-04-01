@@ -8,8 +8,8 @@ import Step3 from './Step-3';
 import Button from 'components/Button';
 import * as S from './style';
 
-export default function Login() {
-  const apiService = new ApiService(false);
+const Register = () => {
+  const apiService = new ApiService('users', false);
   const { setAlert } = useContext(UsersContext);
   const [loading, setLoading] = useState(false);
   const [stepCurrent, setStepCurrent] = useState('step-event-types');
@@ -22,15 +22,15 @@ export default function Login() {
     try {
       setLoading(true);
 
-      console.log('success, message')
+      console.log('success, message');
 
       const response = await apiService.post('/users/register', data);
-     
+
     } catch (e) {
-      setAlert({ 
-        show: true, 
-        title: 'Cadastro', 
-        text:  e?.response?.data?.message || 'Erro ao fazer o cadastro.' 
+      setAlert({
+        show: true,
+        title: 'Cadastro',
+        text: e?.response?.data?.message || 'Erro ao fazer o cadastro.'
       });
     } finally {
       setLoading(false);
@@ -45,10 +45,10 @@ export default function Login() {
         setLoading(true);
 
         const response = await apiService.get(
-          `/users/event-categories?event_type_id=${data.eventType}`, 
+          `/users/event-categories?event_type_id=${data.eventType}`,
           data
         );
-      
+
         setEventCategories(response.data);
         setStepCurrent('step1');
       } catch (e) {
@@ -63,17 +63,17 @@ export default function Login() {
         setLoading(true);
 
         const response = await apiService.get(
-          `/users/fetch-gifts-slug?event_categories_id=${data.eventType}&slug=${data.slug}`, 
+          `/users/fetch-gifts-slug?event_categories_id=${data.eventType}&slug=${data.slug}`,
           data
         );
 
         const { gifts, slug_available, message } = response.data;
 
         if (!slug_available) {
-          setAlert({ 
-            show: true, 
-            title: 'Lista de Presentes', 
-            text:  message || 'O link está em uso, por favor, crie outro.' 
+          setAlert({
+            show: true,
+            title: 'Lista de Presentes',
+            text: message || 'O link está em uso, por favor, crie outro.'
           });
         }
 
@@ -84,10 +84,10 @@ export default function Login() {
           throw new Error('Gift não encontrado');
         }
       } catch (e) {
-        setAlert({ 
-          show: true, 
-          title: 'Erro ao prosseguir o cadastro', 
-          text: 'Se o problema persistir, contate o suporte.' 
+        setAlert({
+          show: true,
+          title: 'Erro ao prosseguir o cadastro',
+          text: 'Se o problema persistir, contate o suporte.'
         });
       } finally {
         setLoading(false);
@@ -100,7 +100,7 @@ export default function Login() {
   };
 
   const getEventTypes = async () => {
-    try {      
+    try {
       setLoading(true);
 
       const response = await apiService.get('/users/event-types', data);
@@ -148,8 +148,8 @@ export default function Login() {
 
             <S.ListEventTypes >
               {eventTypes?.map(item => (
-                <S.ItemEventTypes 
-                  key={item.name} 
+                <S.ItemEventTypes
+                  key={item.name}
                   onClick={() => setData({ ...data, eventType: item.id })}
                   className={`${item.id === data?.eventType ? 'selected' : ''}`}
                 >
@@ -194,4 +194,6 @@ export default function Login() {
       </Container>
     </S.Main >
   );
-}
+};
+
+export default Register; 

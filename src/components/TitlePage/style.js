@@ -1,12 +1,19 @@
 import styled from 'styled-components';
 
 export const Content = styled('div')({ 
-  textAlign: 'center'
+  textAlign: 'start'
 });
 
 export const Title = styled('h2')({ 
-  fontSize: '1.4rem',
-  fontWeight: 500,
+  fontSize: '1.6rem',
+  display: 'flex',
+  alignItems: 'center',
+  gap: 16,
+  fontWeight: 600,
+});
+
+export const Icon = styled('span')({ 
+  fontSize: '28px',
 });
 
 export const Subtitle = styled('h5')({ 

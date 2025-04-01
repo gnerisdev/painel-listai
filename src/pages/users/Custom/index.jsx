@@ -1,6 +1,5 @@
 import { useEffect, useState, useContext } from 'react';
 import { UsersContext } from 'contexts/Users';
-import { ApiService } from 'services/api.service';
 import { ApplicationUtils } from 'utils/ApplicationUtils';
 import Header from 'components/Header';
 import FormContainer from 'components/FormContainer';
@@ -11,8 +10,7 @@ import TitlePage from 'components/TitlePage';
 import Container from 'components/Container';
 
 const Custom = () => {
-  const apiService = new ApiService();
-  const { event, setAlert } = useContext(UsersContext);
+  const { apiService, event, setAlert } = useContext(UsersContext);
 
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState({

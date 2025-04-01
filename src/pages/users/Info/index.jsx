@@ -1,6 +1,5 @@
 import { useEffect, useState, useContext } from 'react';
 import { UsersContext } from 'contexts/Users';
-import { ApiService } from 'services/api.service';
 import { ApplicationUtils } from 'utils/ApplicationUtils';
 import Header from 'components/Header';
 import FormContainer from 'components/FormContainer';
@@ -12,8 +11,7 @@ import Select from 'components/Select';
 import * as S from './style';
 
 const Info = () => {
-  const apiService = new ApiService();
-  const { event, setAlert } = useContext(UsersContext);
+  const { apiService, event, setAlert } = useContext(UsersContext);
   const [loading, setLoading] = useState(false);
   const [log, setLog] = useState({});
   const [urlMap, setUrlMap] = useState(null);
