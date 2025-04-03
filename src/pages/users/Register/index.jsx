@@ -39,7 +39,15 @@ const Register = () => {
 
   const nextStep = async () => {
     if (stepCurrent === 'step-event-types') {
-      if (!data?.eventType) return;
+      if (!data?.eventType) {
+        setAlert({
+          show: true,
+          title: 'Atenção',
+          text: 'Por favor, selecione um tipo de evento para continuar.'
+        });
+        return;
+      }
+
 
       try {
         setLoading(true);
