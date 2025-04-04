@@ -15,6 +15,7 @@ const Input = ({ placeholder, type, label, check, value, messageError, onChange,
           />
         ) : (
           <S.Textarea
+            placeholder={placeholder}
             type={type}
             onBlur={onBlur ? (e) => onBlur(e.target.value) : undefined}
             onChange={onChange ? (e) => onChange(e.target.value) : undefined}

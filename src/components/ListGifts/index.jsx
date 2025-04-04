@@ -2,8 +2,10 @@ import * as S from './style';
 
 // data: { name: string, id: string, price: number, img: any }
 // selected: number[]
+// getData: (id: number) => {}
+// mode: 'add' || 'edit' 
 
-const ListGifts = ({ data, selected, getData }) => {
+const ListGifts = ({ data, selected, getData, mode="add" }) => {
   return (
     <S.List>
       {data?.map((item, index) => {
@@ -24,8 +26,14 @@ const ListGifts = ({ data, selected, getData }) => {
               </span>
             </S.WrapperText>
 
-            <S.Button style={{ backgroundColor: isSelected ? 'rgb(67, 32, 112)' : '#a9a9a9' }}>
-              <span className={`${isSelected ? 'fa-solid fa-check' : 'fa-solid fa-plus'}`}></span>
+            <S.Button 
+              style={{ backgroundColor: isSelected ? 'rgb(67, 32, 112)' : '#a9a9a9' }} 
+              type="button"
+            >
+              {mode === "add" && (
+                <span className={`${isSelected ? 'fa-solid fa-check' : 'fa-solid fa-plus'}`}></span>
+              )}
+              {mode === "edit" && (<span className="fa-solid fa-trash"></span>)}
             </S.Button>
           </S.Item>
         );

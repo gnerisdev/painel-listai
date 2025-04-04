@@ -47,6 +47,7 @@ const Home = () => {
       text: "Adicione mais detalhes ao seu site",
       icon: "fa-solid fa-gift",
       color: "#ff779d",
+      link: '/users/gifts'
     },
     {
       title: "Páginas Personalizadas",

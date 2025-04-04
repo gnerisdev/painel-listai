@@ -7,6 +7,7 @@ import Register from 'pages/users/Register';
 import Home from 'pages/users/Home';
 import Custom from 'pages/users/Custom';
 import Info from 'pages/users/Info';
+import Gifts from 'pages/users/Gifts';
 
 const authRoutes = [
   {
@@ -25,11 +26,12 @@ const mainRoutes = [
     path: 'users/',
     element: <UsersLayout />,
     children: [
+      { path: '*', element: <Navigate to="home/" /> },
       { path: '', element: <Home /> },
       { path: 'home', element: <Home /> },
       { path: 'custom', element: <Custom /> },
       { path: 'info', element: <Info /> },
-      { path: '*', element: <Navigate to="home/" /> },
+      { path: 'gifts', element: <Gifts /> },
     ],
   },
 ];

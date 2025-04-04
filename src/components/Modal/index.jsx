@@ -1,7 +1,15 @@
-import { useEffect, useState, useRef } from 'react';
-import * as S from './style';
+import { useEffect, useState, useRef } from "react";
+import * as S from "./style";
 
-const Modal = ({ children, active, updateShow, background, color }) => {
+const Modal = ({
+  children,
+  active,
+  updateShow,
+  background,
+  color,
+  closeOut = true,
+  zIndex = 10,
+}) => {
   const [visible, setVisible] = useState(active);
   const modalRef = useRef(null);
   const contentRef = useRef(null);
@@ -9,30 +17,36 @@ const Modal = ({ children, active, updateShow, background, color }) => {
   useEffect(() => {
     if (active) {
       setVisible(true);
-      document.body.style.overflowY = 'hidden';
+      document.body.style.overflowY = "hidden";
     } else {
       setTimeout(() => setVisible(false), 300);
-      document.body.style.overflowY = 'auto';
+      document.body.style.overflowY = "auto";
     }
   }, [active]);
 
   const handleOutsideClick = (e) => {
-    if (modalRef.current && !contentRef.current.contains(e.target)) {
-      updateShow(false);
+    if (closeOut) {
+      if (modalRef.current && !contentRef.current.contains(e.target)) {
+        updateShow(false);
+      }
     }
   };
 
   useEffect(() => {
-    document.addEventListener('mousedown', handleOutsideClick); 
+    document.addEventListener("mousedown", handleOutsideClick);
 
     return () => {
-      document.removeEventListener('mousedown', handleOutsideClick); 
+      document.removeEventListener("mousedown", handleOutsideClick);
     };
   }, []);
 
   return (
     visible && (
-      <S.Modal ref={modalRef} className={active ? 'show' : 'hide'}>
+      <S.Modal
+        ref={modalRef}
+        className={active ? "show" : "hide"}
+        style={{ zIndex }}
+      >
         <S.Content ref={contentRef} style={background ? { background } : {}}>
           {children}
 

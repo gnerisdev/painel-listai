@@ -61,17 +61,14 @@ export const UsersProvider = (props) => {
         apiService,
       }}
     >
-      <Modal active={alert.show} updateShow={(e) => setAlert(e)}>
-        <div style={{ textAlign: 'center' }}>
-          <span
-            className="fa-regular fa-circle-question"
-            style={{ fontSize: 40 }}
-          ></span>
+      <Modal active={alert.show} updateShow={(e) => setAlert(e)} zIndex={20}>
+        <div style={{ textAlign: "center" }}>
+          <span className={alert.icon} style={{ fontSize: 40 }}></span>
           <h3>{alert.title}</h3>
-          <small
+          <p
             style={{ margin: 0 }}
             dangerouslySetInnerHTML={{ __html: alert.text }}
-          />
+          ></p>
         </div>
       </Modal>
 
