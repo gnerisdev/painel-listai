@@ -2,7 +2,6 @@ import CardTitle from "components/CardTitle";
 import Container from "components/Container";
 import TitlePage from "components/TitlePage";
 import Header from "components/Header";
-import Button from "components/Button";
 import * as S from "./style";
 
 const TypeGift = () => {
