@@ -39,8 +39,10 @@ export const SortSelect = styled("select")({
 
 export const GiftsList = styled("div")({
   display: "grid",
+  gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
   gap: "16px",
-  marginTop: "24px"
+  marginTop: "24px",
+  
 });
 
 // Estilos adicionais para componentes específicos
