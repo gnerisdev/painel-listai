@@ -10,13 +10,23 @@ import * as S from './style';
 
 const AddGift = () => {
   const [quantity, setQuantity] = useState(1);
+  const [selectedItemId, setSelectedItemId] = useState('');
+  
+  const optionsData = [
+    { title: 'Opção 1', value: '1' },
+    { title: 'Opção 2', value: '2' },
+    { title: 'Opção 3', value: '3' }
+  ];
 
   const handleSubmit = () => {
   };
   const handleImageUpload = (image) => {
+    console.log("Uploaded image:", image);
   }
-  const handleSelectChange = (selectedOption) => {
-  }
+   const handleSelectChange = (value) => {
+    setSelectedItemId(value);
+    console.log('Item selecionado:', value);
+  };
 
   return (
     <Container >
@@ -30,10 +40,11 @@ const AddGift = () => {
         <S.ContainerColumn>
           <Select
             label="Tipo de presente"
-            options={[
-              { value: "fisico", label: "Físico" },
-              { value: "digital", label: "Digital" },
-            ]}
+            data={optionsData}
+            value={selectedItemId}
+            onChange={handleSelectChange}
+            messageError={selectedItemId ? '' : 'Por favor, selecione uma opção'}
+            onBlur={(value) => console.log('Blur event:', value)}
             required
           />
           <Input

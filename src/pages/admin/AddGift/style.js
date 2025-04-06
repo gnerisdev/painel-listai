@@ -5,6 +5,7 @@ export const ContainerRow = styled('div')({
   flexDirection: 'row',
   gap: '30px',
   justifyContent: 'center',
+  alignItems: 'center',
   maxWidth: '1200px',
   '@media (max-width: 768px)': {
     flexDirection: 'column',
