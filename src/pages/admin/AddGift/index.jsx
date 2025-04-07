@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { AdminContext } from 'contexts/Admin';
 import Container from "components/Container";
 import TitlePage from "components/TitlePage";
 import Header from "components/Header";
@@ -11,21 +12,63 @@ import * as S from './style';
 const AddGift = () => {
   const [quantity, setQuantity] = useState(1);
   const [selectedItemId, setSelectedItemId] = useState('');
-  
-  const optionsData = [
-    { title: 'Opção 1', value: '1' },
-    { title: 'Opção 2', value: '2' },
-    { title: 'Opção 3', value: '3' }
-  ];
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [eventTypes, setEventTypes] = useState([]);
+  const { apiService, setAlert } = useContext(AdminContext);
+  const [name, setName] = useState('');
+  const [value, setValue] = useState('');
 
-  const handleSubmit = () => {
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await apiService.get('/admin/event-categories');
+        setEventTypes(response.data.map(item => ({
+          title: item.name,
+          value: item.id.toString()
+        })));
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+    fetchData();
+  }, [apiService]);
+
+  const cleanFields = () => {
+    setName('');
+    setValue('');
+    setQuantity(1);
+    setSelectedItemId('');
+    setSelectedImage(null);
+  };
+  const handleSubmit = async () => {
+    try {
+      if (!name || !value || !selectedItemId || !selectedImage) {
+        setAlert({ show: true, title: 'Erro', text: 'Preencha todos os campos obrigatórios!' });
+        return;
+      }
+      const data = {
+        name: name,
+        value: value,
+        quantity: quantity === 'Ilimitado' ? -1 : quantity,
+        categoryId: selectedItemId,
+        image: selectedImage,
+      };
+      const reponse = await apiService.post('Caminho', data);
+      if (!reponse.data.success) {
+        cleanFields();
+        setAlert({ show: true, title: 'Sucesso', text: 'Presente adicionado com sucesso!' });
+      }
+    } catch (error) {
+      console.log(error);
+      setAlert({ show: true, title: 'Erro', text: 'Ocorreu um erro ao adicionar o presente. Por favor, tente novamente.' });
+    } finally {
+    }
   };
   const handleImageUpload = (image) => {
-    console.log("Uploaded image:", image);
-  }
-   const handleSelectChange = (value) => {
+    setSelectedImage(image);
+  };
+  const handleSelectChange = (value) => {
     setSelectedItemId(value);
-    console.log('Item selecionado:', value);
   };
 
   return (
@@ -36,57 +79,74 @@ const AddGift = () => {
         icon="fa-solid fa-gift"
       />
       <S.ContainerRow>
-        <UploadImage />
+        <UploadImage onFileUpload={handleImageUpload} />
         <S.ContainerColumn>
           <Select
-            label="Tipo de presente"
-            data={optionsData}
+            label="Categoria de presente"
+            data={eventTypes}
             value={selectedItemId}
             onChange={handleSelectChange}
             messageError={selectedItemId ? '' : 'Por favor, selecione uma opção'}
-            onBlur={(value) => console.log('Blur event:', value)}
-            required
           />
           <Input
             label="Nome do presente"
             placeholder="Digite o nome do presente"
             type="text"
-            required
+            check={name !== ''}
+            onChange={(val) => setName(val)}
+            messageError={name === '' ? 'Por favor, preencha este campo' : ''}
           />
           <Input
             label="Valor do presente"
             placeholder="Digite o valor do presente"
             type="text"
-            required
+            check={value !== ''}
+            onChange={(val) => setValue(val)}
+            messageError={value === '' ? 'Por favor, preencha este campo' : ''}
           />
           <S.ContainerQuantity>
             <Input
               label="Quantidade"
               placeholder="Digite a quantidade"
               type="text"
-              value={quantity}
-              required
+              value={quantity === -1 ? 'Ilimitado' : quantity}
+              onChange={(val) => {
+                if (val && val.toLowerCase() === 'ilimitado') {
+                  setQuantity(-1);
+                } else {
+                  const parsed = parseInt(val);
+                  setQuantity(isNaN(parsed) ? 0 : parsed);
+                }
+              }}
+              messageError={quantity < -1 ? 'Por favor, preencha este campo' : ''}
             />
-            <S.Button onClick={() =>
-              setQuantity(prev => {
-                if (typeof prev === 'string') return prev;
-                const next = prev - 1;
-                return next < 0 ? 'Ilimitado' : next;
-              })}
-              className="fa-solid fa-minus" />
-            <S.Button onClick={() =>
-              setQuantity(prev => {
-                if (prev === 'Ilimitado') return 0; // se for Infinito, volta pro 0
-                return prev + 1;
-              })}
-              className="fa-solid fa-plus" />
+            <S.Button
+              type="button"
+              onClick={() =>
+                setQuantity(prev => {
+                  const numeric = prev === -1 ? 0 : prev;
+                  const next = numeric - 1;
+                  return next < 0 ? -1 : next;
+                })}
+              className="fa-solid fa-minus"
+            />
+            <S.Button
+              type="button"
+              onClick={() =>
+                setQuantity(prev => {
+                  if (prev === -1) return 0;
+                  return prev + 1;
+                })}
+              className="fa-solid fa-plus"
+            />
           </S.ContainerQuantity>
         </S.ContainerColumn>
       </S.ContainerRow>
       <S.ContainerButton>
         <Button
           text="Salvar Presente"
-          type="submit"
+          type="button"
+          onClick={handleSubmit}
         />
       </S.ContainerButton>
     </Container>
