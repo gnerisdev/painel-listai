@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const Main = styled('main')({
   margin: 0,
-  padding: 0
+  padding: 0,
 });
 
 export const Background = styled('img')({
@@ -54,6 +54,7 @@ export const Content = styled('section')({
   '@media(min-width: 1024px)': {
     gridTemplateColumns: '1fr 280px',
   },
+  padding: '32px 0'
 });
 
 export const WrapperCards = styled('div')({

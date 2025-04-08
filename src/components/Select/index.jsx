@@ -2,7 +2,7 @@ import * as S from './style'
 
 // Data: { title: string, value: any }
 
-const Select = ({ label, messageError, data, value, onBlur, onChange }) => {
+const Select = ({ label, messageError, data, value, onBlur, onChange, disabled }) => {
   return (
     <div>
       <S.Label>{label}</S.Label>
@@ -11,6 +11,7 @@ const Select = ({ label, messageError, data, value, onBlur, onChange }) => {
           onBlur={onBlur ? (e) => onBlur(e.target.value) : undefined}
           onChange={onChange ? (e) => onChange(e.target.value) : undefined}
           value={value}
+          disabled={disabled}
         >
           <option value='' disabled key="item-0">Selecione</option>
           {data?.map((item) => (

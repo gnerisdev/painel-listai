@@ -35,9 +35,8 @@ export const WrapperIcons = styled('div')({
   flexDirection: 'column',
   right: 8,
   color: '#a6a6a6',
-  gap: 2,
   'span': {
-    fontSize: 6
+    fontSize: 8
   }
 });
 

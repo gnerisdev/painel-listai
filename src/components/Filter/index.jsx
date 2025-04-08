@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import * as S from './style';
+import { useState, useEffect } from 'react';
 import Button from 'components/Button';
+import * as S from './style';
 
-const Filter = ({ fields, onSearch }) => {
+const Filter = ({ fields, onSearch, filterValues }) => {
   const [filters, setFilters] = useState(
     fields.reduce((acc, field) => ({ ...acc, [field.name]: '' }), {}),
   );
@@ -12,31 +12,60 @@ const Filter = ({ fields, onSearch }) => {
     setFilters((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onSearch(filters);
-  };
+  useEffect(() => {
+    if (Object.keys(filterValues).length > 0) {
+      setFilters(filterValues);
+    }
+  }, [])
 
   return (
-    <S.WrapperSearch onSubmit={handleSubmit}>
+    <S.WrapperSearch>
       <h3 style={{ marginTop: 8 }}>Filtro</h3>
       <S.WrapperInput>
         {fields.map((field) => (
           <S.SearchField key={field.name}>
             <label htmlFor={field.name}>{field.label}:</label>
-            <S.Input
-              type="text"
-              id={field.name}
-              name={field.name}
-              value={filters[field.name]}
-              onChange={handleInputChange}
-            />
+            {(field.type === 'text' || !field.type) && (
+              <S.Input
+                type="text"
+                id={field.name}
+                name={field.name}
+                value={filters[field.name]}
+                onChange={handleInputChange}
+              />
+            )}
+
+            {field.type === 'date' && (
+              <S.Input
+                type="date"
+                id={field.name}
+                name={field.name}
+                value={filters[field.name]}
+                onChange={handleInputChange}
+              />
+            )}
+
+            {field.type === 'select' && (
+              <S.Select
+                type="date"
+                id={field.name}
+                name={field.name}
+                value={filters[field.name]}
+                onChange={handleInputChange}
+              >
+                {field?.options?.map((item) => (
+                  <option key={item.value} value={item}>
+                    {item.label}
+                  </option>
+                ))}
+              </S.Select>
+            )}
           </S.SearchField>
         ))}
       </S.WrapperInput>
 
       <S.WrapperButton>
-        <Button text="Buscar" type="button" />
+        <Button text="Buscar" type="button" onClick={() => onSearch(filters)} />
       </S.WrapperButton>
     </S.WrapperSearch>
   );

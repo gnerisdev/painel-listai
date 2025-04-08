@@ -54,3 +54,7 @@ table {
 body {
   min-height: 100vh;
 }
+
+input:disabled, select:disabled, textarea:disabled {
+  cursor: not-allowed;
+}

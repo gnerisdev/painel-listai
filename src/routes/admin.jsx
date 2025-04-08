@@ -4,6 +4,8 @@ import { AdminContext } from 'contexts/Admin';
 import AdminLayout from 'layouts/AdminLayout';
 import ManageUsers from 'pages/admin/ManageUsers';
 import Home from 'pages/admin/Home';
+import Events from 'pages/admin/Events';
+import EventUpdate from 'pages/admin/EventUpdate';
 
 const authRoutes = [
   {
@@ -21,10 +23,11 @@ const mainRoutes = [
     path: 'admin/',
     element: <AdminLayout />,
     children: [
-      { path: 'users', element: <ManageUsers /> },
-      { path: '', element: <Home /> },
-      { path: 'home', element: <Home /> },
       { path: '*', element: <Navigate to="home/" /> },
+      { path: '', element: <Home /> },
+      { path: 'users', element: <ManageUsers /> },
+      { path: 'events', element: <Events /> },
+      { path: 'events/:id', element: <EventUpdate /> },
     ],
   },
 ];

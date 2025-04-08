@@ -35,6 +35,14 @@ export const Input = styled('input')({
   outline: 'none',
 });
 
+export const Select = styled('select')({
+  padding: '8px',
+  fontSize: '14px',
+  border: '1px solid #ccc',
+  borderRadius: '4px',
+  outline: 'none',
+});
+
 export const SearchButton = styled('button')({
   padding: '10px 15px',
   fontSize: '14px',

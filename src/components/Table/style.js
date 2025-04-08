@@ -71,6 +71,7 @@ export const Dropdown = styled('div')({
 export const DropdownItem = styled('div')({
   padding:' 8px 16px',
   cursor: 'pointer',
+  textAlign: 'start',
  '&:hover': {
     background: '#f0f0f0'
   }

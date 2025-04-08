@@ -1,5 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable no-unused-vars */
 import { useState, useEffect, useContext } from 'react';
 import { AdminContext } from 'contexts/Admin';
 import { ApplicationUtils } from 'utils/ApplicationUtils';
@@ -24,57 +22,48 @@ const ManageUsers = () => {
   const [modalUserEvents, setModalUserEvents] = useState(false);
   const [userEventsData, setUserEventsData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [filterValues, setFilterValues] = useState({});
+
+  
   const [searchParams, setSearchParams] = useState({
     name: '',
     email: '',
     status: '',
   });
 
-  const onSearch = async (values) => {
-      console.log('values', values);
+  const onSearch = async (data) => {
+    console.log(data);
   };
 
   const getUsers = async () => {
     try {
-      const response = await apiService.get('/admin/userAll');
-
-      // Verifica a estrutura correta da resposta
-      if (response.data?.success && Array.isArray(response.data.data)) {
-        const users = response.data.data;
-
-        const tableData = users.map(user => ({
+      const { data } = await apiService.get(`/admin/users`);
+      if (data.users) {
+        const tableData = data.users.map((user) => ({
           id: user.id,
+          name: user.firstName + ' ' + user.lastName,
           email: user.email,
-          // Corrige os nomes dos campos para snake_case
-          name: `${user.first_name} ${user.last_name}`,
-          // Adiciona verificação de campos opcionais
-          active: user.active !== undefined ? (user.active ? 'Sim' : 'Não') : '-',
-          phoneNumber: user.phone_number || '-',
-          createdAt: ApplicationUtils.formatDate(user.created_at)
+          status: user.status,
+          active: user.active ? 'Sim' : 'Não',
+          phoneNumber: user.phoneNumber,
+          createdAt: ApplicationUtils.formatDate(user.createdAt),
         }));
 
         setTableData(tableData);
-      } else {
-        throw new Error('Resposta da API inválida');
       }
     } catch (error) {
-      // Tratamento de erro aprimorado
       setAlert({
         show: true,
-        title: 'Erro na requisição',
+        title: 'Erro!',
         type: 'error',
-        text: `Falha ao carregar usuários: ${ApplicationUtils.getErrorMessage(error)}`,
+        text: ApplicationUtils.getErrorMessage(
+          error,
+          'Erro ao recuperar informações do evento.',
+        ),
       });
     }
   };
-  const resetSearch = () => {
-    setSearchParams({
-      name: '',
-      email: '',
-      phone: ''
-    });
 
-  };
   const getUserData = async (id) => {
     try {
       const { data } = await apiService.get(`/admin/users/${id}`);
@@ -130,25 +119,12 @@ const ManageUsers = () => {
         <S.WrapperFilter>
           <Filter
             fields={[
-              {
-                name: 'name',
-                label: 'Nome',
-                placeholder: 'Digite um nome...'
-              },
-              {
-                name: 'email',
-                label: 'E-mail',
-                type: 'email'
-              },
-              {
-                name: 'phone',
-                label: 'Telefone',
-                placeholder: '(00) 00000-0000'
-              },
+              { name: 'name', label: 'Nome' },
+              { name: 'email', label: 'E-mail' },
+              { name: 'Telefone', label: 'Telefone' },
             ]}
-            initialValues={searchParams}
-            onClick={() => onSearch()}
-
+            filterValues={filterValues}
+            onSearch={onSearch}
           />
         </S.WrapperFilter>
 
@@ -175,6 +151,7 @@ const ManageUsers = () => {
         />
       </S.Content>
 
+      {/* Modal View Events  */}
       <Modal
         active={modalUserEvents}
         updateShow={() => setModalUserEvents(false)}

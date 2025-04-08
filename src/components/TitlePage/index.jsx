@@ -1,15 +1,15 @@
-import * as S from './style'
+import * as S from "./style";
 
 const TitlePage = ({ title, subtitle, icon }) => {
   return (
     <S.Content>
-      <S.Title>
+      <div style={{ display: 'flex', alignItems: 'end', gap: 16 }}>
         <S.Icon className={icon} />
-        {title}
-      </S.Title>
+        <S.Title>{title}</S.Title>
+      </div>
       <S.Subtitle>{subtitle}</S.Subtitle>
     </S.Content>
-  )
-}
+  );
+};
 
-export default TitlePage
+export default TitlePage;
