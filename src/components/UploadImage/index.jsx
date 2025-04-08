@@ -1,20 +1,41 @@
 import React, { useRef, useState } from 'react';
 import * as S from './style';
+import imageCompression from 'browser-image-compression';
 
 const UploadImage = ({ onFileUpload }) => {
   const inputRef = useRef(null);
   const [previewImage, setPreviewImage] = useState(null);
 
-  const handleFileChange = (e) => {
+  const handleFileChange = async (e) => {
     const file = e.target.files[0];
-    if (file) {
+    if (!file) return;
+    try {
+      const options = {
+        maxSizeMB: 5,
+        maxWidthOrHeight: 1920,
+        useWebWorker: true,
+      };
+      
+      const compressedFile = await imageCompression(file, options);
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewImage(reader.result);
+      };
+      reader.readAsDataURL(compressedFile);
+      
+      if (onFileUpload) {
+        onFileUpload(compressedFile);
+      }
+    } catch (error) {      
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreviewImage(reader.result);
       };
       reader.readAsDataURL(file);
+      
       if (onFileUpload) {
-        onFileUpload(file); 
+        onFileUpload(file);
       }
     }
   };
