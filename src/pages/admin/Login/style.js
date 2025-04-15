@@ -5,7 +5,13 @@ export const Main = styled('main')({
   margin: '0 auto',
   textAlign: 'center',
   width: '100%',
-  padding: '8px 16px 40px'
+  padding: '8px 16px 40px',
+  display: 'flex',
+  height: '100vh'
+});
+
+export const Content = styled('main')({
+  margin: 'auto',
 });
 
 export const Logo = styled('img')({
@@ -16,51 +22,3 @@ export const Logo = styled('img')({
 export const Subtitle = styled('h2')({
   fontSize: '1.1rem'
 });
-
-export const Text = styled('p')({
-  fontSize: '0.9rem',
-  color: 'gray'
-});
-
-export const TextSmall = styled('p')({
-  fontSize: '0.8rem',
-  color: 'gray',
-  margin: '16px 0 0'
-});
-
-export const WrapperForm = styled('div')({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '1.2rem',
-  margin: '1.6rem 0',
-  padding: '0 6px'
-});
-
-export const Line = styled.div`
-  display: flex;
-  margin: 20px 10px;
-  gap: 8px;
-
-  span:first-child {
-    width: 100%;
-    height: 1px;
-    margin-top: 9px;
-    background: #d3d3d3;
-    display: block;
-  }
-
-  span:nth-child(2) {
-    font-size: 14px;
-    color: gray;
-    display: block;
-  }
-
-  span:nth-child(3) {
-    width: 100%;
-    height: 1px;
-    margin-top: 9px;
-    background: #d3d3d3;
-    display: block;
-  }
-`;
-

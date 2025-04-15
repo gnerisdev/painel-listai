@@ -6,13 +6,11 @@ import TitlePage from 'components/TitlePage';
 import Header from 'components/Header';
 import Table from 'components/Table';
 import Filter from 'components/Filter';
-import * as S from './style';
 import Modal from 'components/Modal';
 import Input from 'components/Input';
-import FormContainer from 'components/FormContainer';
 import Select from 'components/Select';
 import Button from 'components/Button';
-import CardTitle from 'components/CardTitle';
+import * as S from './style';
 
 const ManageUsers = () => {
   const { apiService, setAlert } = useContext(AdminContext);
@@ -24,20 +22,28 @@ const ManageUsers = () => {
   const [loading, setLoading] = useState(false);
   const [filterValues, setFilterValues] = useState({});
 
+
+  const onSearch = async (filters) => {
+    setFilterValues(filters);
   
-  const [searchParams, setSearchParams] = useState({
-    name: '',
-    email: '',
-    status: '',
-  });
+    const queryParams = new URLSearchParams();
+  
+    if (filters.name) queryParams.append('name', filters.name);
+    if (filters.email) queryParams.append('email', filters.email);
+    if (filters.phoneNumber) queryParams.append('phoneNumber', filters.phoneNumber);
+    queryParams.append('page', 1); 
+    queryParams.append('limit', 10); 
 
-  const onSearch = async (data) => {
-    console.log(data);
-  };
-
-  const getUsers = async () => {
+    getUsers(queryParams.toString())
+  }
+  
+  const getUsers = async (queryParams) => {
     try {
-      const { data } = await apiService.get(`/admin/users`);
+      console.log(queryParams)
+      setLoading(true);
+  
+      const { data } = await apiService.get(`/admin/users?${queryParams}`);
+  
       if (data.users) {
         const tableData = data.users.map((user) => ({
           id: user.id,
@@ -48,7 +54,7 @@ const ManageUsers = () => {
           phoneNumber: user.phoneNumber,
           createdAt: ApplicationUtils.formatDate(user.createdAt),
         }));
-
+  
         setTableData(tableData);
       }
     } catch (error) {
@@ -56,14 +62,13 @@ const ManageUsers = () => {
         show: true,
         title: 'Erro!',
         type: 'error',
-        text: ApplicationUtils.getErrorMessage(
-          error,
-          'Erro ao recuperar informações do evento.',
-        ),
+        text: ApplicationUtils.getErrorMessage(error, 'Erro ao recuperar informações do evento.'),
       });
+    } finally {
+      setLoading(false);
     }
   };
-
+  
   const getUserData = async (id) => {
     try {
       const { data } = await apiService.get(`/admin/users/${id}`);
@@ -76,10 +81,7 @@ const ManageUsers = () => {
         show: true,
         title: 'Erro!',
         type: 'error',
-        text: ApplicationUtils.getErrorMessage(
-          error,
-          'Erro ao recuperar informações do evento.',
-        ),
+        text: ApplicationUtils.getErrorMessage(error, 'Erro ao recuperar informações do evento.'),
       });
     }
   };
@@ -121,7 +123,7 @@ const ManageUsers = () => {
             fields={[
               { name: 'name', label: 'Nome' },
               { name: 'email', label: 'E-mail' },
-              { name: 'Telefone', label: 'Telefone' },
+              { name: 'phoneNumber', label: 'Telefone' },
             ]}
             filterValues={filterValues}
             onSearch={onSearch}

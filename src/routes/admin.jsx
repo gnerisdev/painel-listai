@@ -6,15 +6,10 @@ import ManageUsers from 'pages/admin/ManageUsers';
 import Home from 'pages/admin/Home';
 import Events from 'pages/admin/Events';
 import EventUpdate from 'pages/admin/EventUpdate';
+import Login from 'pages/admin/Login';
 
 const authRoutes = [
-  {
-    path: 'admin/',
-    children: [
-      { path: 'login', element:<>login</> },
-      { path: '', element:<>ok</> },
-    ],
-  },
+  { path: 'admin/', children: [{ path: 'login', element: <Login /> }] },
   { path: '*', element: <Navigate to="admin/login" /> },
 ];
 
@@ -23,21 +18,20 @@ const mainRoutes = [
     path: 'admin/',
     element: <AdminLayout />,
     children: [
-      { path: '*', element: <Navigate to="home/" /> },
       { path: '', element: <Home /> },
       { path: 'users', element: <ManageUsers /> },
       { path: 'events', element: <Events /> },
       { path: 'events/:id', element: <EventUpdate /> },
     ],
   },
+  { path: '*', element: <Navigate to="admin/" replace /> }
 ];
 
 const Auth = () => useRoutes([...authRoutes]);
 const Main = () => useRoutes([...mainRoutes]);
 
 export const AdminRoutes = () => {
-  // const { authState } = useContext(AdminContext);
-  const authState = 'authenticated';
+  const { authState } = useContext(AdminContext);
   return (
     <>
       {authState === 'checking' && 'Carregando...'}

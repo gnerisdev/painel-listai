@@ -196,7 +196,6 @@ const Info = () => {
 
       if (response.eventDetails) setData(response.eventDetails);
     } catch (error) {
-      console.log(ApplicationUtils.getErrorMessage(error, 'Erro ao atualizar evento.'))
       setAlert({
         show: true,
         title: 'Erro!',
@@ -219,6 +218,7 @@ const Info = () => {
         <TitlePage
           title="Informações do Evento"
           subtitle="Tudo em um só lugar para seu convidado"
+          align="center"
         />
 
         <FormContainer margin="2rem auto">

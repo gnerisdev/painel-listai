@@ -10,7 +10,7 @@ export const AdminProvider = (props) => {
   const normalizedPathname = location.pathname.replace(/\/$/, '');
   const isAuthPage = normalizedPathname === '/admin/login' || normalizedPathname === '/admin/register';
   const apiService = useMemo(
-    () => new ApiService({ module: 'admin', auth: false }),
+    () => new ApiService({ module: 'admin', auth: true }),
     [isAuthPage],
   );
 
@@ -25,7 +25,7 @@ export const AdminProvider = (props) => {
 
   const getAdmin = async () => {
     try {
-      const response = await apiService.get(`/admins/me`);
+      const response = await apiService.get(`/admin/me`);
       const { admin } = await response.data;
 
       if (response.status === 401 || response.status === 404) {

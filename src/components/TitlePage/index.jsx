@@ -1,13 +1,18 @@
 import * as S from "./style";
 
-const TitlePage = ({ title, subtitle, icon }) => {
+const TitlePage = ({ title, subtitle, icon, align }) => {
   return (
-    <S.Content>
-      <div style={{ display: 'flex', alignItems: 'end', gap: 16 }}>
-        <S.Icon className={icon} />
+    <S.Content style={{ textAlign: align }}>
+      <div style={{ 
+        display: 'flex', 
+        alignItems: align || 'end', 
+        justifyContent: align || 'start', 
+        gap: 16 
+      }}>
+        {icon && <S.Icon className={icon} />}
         <S.Title>{title}</S.Title>
       </div>
-      <S.Subtitle>{subtitle}</S.Subtitle>
+      {subtitle && <S.Subtitle>{subtitle}</S.Subtitle>}
     </S.Content>
   );
 };

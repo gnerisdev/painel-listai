@@ -92,6 +92,7 @@ const Custom = () => {
         <TitlePage
           title="Cores e Textos"
           subtitle="Deixe o site do seu evento com a sua cara"
+          align="center"
         />
 
         <FormContainer margin="2rem auto">

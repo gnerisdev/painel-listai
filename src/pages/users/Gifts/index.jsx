@@ -117,6 +117,7 @@ const Gifts = () => {
         <TitlePage
           title="Lista de Presentes"
           subtitle="Minha Lista de Presentes em Dinheiro"
+          align="center"
         />
 
         <FormContainer margin="2rem auto">
@@ -133,6 +134,7 @@ const Gifts = () => {
             <TitlePage
               title="Adicionar Sugestões de Presente"
               subtitle="Não encontrou o presente que você queria? Adicione uma sugestão!"
+              align="center"
             />
 
             <Button

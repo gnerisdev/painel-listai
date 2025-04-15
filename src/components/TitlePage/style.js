@@ -1,12 +1,10 @@
 import styled from 'styled-components';
 
-export const Content = styled('div')({ 
-  textAlign: 'start'
-});
+export const Content = styled('div')({ });
 
 export const Title = styled('h2')({ 
   fontSize: '1.6rem',
-  lineHeight: '1.1rem',
+  lineHeight: 0.8,
   fontWeight: 600,
 });
 
@@ -15,7 +13,7 @@ export const Icon = styled('span')({
 });
 
 export const Subtitle = styled('h5')({ 
-  marginTop: -8,
+  marginTop: 2,
   fontSize: '0.9rem',
   fontWeight: 400,
   color: '#a9a9a9'
