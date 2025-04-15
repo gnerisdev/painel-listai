@@ -143,7 +143,6 @@ const AddService = () => {
       });
     } catch (err) {
       console.error("Erro ao salvar serviço:", err);
-      alert("Erro ao salvar serviço.");
       setAlert({
         show: true,
         title: 'Erro',
