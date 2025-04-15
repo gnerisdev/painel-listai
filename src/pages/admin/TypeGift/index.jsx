@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import CardTitle from "components/CardTitle";
 import Container from "components/Container";
 import TitlePage from "components/TitlePage";
@@ -5,6 +6,7 @@ import Header from "components/Header";
 import * as S from "./style";
 
 const TypeGift = () => {
+  const navigate = useNavigate();
   const gifts = [
     { title: "Café da Manhã Beach View", price: "R$ 119,90", icon: "fa-solid fa-mug-hot" },
     { title: "Brinde dos Noivos", price: "R$ 109,90", icon: "fa-solid fa-gift" },
@@ -26,7 +28,7 @@ const TypeGift = () => {
           text="R$ 0,00"
           icon="fa-solid fa-gift"
           color="#ff6b6b"
-          onClick={() => console.log('Criar Lista de Presentes')}
+          onClick={() => navigate("/admin/adicionar-presente")}
         />
 
       </S.ButtonGroup>
