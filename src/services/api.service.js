@@ -9,7 +9,7 @@ export class ApiService {
   #id;
 
   constructor({ module = 'users', auth = true }) {
-    console.log(module)
+    console.log(module, auth)
     this.module = module;
   
     if (auth) {

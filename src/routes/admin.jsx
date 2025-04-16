@@ -9,8 +9,14 @@ import EventUpdate from 'pages/admin/EventUpdate';
 import Login from 'pages/admin/Login';
 
 const authRoutes = [
-  { path: 'admin/', children: [{ path: 'login', element: <Login /> }] },
-  { path: '*', element: <Navigate to="admin/login" /> },
+  {
+    path: 'admin/',
+    children: [
+      { path: 'login', element: <Login /> },
+      { path: '', element: <Navigate to="admin/login" /> },
+    ],
+  },
+  { path: '*', element: <Navigate to="admin/login" /> }, 
 ];
 
 const mainRoutes = [
@@ -24,7 +30,7 @@ const mainRoutes = [
       { path: 'events/:id', element: <EventUpdate /> },
     ],
   },
-  { path: '*', element: <Navigate to="admin/" replace /> }
+  { path: '*', element: <Navigate to="admin/" /> }
 ];
 
 const Auth = () => useRoutes([...authRoutes]);

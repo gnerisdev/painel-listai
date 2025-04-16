@@ -8,9 +8,9 @@ export const AdminContext = createContext();
 export const AdminProvider = (props) => {
   const location = useLocation();
   const normalizedPathname = location.pathname.replace(/\/$/, '');
-  const isAuthPage = normalizedPathname === '/admin/login' || normalizedPathname === '/admin/register';
+  const isAuthPage = normalizedPathname === '/admin/login';
   const apiService = useMemo(
-    () => new ApiService({ module: 'admin', auth: true }),
+    () => new ApiService({ module: 'admin', auth: !isAuthPage }),
     [isAuthPage],
   );
 

@@ -55,6 +55,7 @@ const Home = () => {
       text: 'Controle os serviços disponíveis na plataforma',
       icon: 'fa-solid fa-briefcase',
       color: '#03A9F4', 
+
     },
     {
       title: 'Configurações',
