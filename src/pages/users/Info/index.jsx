@@ -175,13 +175,23 @@ const Info = () => {
 
   const getEventDetails = async () => {
     try {
-      const { data } = await apiService.get(`/users/event-details/${event.id}`);
-      if (data.eventDetails) setData(data.eventDetails);
+      const response = await apiService.get(`/users/event-details/${event.id}`);
+      const { success, message, eventDetails } = response.data;
+      if (!success) throw new Error(message);
+
+      if (eventDetails) {
+        setData({ 
+          ...eventDetails, 
+          date: ApplicationUtils.formatToInputDate(eventDetails.eventDate),
+          startTime: ApplicationUtils.formatToInputTime(eventDetails.startTime),
+          endTime: ApplicationUtils.formatToInputTime(eventDetails.endTime),
+        });
+      }
     } catch (error) {
       setAlert({
         show: true,
         title: 'Erro!',
-        type: 'error',
+        icon: 'fa-solid fa-triangle-exclamation',
         text: ApplicationUtils.getErrorMessage(error, 'Erro ao recuperar informações do evento.'),
       });
     }
@@ -198,7 +208,8 @@ const Info = () => {
     } catch (error) {
       setAlert({
         show: true,
-        title: 'Erro!',
+        title: 'Ops!',
+        icon: 'fa-solid fa-triangle-exclamation',
         text: ApplicationUtils.getErrorMessage(error, 'Erro ao atualizar evento.')
       });
     } finally {
@@ -299,7 +310,6 @@ const Info = () => {
                 check={log.fullAddress === ''}
                 messageError={log.fullAddress}
                 onChange={(value) => getValue('fullAddress', value)}
-                onBlur={(value) => getGeolocation(value)}
               />
 
               {(data.latitude && data.longitude) && (

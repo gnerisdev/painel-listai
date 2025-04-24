@@ -8,13 +8,17 @@ import Home from 'pages/users/Home';
 import Custom from 'pages/users/Custom';
 import Info from 'pages/users/Info';
 import Gifts from 'pages/users/Gifts';
+import CustomPages from 'pages/users/CustomPages';
+import Settings from 'pages/users/Settings';
+import Gallery from 'pages/users/Gallery';
+import ServicePackage from 'pages/users/ServicePackage';
 
 const authRoutes = [
   {
     path: 'users/',
     children: [
       { path: 'login', element: <Login /> },
-      { path: '', element: <Login /> },
+      { path: '', element: <Navigate to="admin/login" /> },
       { path: 'register', element: <Register /> },
     ],
   },
@@ -32,6 +36,10 @@ const mainRoutes = [
       { path: 'custom', element: <Custom /> },
       { path: 'info', element: <Info /> },
       { path: 'gifts', element: <Gifts /> },
+      { path: 'custom-pages', element: <CustomPages /> },
+      { path: 'settings', element: <Settings /> },
+      { path: 'gallery', element: <Gallery /> },
+      { path: 'service-package', element: <ServicePackage /> },
     ],
   },
 ];

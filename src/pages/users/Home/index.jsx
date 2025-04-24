@@ -34,6 +34,7 @@ const Home = () => {
       text: "Compartilhe momentos inesquecíveis",
       icon: "fa-regular fa-image",
       color: "#5d9cec",
+      link: '/users/gallery'
     },
     {
       title: "Informações do Evento",
@@ -47,31 +48,28 @@ const Home = () => {
       text: "Adicione mais detalhes ao seu site",
       icon: "fa-solid fa-gift",
       color: "#ff779d",
-      link: '/users/gifts'
+      link: '/users/gifts'      
     },
     {
       title: "Páginas Personalizadas",
       text: "Adicione mais detalhes ao seu site",
       icon: "fa-solid fa-pager",
       color: "#f29157",
-    },
-    {
-      title: "Convite Virtual",
-      text: "Crie um convite ou save the date para o seu evento",
-      icon: "fa-regular fa-envelope",
-      color: "#ffce54",
+      link: '/users/custom-pages'      
     },
     {
       title: "Pacote de Serviços",
       text: "Serviços para personalizar ainda mais o seu site",
       icon: "fa-solid fa-box",
       color: "#77d5b2",
+      link: '/users/service-package'
     },
     {
       title: "Configurações do Site",
       text: "Segurança e praticidade em primeiro lugar",
       icon: "fa-solid fa-gear",
       color: "#1d304c",
+      link: '/users/settings'  
     },
     {
       title: "Compartilhar o Seu Site",

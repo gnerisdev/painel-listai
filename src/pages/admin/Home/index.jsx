@@ -6,8 +6,8 @@ import BoxNumber from 'components/BoxNumber'
 import CardTitle from 'components/CardTitle'
 import SidebarMenu from 'components/SidebarMenu'
 import HeaderAdmin from 'components/HeaderAdmin'
-import * as S from './style'
 import TitlePage from 'components/TitlePage';
+import * as S from './style'
 
 const Home = () => {
   const navigate = useNavigate()
@@ -55,7 +55,7 @@ const Home = () => {
       text: 'Controle os serviços disponíveis na plataforma',
       icon: 'fa-solid fa-briefcase',
       color: '#03A9F4', 
-
+      link: '/admin/services',
     },
     {
       title: 'Configurações',

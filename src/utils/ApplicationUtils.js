@@ -32,6 +32,20 @@ export class ApplicationUtils {
       (includeTime ? ` ${hour}:${minutes}:${seconds}` : '');
     return formattedDate;
   }
+
+  static formatToInputDate(dateString) {
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return '';
+    return date.toISOString().split('T')[0];
+  }
+
+  static formatToInputTime(dateString) {
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return '';
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    return `${hours}:${minutes}`;
+  }
   
   static convertHexToRgba(hex, alpha) {
     hex = hex.replace(/^#/, '');
@@ -45,6 +59,7 @@ export class ApplicationUtils {
   }
 
   static getErrorMessage (error, defaultMessage = "Ocorreu um erro inesperado.") {  
-    return (error?.response?.data?.message || error?.message || defaultMessage);
+    let message = error?.response?.data?.message || error?.message || defaultMessage;
+    return message === 'Network Error' ? 'Erro de rede.' : message;
   };
 }

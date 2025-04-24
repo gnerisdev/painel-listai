@@ -49,12 +49,15 @@ export const CardContent =  styled('div')({
 
 export const CardTitle = styled('h4')({
   fontSize: 18,
-  marginBottom: 8,
+  marginBottom: 0,
+  color: '#000000',
+  textTransform: 'capitalize'
 });
 
-export const CardSubtitle = styled('p')({
+export const CardSubtitle = styled('h6')({
   fontSize: 14,
   color: '#777',
+  textTransform: 'capitalize'
 });
 
 export const CardDetails =  styled('div')({

@@ -24,7 +24,7 @@ const colors = [
 const SelectColor = ({ label, messageError, getData, selected }) => {
   const [startIndex, setStartIndex] = useState(0);
   const [visibleCount, setVisibleCount] = useState(10);
-
+  
   useEffect(() => {
     const updateSize = () => setVisibleCount(window.innerWidth <= 768 ? 6 : 10);
     updateSize();

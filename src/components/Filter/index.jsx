@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Button from 'components/Button';
 import * as S from './style';
 
-const Filter = ({ fields, onSearch, filterValues }) => {
+const Filter = ({ fields, onSearch, filterValues, isLoading }) => {
   const [filters, setFilters] = useState(
     fields.reduce((acc, field) => ({ ...acc, [field.name]: '' }), {}),
   );
@@ -65,7 +65,12 @@ const Filter = ({ fields, onSearch, filterValues }) => {
       </S.WrapperInput>
 
       <S.WrapperButton>
-        <Button text="Buscar" type="button" onClick={() => onSearch(filters)} />
+        <Button 
+          isLoading={isLoading} 
+          text="Buscar" 
+          type="button" 
+          onClick={() => onSearch(filters)} 
+        />
       </S.WrapperButton>
     </S.WrapperSearch>
   );

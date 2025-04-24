@@ -7,6 +7,7 @@ import Home from 'pages/admin/Home';
 import Events from 'pages/admin/Events';
 import EventUpdate from 'pages/admin/EventUpdate';
 import Login from 'pages/admin/Login';
+import Services from 'pages/admin/Services';
 
 const authRoutes = [
   {
@@ -28,6 +29,7 @@ const mainRoutes = [
       { path: 'users', element: <ManageUsers /> },
       { path: 'events', element: <Events /> },
       { path: 'events/:id', element: <EventUpdate /> },
+      { path: 'services', element: <Services /> }
     ],
   },
   { path: '*', element: <Navigate to="admin/" /> }

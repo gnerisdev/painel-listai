@@ -6,7 +6,8 @@ import Modal from 'components/Modal';
 export const UsersProvider = (props) => {
   const location = useLocation();
   const normalizedPathname = location.pathname.replace(/\/$/, '');
-  const isAuthPage = normalizedPathname === '/users/login' || normalizedPathname === '/users/register';
+  const isAuthPage = (normalizedPathname === '/users/login' 
+  || normalizedPathname === '/users/register');
   const apiService = useMemo(
     () => new ApiService({ module: 'users', auth: !isAuthPage }),
     [isAuthPage],
@@ -65,10 +66,7 @@ export const UsersProvider = (props) => {
         <div style={{ textAlign: "center" }}>
           <span className={alert.icon} style={{ fontSize: 40 }}></span>
           <h3>{alert.title}</h3>
-          <p
-            style={{ margin: 0 }}
-            dangerouslySetInnerHTML={{ __html: alert.text }}
-          ></p>
+          <p style={{ margin: 0 }} dangerouslySetInnerHTML={{ __html: alert.text }}></p>
         </div>
       </Modal>
 

@@ -10,7 +10,7 @@ import TitlePage from 'components/TitlePage';
 import Container from 'components/Container';
 
 const Custom = () => {
-  const { apiService, event, setAlert } = useContext(UsersContext);
+  const { apiService, event, setEvent, setAlert } = useContext(UsersContext);
 
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState({
@@ -53,6 +53,13 @@ const Custom = () => {
       if (!validateFields()) throw new Error('Verifique os campos.');
       const { data: response } = await apiService.put(`/users/event/${event.id}`, data);
       setData(response.event);
+      setEvent(response.event);
+      setAlert({ 
+        show: true, 
+        title: 'Sucesso!', 
+        text: 'Informações atualizadas.', 
+        icon: 'fa-solid fa-check' 
+      });
     } catch (error) {
       setAlert({ 
         show: true, 

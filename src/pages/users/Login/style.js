@@ -36,35 +36,32 @@ export const WrapperForm = styled('div')({
   padding: '0 6px'
 });
 
-export const Line = styled.div`
-  display: flex;
-  margin: 20px 10px;
-  gap: 8px;
-
-  span:first-child {
-    width: 100%;
-    height: 1px;
-    margin-top: 9px;
-    background: #d3d3d3;
-    display: block;
+export const Line = styled('div')({
+  display: 'flex',
+  margin: '20px 10px',
+  gap: 8,
+ 'span:first-child': {
+    width: '100%',
+    height: '1px',
+    marginTop: '9px',
+    background: '#d3d3d3',
+    display: 'block',
+  },
+  'span:nth-child(2)': {
+    fontSize: '14px',
+    color: 'gray',
+    display: 'block',
+  },
+  'span:nth-child(3)': {
+    width: '100%',
+    height: '1px',
+    marginTop: '9px',
+    background: '#d3d3d3',
+    display: 'block',
   }
+});
 
-  span:nth-child(2) {
-    font-size: 14px;
-    color: gray;
-    display: block;
-  }
-
-  span:nth-child(3) {
-    width: 100%;
-    height: 1px;
-    margin-top: 9px;
-    background: #d3d3d3;
-    display: block;
-  }
-`;
-
-export const Link = styled('span')({
+export const Link = styled('a')({
   textDecoration: 'none',
   color:'#00f',
   cursor: 'pointer'

@@ -127,11 +127,11 @@ const Step1 = ({ data, eventCategories, isLoading, getData, next }) => {
 
         <InputUrl
           label="URL - Link do seu site"
-          url="https://sites.mimon.com.br/"
+          url="https://listai.com.br/"
           messageError={log.slug}
           check={log.slug === ''}
           value={data.slug}
-          onBlur={(value) => {
+          onChange={(value) => {
             getData({ slug: value });
             value === ''
               ? setLog({ ...log, slug:'* O link www.mimon.com.br/aaaaa está em uso, por favor, crie outro' })

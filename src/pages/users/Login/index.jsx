@@ -3,6 +3,7 @@ import { UsersContext } from 'contexts/Users';
 import Container from 'components/Container';
 import Input from 'components/Input';
 import Button from 'components/Button';
+import logo from 'assets/logo-2.png';
 import * as S from './style';
 
 const Login = () => {  
@@ -16,7 +17,6 @@ const Login = () => {
     try {
       setLoading(true);
 
-      console.log(validateFields())
       if (!data.email || !data.password) throw new Error('Preencha os dados corretamente!');
       if (!validateFields()) throw new Error('Preencha os dados corretamente!');
 
@@ -70,10 +70,7 @@ const Login = () => {
   return (
     <S.Main>
       <Container>
-        <S.Logo
-          src="https://painel.mimon.com.br/assets/logos/mimon.png"
-          alt="Logomarca"
-        />
+        <S.Logo src={logo} alt="Logomarca" />
 
         <S.Subtitle>Seja bem-vindo!</S.Subtitle>
 
@@ -126,9 +123,7 @@ const Login = () => {
 
         <S.TextSmall>
           Não possui conta? {" "}
-          <S.Link
-            onClick={() => { }}
-          >
+          <S.Link href="users/register">
             Clique
           </S.Link> {" "}
           para cadastrar.

@@ -9,6 +9,7 @@ import Filter from 'components/Filter';
 import Modal from 'components/Modal';
 import Input from 'components/Input';
 import Select from 'components/Select';
+import Pagination from 'components/Pagination';
 import Button from 'components/Button';
 import * as S from './style';
 
@@ -21,27 +22,28 @@ const ManageUsers = () => {
   const [userEventsData, setUserEventsData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [filterValues, setFilterValues] = useState({});
-
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const PAGE_LIMIT = 2;
 
   const onSearch = async (filters) => {
     setFilterValues(filters);
-  
-    const queryParams = new URLSearchParams();
-  
-    if (filters.name) queryParams.append('name', filters.name);
-    if (filters.email) queryParams.append('email', filters.email);
-    if (filters.phoneNumber) queryParams.append('phoneNumber', filters.phoneNumber);
-    queryParams.append('page', 1); 
-    queryParams.append('limit', 10); 
-
-    getUsers(queryParams.toString())
+    getUsers({ ...filters });
   }
   
-  const getUsers = async (queryParams) => {
+  const getUsers = async (filter) => {
     try {
-      console.log(queryParams)
       setLoading(true);
   
+      let queryParams = '';
+  
+      if (filter.name) queryParams += `name=${filter.name}`;
+      if (filter.email) queryParams += `&email=${filter.email}`;
+      if (filter.phoneNumber) queryParams += `&phoneNumber=${filter.phoneNumber}`;
+     
+      queryParams += `&page=${page}`;
+      queryParams += `&limit=${PAGE_LIMIT}`;
+      
       const { data } = await apiService.get(`/admin/users?${queryParams}`);
   
       if (data.users) {
@@ -56,6 +58,7 @@ const ManageUsers = () => {
         }));
   
         setTableData(tableData);
+        setTotalPages(Math.ceil(data.total / PAGE_LIMIT)); // <-- baseado em retorno da API
       }
     } catch (error) {
       setAlert({
@@ -91,6 +94,7 @@ const ManageUsers = () => {
       const { data } = await apiService.get(`/admin/user-events/${id}`);
       if (data.events) {
         setModalUserEvents(true);
+        console.log(data)
         setUserEventsData(data.events);
       }
     } catch (error) {
@@ -107,10 +111,8 @@ const ManageUsers = () => {
   };
 
   useEffect(() => {
-    getUsers();
+    getUsers(page);
   }, []);
-
-  if (loading) return <div>loading....</div>;
 
   return (
     <Container>
@@ -127,6 +129,7 @@ const ManageUsers = () => {
             ]}
             filterValues={filterValues}
             onSearch={onSearch}
+            isLoading={loading}
           />
         </S.WrapperFilter>
 
@@ -151,6 +154,15 @@ const ManageUsers = () => {
             },
           ]}
         />
+
+      <Pagination
+        currentPage={page}
+        totalPages={totalPages}
+        onPageChange={(page) => {
+          setPage(page);
+          getUsers(filterValues);
+        }}
+      />
       </S.Content>
 
       {/* Modal View Events  */}
@@ -162,7 +174,7 @@ const ManageUsers = () => {
       >
         <S.TitleModal>
           <i className="fa-solid fa-calendar"></i>
-          Eventos usuário
+          Eventos do usuário
         </S.TitleModal>
 
         <S.WrapperForm>
@@ -176,8 +188,8 @@ const ManageUsers = () => {
                 <S.CardSubtitle>{event.subtitle}</S.CardSubtitle>
                 <S.CardDetails>
                   <div>
-                    <strong>Data: </strong>
-                    {ApplicationUtils.formatDate(event.date)}
+                    <strong>Data criação: </strong>
+                    {ApplicationUtils.formatDate(event.createdAt)}
                   </div>
                   <div>
                     <strong>Localização: </strong>

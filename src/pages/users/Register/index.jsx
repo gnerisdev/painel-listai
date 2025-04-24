@@ -1,5 +1,4 @@
 import { useContext, useEffect, useState } from 'react';
-import { ApiService } from 'services/api.service';
 import { UsersContext } from 'contexts/Users';
 import Container from 'components/Container';
 import Step1 from './Step-1';
@@ -7,10 +6,10 @@ import Step2 from './Step-2';
 import Step3 from './Step-3';
 import Button from 'components/Button';
 import * as S from './style';
+import { ApplicationUtils } from 'utils/ApplicationUtils';
 
 const Register = () => {
-  const apiService = new ApiService('users', false);
-  const { setAlert } = useContext(UsersContext);
+  const { apiService, setAlert } = useContext(UsersContext);
   const [loading, setLoading] = useState(false);
   const [stepCurrent, setStepCurrent] = useState('step-event-types');
   const [data, setData] = useState({});
@@ -22,14 +21,23 @@ const Register = () => {
     try {
       setLoading(true);
 
-      console.log('success, message');
-
       const response = await apiService.post('/users/register', data);
+      const { success, token, id, message } = response.data;
+
+      if (success) {
+        localStorage.setItem('userId', JSON.stringify(id));
+        localStorage.setItem('userToken', JSON.stringify(token));
+  
+        window.location.href = '/users/home';
+      } else {
+        throw new Error(message);
+      }
 
     } catch (e) {
       setAlert({
         show: true,
         title: 'Cadastro',
+        icon: 'fa-solid fa-triangle-exclamation',
         text: e?.response?.data?.message || 'Erro ao fazer o cadastro.'
       });
     } finally {
@@ -43,19 +51,16 @@ const Register = () => {
         setAlert({
           show: true,
           title: 'Atenção',
+          icon: 'fa-solid fa-triangle-exclamation',
           text: 'Por favor, selecione um tipo de evento para continuar.'
         });
         return;
       }
 
-
       try {
         setLoading(true);
 
-        const response = await apiService.get(
-          `/users/event-categories?event_type_id=${data.eventType}`,
-          data
-        );
+        const response = await apiService.get(`/users/event-categories?event_type_id=${data.eventType}`, data);
 
         setEventCategories(response.data);
         setStepCurrent('step1');
@@ -76,11 +81,13 @@ const Register = () => {
         );
 
         const { gifts, slug_available, message } = response.data;
+        console.log(slug_available)
 
         if (!slug_available) {
           setAlert({
             show: true,
             title: 'Lista de Presentes',
+            icon: 'fa-solid fa-triangle-exclamation',
             text: message || 'O link está em uso, por favor, crie outro.'
           });
         }
@@ -91,11 +98,12 @@ const Register = () => {
         } else {
           throw new Error('Gift não encontrado');
         }
-      } catch (e) {
+      } catch (error) {
         setAlert({
           show: true,
           title: 'Erro ao prosseguir o cadastro',
-          text: 'Se o problema persistir, contate o suporte.'
+          icon: 'fa-solid fa-triangle-exclamation',
+          text: ApplicationUtils.getErrorMessage(error, 'Se o problema persistir, contate o suporte.'),          
         });
       } finally {
         setLoading(false);

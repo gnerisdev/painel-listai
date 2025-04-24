@@ -46,13 +46,11 @@ const Gifts = () => {
 
       const { data } = await apiService.post(
         `/users/gifts/suggestion/${event.id}`,
-        {
-          ...suggestion,
-        }
+        { ...suggestion }
       );
 
       if (!data.success) throw new Error(data.message);
-      if (data.giftSuggestions) suggestions(data.giftSuggestions);
+      if (data.giftSuggestions) setSuggestion(data.giftSuggestions);
 
       setAlert({
         show: true,
@@ -61,16 +59,13 @@ const Gifts = () => {
         icon: "fa-solid fa-check",
       });
 
-      setModalSuggestion(true);
+      setModalSuggestion(false);
     } catch (error) {
+      console.log(error)
       setAlert({
         show: true,
         title: "Erro!",
-        type: "error",
-        text: ApplicationUtils.getErrorMessage(
-          error,
-          "Erro ao salvar sugestão."
-        ),
+        text: ApplicationUtils.getErrorMessage(error, "Erro ao salvar sugestão."),
       });
     } finally {
       setLoading(false);
@@ -145,7 +140,7 @@ const Gifts = () => {
             />
 
             {suggestions.map((suggestion, index) => (
-              <S.Card>
+              <S.Card key={`item-${index}`}>
                 <S.Title>{suggestion.title}</S.Title>
                 <S.Description>{suggestion.description}</S.Description>
               </S.Card>
