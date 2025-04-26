@@ -123,7 +123,7 @@ export const SectionIntroduction = styled('section')({
       gridTemplateColumns: '55% 45%'
     },
     'p': {
-      textAlign: 'justify',
+      textAlign: 'left',
       textAlignLast: 'left',
       minHeight: '200px',
       '&:after': {

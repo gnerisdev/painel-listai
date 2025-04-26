@@ -12,6 +12,7 @@ import CustomPages from 'pages/users/CustomPages';
 import Settings from 'pages/users/Settings';
 import Gallery from 'pages/users/Gallery';
 import ServicePackage from 'pages/users/ServicePackage';
+import Confirmations from 'pages/users/Confirmations';
 
 const authRoutes = [
   {
@@ -40,6 +41,7 @@ const mainRoutes = [
       { path: 'settings', element: <Settings /> },
       { path: 'gallery', element: <Gallery /> },
       { path: 'service-package', element: <ServicePackage /> },
+      { path: 'confirmations', element: <Confirmations /> },
     ],
   },
 ];

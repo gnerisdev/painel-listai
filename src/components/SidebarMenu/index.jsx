@@ -13,7 +13,7 @@ const SidebarMenu = ({ menuItems, userName, message }) => {
         {menuItems.map((item, index) => (
           <S.MenuItem key={index}>
             <Link to={item.link} style={{ textDecoration: 'none', color: 'inherit' }}>
-              <span className={item.icon}></span> {item.label}
+              <span className={item.icon + " icon"}></span> {item.label}
             </Link>
           </S.MenuItem>
         ))}

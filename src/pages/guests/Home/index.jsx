@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { ApplicationUtils } from 'utils/ApplicationUtils';
 import { GuestsContext } from 'contexts/Guests';
 import Container from 'components/Container';
@@ -8,10 +8,11 @@ import Button from 'components/Button';
 import Input from 'components/Input';
 import Modal from 'components/Modal';
 import logo from 'assets/logo-2.png';
+import imageDefaultEvent from 'assets/default-image-event.avif';
 import * as S from './style';
 
 const Home = () => {
-  const { apiService, setAlert, event } = useContext(GuestsContext);
+  const { apiService, setAlert, event, setEvent } = useContext(GuestsContext);
 
   // Regex
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -195,6 +196,23 @@ const Home = () => {
       setLoading(false);
     }
   };  
+
+  useEffect(() => {
+    if (!event?.description) {
+      setEvent({
+        ...event, 
+        gallery: event?.gallery?.length > 0 ? event.gallery : [{ url: imageDefaultEvent }],
+        titleDescription: event?.titleDescription || `Sejam bem-vindos!`,
+        description: `
+          Estamos organizando esse evento com muito amor e carinho. Criamos esse espaço para facilitar para todos.
+          
+          E para aqueles que querem presentear com um MIMO, criamos uma lista de presentes online para evitar dúvidas, economizar tempo e incentivar o consumo consciente
+          
+          Por favor, confirmem a presença no site logo abaixo e deixem um recadinho!
+        `
+      });
+    }
+  }, [])
   
   return (
     <S.Main>
@@ -251,10 +269,10 @@ const Home = () => {
             <Container>
               <div className="content">
                 <article>
-                  <S.TitleSection style={{ color: event.color, textAlign: 'start' }}>
+                  <S.TitleSection style={{ color: event.color, textAlign: 'start', textTransform: 'capitalize' }}>
                     {event.titleDescription}
                   </S.TitleSection>
-                  <p dangerouslySetInnerHTML={{ __html: event.description.replace(/\n/g, '<br />') }} />
+                  <p dangerouslySetInnerHTML={{ __html: event?.description?.replace(/\n/g, '<br />') }} />
                 </article>
                 <div className="gallery">
                   <GallerySlider gallery={event.gallery} options={{ loop: true }} />
@@ -318,7 +336,7 @@ const Home = () => {
                 <div className="text-info">
                   <span className="fa-regular fa-calendar"></span>
                   <p>
-                    {event.details.eventDate
+                    {event?.details?.eventDate
                       ? ApplicationUtils.formatDate(event.details.eventDate, false)
                       : "A definir"}
                   </p>
@@ -327,13 +345,13 @@ const Home = () => {
                 <div className="text-info">
                   <span className="fa-regular fa-clock"></span>
                   <p>
-                    {event.details.startTime && event.details.endTime
+                    {event?.details?.startTime && event?.details?.endTime
                       ? `${ApplicationUtils.formatToInputTime(event.details.startTime)} às ${ApplicationUtils.formatToInputTime(event.details.endTime)}`
                       : "A definir"}
                   </p>
                 </div>
 
-                {event.details.eventType === 'virtual' && (
+                {event?.details?.eventType === 'virtual' && (
                   <div className="text-info">
                     <span className="fa-solid fa-wifi" style={{ fontSize: 32 }} />
                     <div>
@@ -348,7 +366,7 @@ const Home = () => {
                   </div>
                 )}
 
-                {event.details.eventType === 'in-person' && (
+                {event?.details?.eventType === 'in-person' && (
                   <>
                     <div className="text-info">
                       <span className="fa-solid fa-location-dot"></span>

@@ -58,4 +58,8 @@ export const MenuItem = styled.li({
     marginRight: "10px",
     fontSize: "18px",
   },
+  '.icon': {
+    fontSize: 20,
+    marginRight: 8
+  }
 });
