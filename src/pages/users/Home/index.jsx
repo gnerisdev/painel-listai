@@ -13,13 +13,12 @@ const Home = () => {
   const { user, event } = useContext(UsersContext);
   
   const menuItems = [
-    { icon: "fa-solid fa-house", label: "Home" },
-    { icon: "fa-solid fa-gift", label: "Presentes recebidos" },
-    { icon: "fa-solid fa-check-square", label: "Confirmação de presença" },
-    { icon: "fa-solid fa-comment-dots", label: "Recados" },
-    { icon: "fa-solid fa-user", label: "Perfil" },
-    { icon: "fa-solid fa-right-from-bracket", label: "Sair" },
-  ];
+    { icon: "fa-solid fa-house", label: "Home", link: "/" },
+    { icon: "fa-solid fa-gift", label: "Presentes recebidos", link: "/gifts" },
+    { icon: "fa-solid fa-check-square", label: "Confirmação de presença", link: "/confirmations" },
+    { icon: "fa-solid fa-comment-dots", label: "Recados", link: "/messages" },
+    { icon: "fa-solid fa-right-from-bracket", label: "Sair", link: "/logout" },
+  ];  
 
   const cardItems = [
     {
@@ -27,49 +26,42 @@ const Home = () => {
       text: "Deixe o site do seu evento com a sua cara",
       icon: "fa-solid fa-pen-to-square",
       color: "#a0d468",
-      link: '/users/custom'
+      link: '/custom'
     },
     {
       title: "Galeria de Fotos e Vídeos",
       text: "Compartilhe momentos inesquecíveis",
       icon: "fa-regular fa-image",
       color: "#5d9cec",
-      link: '/users/gallery'
+      link: '/gallery'
     },
     {
       title: "Informações do Evento",
       text: "Tudo em um só lugar para seu convidado",
       icon: "fa-regular fa-calendar",
       color: "#ac92eb",
-      link: '/users/info'
+      link: '/info'
     },
     {
       title: "Lista de Presentes",
       text: "Adicione mais detalhes ao seu site",
       icon: "fa-solid fa-gift",
       color: "#ff779d",
-      link: '/users/gifts'      
-    },
-    {
-      title: "Páginas Personalizadas",
-      text: "Adicione mais detalhes ao seu site",
-      icon: "fa-solid fa-pager",
-      color: "#f29157",
-      link: '/users/custom-pages'      
+      link: '/gifts'      
     },
     {
       title: "Pacote de Serviços",
       text: "Serviços para personalizar ainda mais o seu site",
       icon: "fa-solid fa-box",
       color: "#77d5b2",
-      link: '/users/service-package'
+      link: '/service-package'
     },
     {
       title: "Configurações do Site",
       text: "Segurança e praticidade em primeiro lugar",
       icon: "fa-solid fa-gear",
       color: "#1d304c",
-      link: '/users/settings'  
+      link: '/settings'  
     },
     {
       title: "Compartilhar o Seu Site",
@@ -101,7 +93,17 @@ const Home = () => {
             <h6>{event.subtitle}</h6>
           </S.AvatarTitle>
           <S.WrapperButton>
-            <Button text="Visitar meu site" background={event.color} />
+            <Button 
+              text="Visitar meu site" 
+              background={event.color} 
+              onClick={() => {
+                let host = window.location.hostname;
+                host = host.replace('users.', '')
+                  .replace('localhost', 'localhost:3001');
+                const url = `http://sites.${host}/${event.slug}`;
+                window.open(url, '_blank');
+              }}
+            />
           </S.WrapperButton>
         </S.WrapperProfile>
 

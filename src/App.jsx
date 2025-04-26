@@ -1,8 +1,9 @@
-import { useLocation } from 'react-router-dom';
 import { UsersProvider } from 'contexts/Users';
 import { AdminProvider } from 'contexts/Admin';
 import { AdminRoutes } from 'routes/admin';
 import { UsersRoutes } from 'routes/users';
+import { GuestsRoutes } from 'routes/guests';
+import { GuestsProvider } from 'contexts/Guests';
 
 const AdminRoutesProvider = () => {
   return (
@@ -20,13 +21,23 @@ const UsersRoutesProvider = () => {
   );
 };
 
-const App = () => {
-  const location = useLocation();
-  const isUsers = location.pathname.startsWith('/users');
-  const isAdmin = location.pathname.startsWith('/admin');
+const GuestsRoutesProvider = () => {
+  return (
+    <GuestsProvider>
+      <GuestsRoutes />
+    </GuestsProvider>
+  );
+};
 
-  if (isUsers) return <UsersRoutesProvider />
+const App = () => {
+  const hostname = window.location.hostname;
+  const isUsers = hostname.startsWith('users.');
+  const isAdmin = hostname.startsWith('admin.');
+  const isGuest = hostname.startsWith('sites.');
+
   if (isAdmin) return <AdminRoutesProvider />;
+  if (isUsers) return <UsersRoutesProvider />
+  if (isGuest) return <GuestsRoutesProvider />;
 
   return <div>Página não encontrada</div>;
 };

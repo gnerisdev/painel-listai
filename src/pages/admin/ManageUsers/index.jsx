@@ -215,7 +215,7 @@ const ManageUsers = () => {
         color="#000"
       >
         <S.TitleModal>
-          <i class="fa-solid fa-user-pen"></i>
+          <i className="fa-solid fa-user-pen"></i>
           Editar usuário
         </S.TitleModal>
 

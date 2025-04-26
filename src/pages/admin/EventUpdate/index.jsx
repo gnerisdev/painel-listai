@@ -111,8 +111,8 @@ const EventUpdate = () => {
           <h2>Informações</h2>
           <Button 
             text={`${disabled 
-              ? "<i class='fa-solid fa-pen'></i> Editar" 
-              : "<i class='fa-regular fa-eye'></i> Visualizar"
+              ? "<i className='fa-solid fa-pen'></i> Editar" 
+              : "<i className='fa-regular fa-eye'></i> Visualizar"
             }`}
             onClick={() => setDisabled(!disabled)}
           />

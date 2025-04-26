@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import * as S from './style';
 
 const SidebarMenu = ({ menuItems, userName, message }) => {
@@ -11,9 +12,9 @@ const SidebarMenu = ({ menuItems, userName, message }) => {
       <S.MenuList>
         {menuItems.map((item, index) => (
           <S.MenuItem key={index}>
-            {/* {item.icon} */}
-            <span className={item.icon}></span>
-            {item.label}
+            <Link to={item.link} style={{ textDecoration: 'none', color: 'inherit' }}>
+              <span className={item.icon}></span> {item.label}
+            </Link>
           </S.MenuItem>
         ))}
       </S.MenuList>

@@ -29,7 +29,7 @@ const Gifts = () => {
       setAlert({
         show: true,
         title: "Erro!",
-        type: "error",
+        icon: "fa-solid fa-triangle-exclamation",
         text: ApplicationUtils.getErrorMessage(
           error,
           "Erro ao recuperar lista de presentes."
@@ -65,6 +65,7 @@ const Gifts = () => {
       setAlert({
         show: true,
         title: "Erro!",
+        icon: "fa-solid fa-triangle-exclamation",
         text: ApplicationUtils.getErrorMessage(error, "Erro ao salvar sugestão."),
       });
     } finally {

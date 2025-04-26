@@ -176,7 +176,7 @@ const Services = () => {
       <S.Main>
         <S.WrapperButton>
           <Button 
-            text="<i class='fa-solid fa-plus'></i> Novo serviço" 
+            text="<i className='fa-solid fa-plus'></i> Novo serviço" 
             isLoading={loading} 
             onClick={() => setShowModal(true)}
           />

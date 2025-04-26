@@ -6,8 +6,8 @@ import Modal from 'components/Modal';
 export const UsersProvider = (props) => {
   const location = useLocation();
   const normalizedPathname = location.pathname.replace(/\/$/, '');
-  const isAuthPage = (normalizedPathname === '/users/login' 
-  || normalizedPathname === '/users/register');
+  const isAuthPage = (normalizedPathname === '/login' 
+  || normalizedPathname === '/register');
   const apiService = useMemo(
     () => new ApiService({ module: 'users', auth: !isAuthPage }),
     [isAuthPage],

@@ -31,7 +31,7 @@ const Login = () => {
       localStorage.setItem('userId', JSON.stringify(id));
       localStorage.setItem('userToken', JSON.stringify(token));
 
-      window.location.href = '/users/home';
+      window.location.href = '/home';
     } catch (e) {
       const message = e?.response?.data?.message || e?.message
       setAlert({ show: true, title: 'Login', text: message });

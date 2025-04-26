@@ -37,7 +37,7 @@ const Events = () => {
       setAlert({
         show: true,
         title: "Erro!",
-        type: "error",
+        icon: "fa-solid fa-triangle-exclamation",
         text: ApplicationUtils.getErrorMessage(error, "Erro ao buscar eventos."),
       });
     }
@@ -99,7 +99,7 @@ const Events = () => {
           ]}
           actions={[
             { 
-              label: "<i class='fa-regular fa-eye'></i> Ver detalhes",
+              label: "<i className='fa-regular fa-eye'></i> Ver detalhes",
               onClick: (row) => navigate(`/admin/events/${row.id}`),
             },
           ]}

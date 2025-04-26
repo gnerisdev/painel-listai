@@ -15,19 +15,19 @@ import ServicePackage from 'pages/users/ServicePackage';
 
 const authRoutes = [
   {
-    path: 'users/',
+    path: '/',
     children: [
       { path: 'login', element: <Login /> },
       { path: '', element: <Navigate to="admin/login" /> },
       { path: 'register', element: <Register /> },
     ],
   },
-  { path: '*', element: <Navigate to="users/login" /> },
+  { path: '*', element: <Navigate to="/login" /> },
 ];
 
 const mainRoutes = [
   {
-    path: 'users/',
+    path: '/',
     element: <UsersLayout />,
     children: [
       { path: '*', element: <Navigate to="home/" /> },
