@@ -35,6 +35,16 @@ const Filter = ({ fields, onSearch, filterValues, isLoading }) => {
               />
             )}
 
+            {(field.type === 'number') && (
+              <S.Input
+                type="number"
+                id={field.name}
+                name={field.name}
+                value={filters[field.name]}
+                onChange={handleInputChange}
+              />
+            )}
+
             {field.type === 'date' && (
               <S.Input
                 type="date"
@@ -54,7 +64,7 @@ const Filter = ({ fields, onSearch, filterValues, isLoading }) => {
                 onChange={handleInputChange}
               >
                 {field?.options?.map((item) => (
-                  <option key={item.value} value={item}>
+                  <option key={item.value} value={item.value}>
                     {item.label}
                   </option>
                 ))}

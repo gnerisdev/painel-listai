@@ -5,11 +5,19 @@ import * as S from './style';
 // onPageChange: (page: number) => void;
 
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
+  const handlePageChange = (newPage) => {
+    if (newPage < 1 || newPage > totalPages || newPage === currentPage) {
+      return;
+    }
+
+    onPageChange(newPage);
+  };
+
   return (
     <S.Wrapper>
       <S.PaginationButton
-        onClick={() => onPageChange(currentPage - 1)}
-        disabled={currentPage === 1}
+        onClick={() => handlePageChange(currentPage - 1)}
+        disabled={currentPage <= 1}
       >
         Anterior
       </S.PaginationButton>
@@ -17,8 +25,8 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
       <span>Página {currentPage} de {totalPages}</span>
 
       <S.PaginationButton
-        onClick={() => onPageChange(currentPage + 1)}
-        disabled={currentPage === totalPages}
+        onClick={() => handlePageChange(currentPage + 1)}
+        disabled={currentPage >= totalPages}
       >
         Próxima
       </S.PaginationButton>

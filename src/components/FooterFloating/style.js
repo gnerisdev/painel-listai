@@ -10,6 +10,9 @@ export const FooterFloating = styled('footer')({
   height: 48,
   'div': {
     height: '100%'
+  },
+  '@media(min-width: 1024px)': {
+    display: 'none'
   }
 });
 

@@ -24,7 +24,7 @@ const ManageUsers = () => {
   const [filterValues, setFilterValues] = useState({});
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const PAGE_LIMIT = 2;
+  const PAGE_LIMIT = 20;
 
   const onSearch = async (filters) => {
     setFilterValues(filters);
@@ -58,7 +58,7 @@ const ManageUsers = () => {
         }));
   
         setTableData(tableData);
-        setTotalPages(Math.ceil(data.total / PAGE_LIMIT)); // <-- baseado em retorno da API
+        setTotalPages(Math.ceil(data.total / PAGE_LIMIT));
       }
     } catch (error) {
       setAlert({

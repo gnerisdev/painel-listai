@@ -19,29 +19,18 @@ export const SectionTitle = styled.h2({
   marginBottom: '20px',
 });
 
-export const GuestCard = styled.div({
+export const Card = styled.div({
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
-  padding: '20px 0',
+  padding: '20px 16px',
   borderBottom: '1px solid #ccc',
 });
 
-export const GuestInfo = styled.div({
+export const Info = styled.div({
   display: 'flex',
   flexDirection: 'column',
   gap: '5px',
-});
-
-export const Tag = styled.span({
-  backgroundColor: '#FFCE4B',
-  color: '#ffffff',
-  padding: '5px 10px',
-  borderRadius: '20px',
-  fontSize: '12px',
-  fontWeight: 'bold',
-  alignSelf: 'start',
-  marginTop: '10px',
 });
 
 export const ActionButtons = styled.div({

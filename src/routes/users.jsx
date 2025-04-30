@@ -13,6 +13,8 @@ import Settings from 'pages/users/Settings';
 import Gallery from 'pages/users/Gallery';
 import ServicePackage from 'pages/users/ServicePackage';
 import Confirmations from 'pages/users/Confirmations';
+import Messages from 'pages/users/Messages';
+import GiftsReceived from 'pages/users/GiftsReceived';
 
 const authRoutes = [
   {
@@ -42,6 +44,8 @@ const mainRoutes = [
       { path: 'gallery', element: <Gallery /> },
       { path: 'service-package', element: <ServicePackage /> },
       { path: 'confirmations', element: <Confirmations /> },
+      { path: 'messages', element: <Messages /> },
+      { path: 'gifts-received', element: <GiftsReceived /> },
     ],
   },
 ];

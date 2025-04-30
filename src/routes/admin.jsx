@@ -11,18 +11,17 @@ import Services from 'pages/admin/Services';
 
 const authRoutes = [
   {
-    path: 'admin/',
+    path: '/',
     children: [
       { path: 'login', element: <Login /> },
-      { path: '', element: <Navigate to="admin/login" /> },
     ],
   },
-  { path: '*', element: <Navigate to="admin/login" /> }, 
+  { path: '*', element: <Navigate to="/login" /> }, 
 ];
 
 const mainRoutes = [
   {
-    path: 'admin/',
+    path: '/',
     element: <AdminLayout />,
     children: [
       { path: '', element: <Home /> },
@@ -32,7 +31,7 @@ const mainRoutes = [
       { path: 'services', element: <Services /> }
     ],
   },
-  { path: '*', element: <Navigate to="admin/" /> }
+  { path: '*', element: <Navigate to="/" /> }
 ];
 
 const Auth = () => useRoutes([...authRoutes]);

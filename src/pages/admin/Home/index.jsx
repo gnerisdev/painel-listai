@@ -28,21 +28,21 @@ const Home = () => {
       text: 'Gerencie os cadastros dos usuários',
       icon: 'fa-solid fa-users',
       color: '#4CAF50', 
-      link: '/admin/users',
+      link: '/users',
     },
     {
       title: 'Eventos',
       text: 'Administre os eventos cadastrados no sistema',
       icon: 'fa-solid fa-calendar-days',
       color: '#2196F3', 
-      link: '/admin/events',
+      link: '/events',
     },
     {
       title: 'Lista de Presente',
       text: 'Gerencie as listas de presentes dos eventos',
       icon: 'fa-solid fa-gift',
       color: '#9C27B0', 
-      link: '/admin/info',
+      link: '/info',
     },
     {
       title: 'Tipo/Categoria de Presente',
@@ -55,7 +55,7 @@ const Home = () => {
       text: 'Controle os serviços disponíveis na plataforma',
       icon: 'fa-solid fa-briefcase',
       color: '#03A9F4', 
-      link: '/admin/services',
+      link: '/services',
     },
     {
       title: 'Configurações',

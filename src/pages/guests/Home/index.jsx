@@ -212,6 +212,9 @@ const Home = () => {
         `
       });
     }
+
+    setUrlMap(`/marker-map.html?lat=${-23.5505}&lon=${-46.6333}&color=${event.color}`);
+    console.log(`/marker-map.html?lat=${-23.5505}&lon=${-46.6333}&color=${event.color}`)
   }, [])
   
   return (

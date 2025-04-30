@@ -1,12 +1,13 @@
 import { useContext, useEffect, useState } from 'react';
 import { UsersContext } from 'contexts/Users';
+import { ApplicationUtils } from 'utils/ApplicationUtils';
 import Container from 'components/Container';
+import Button from 'components/Button';
 import Step1 from './Step-1';
 import Step2 from './Step-2';
 import Step3 from './Step-3';
-import Button from 'components/Button';
+import logo from 'assets/logo-2.png';
 import * as S from './style';
-import { ApplicationUtils } from 'utils/ApplicationUtils';
 
 const Register = () => {
   const { apiService, setAlert } = useContext(UsersContext);
@@ -135,10 +136,7 @@ const Register = () => {
   return (
     <S.Main>
       <Container>
-        <S.Logo
-          src="https://painel.mimon.com.br/assets/logos/mimon.png"
-          alt="Logomarca"
-        />
+        <S.Logo src={logo} alt="Logomarca Listai" />
 
         <S.Steps>
           <span

@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export class ApiService {
   // #baseUrl = process.env.REACT_APP_API_URL;
-  #baseUrl = 'http://127.0.0.1:3000/api';
+  #baseUrl = 'http://localhost:3000/api';
   isAuth = false;
   #module;
   #token;
@@ -10,7 +10,7 @@ export class ApiService {
 
   constructor({ module = 'users', auth = true }) {
     this.module = module;
-  
+    
     if (auth) {
       this.isAuth = true;
   
@@ -20,6 +20,7 @@ export class ApiService {
       } else if (module === 'admin') {
         this.token = localStorage.getItem('adminToken')?.toString();
         this.id = localStorage.getItem('adminId')?.toString();
+        console.log('-----', this.token, this.id)
       }
     }
   }

@@ -111,6 +111,8 @@ export const EventTitle = styled('div')({
 
 export const SectionIntroduction = styled('section')({
   padding: '40px 0',
+  maxWidth: 1100,
+  margin: 'auto',
   '.content': {
     display: 'grid',
     justifyContent: 'center',
@@ -120,7 +122,7 @@ export const SectionIntroduction = styled('section')({
       maxWidth: 450,
     },
     '@media(min-width: 992px)': {
-      gridTemplateColumns: '55% 45%'
+      gridTemplateColumns: '1fr 1fr'
     },
     'p': {
       textAlign: 'left',

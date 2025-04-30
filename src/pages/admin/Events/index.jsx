@@ -7,6 +7,7 @@ import TitlePage from "components/TitlePage";
 import Header from "components/Header";
 import Table from "components/Table";
 import Filter from "components/Filter";
+import Pagination from "components/Pagination";
 import * as S from "./style";
 
 const Events = () => {
@@ -14,10 +15,28 @@ const Events = () => {
   const { apiService, setAlert } = useContext(AdminContext);
   const [tableData, setTableData] = useState([]);
   const [filters, setFilters] = useState({});
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const PAGE_LIMIT = 20;
 
-  const getEvents = async () => {
+  const onSearch = (filters, pageCurrent = page) => {
+    let queryParams = `?page=${pageCurrent}&limit=${PAGE_LIMIT}`;
+
+    for (let filter in filters) {
+      if (filter === 'active' && filters[filter]) {
+        queryParams += `&${filter}=${filters[filter] === 'active' ? true : false}`;
+        continue;
+      }
+      if (filters[filter]) queryParams += `&${filter}=${filters[filter]}`;
+    }
+
+    setFilters(filters);
+    getEvents(queryParams);
+  };
+
+  const getEvents = async (queryParams) => {
     try {
-      const { data } = await apiService.get(`/admin/events`);
+      const { data } = await apiService.get(`/admin/events${queryParams || ''}`);
       if (!data.success) throw new Error(data?.message);
       if (data.events) {
         setTableData(
@@ -25,7 +44,7 @@ const Events = () => {
             id: event.id,
             title: event.title,
             slug: '/' + event.slug,
-            userName: event.userName,
+            userName: event?.user?.firstName + ' ' + event?.user?.lastName,
             active: event.active ? 'Ativo' : 'Não ativo',
             phoneNumber: event.phoneNumber,
             createdAt: ApplicationUtils.formatDate(event.createdAt),
@@ -33,6 +52,10 @@ const Events = () => {
           }))
         );
       }
+
+      if (data.totalPages) setTotalPages(data.totalPages);
+      if (data.setPage) setTotalPages(data.setPage);
+
     } catch (error) {
       setAlert({
         show: true,
@@ -41,10 +64,10 @@ const Events = () => {
         text: ApplicationUtils.getErrorMessage(error, "Erro ao buscar eventos."),
       });
     }
-  };  
+  };
 
   useEffect(() => {
-    getEvents();
+    onSearch();
   }, []);
 
   return (
@@ -56,6 +79,7 @@ const Events = () => {
         <S.WrapperFilter>
           <Filter
             fields={[
+              { label: "ID", name: "id", type: "number" },
               { name: "title", label: "Título" },
               { name: "slug", label: "Url" },
               {
@@ -64,8 +88,8 @@ const Events = () => {
                 type: "select",
                 options: [
                   { label: "Selecione", value: "" },
-                  { label: "Ativo", value: true },
-                  { label: "Desativo", value: false },
+                  { label: "Ativo", value: "active" },
+                  { label: "Desativo", value: "disabled" },
                 ],
               },
               {
@@ -81,7 +105,7 @@ const Events = () => {
               { name: "startDate", label: "Data inicial", type: "date" },
               { name: "endDate", label: "Data final", type: "date" },
             ]}
-            onSearch={(filters) => setFilters(filters)}
+            onSearch={onSearch}
             filterValues={filters}
           />
         </S.WrapperFilter>
@@ -98,11 +122,20 @@ const Events = () => {
             { label: "Status", name: "active" },
           ]}
           actions={[
-            { 
+            {
               label: "<i className='fa-regular fa-eye'></i> Ver detalhes",
               onClick: (row) => navigate(`/admin/events/${row.id}`),
             },
           ]}
+        />
+
+        <Pagination
+          currentPage={page}
+          totalPages={totalPages}
+          onPageChange={(page) => {
+            setPage(page);
+            onSearch(filters, page);
+          }}
         />
       </S.Content>
     </Container>

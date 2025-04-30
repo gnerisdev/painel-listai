@@ -8,12 +8,12 @@ export const BoxNumber = styled('div')({
   flexGrow: 1,
   boxShadow: '1px 1px 10px #ccc5c5',
   '.number': {
-    fontSize: '2rem',
-    fontWeight: 700,
+    fontSize: '1.8rem',
+    fontWeight: 600,
     color: '#1e242d'
   },
   '.text': {
-    fontSize: '0.9rem',
+    fontSize: '0.8rem',
     color: '#696969'
   }
 });

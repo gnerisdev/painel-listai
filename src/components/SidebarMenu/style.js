@@ -1,14 +1,12 @@
 import styled from 'styled-components';
 
 export const Sidebar = styled('aside')({
-  width: "250px",
-  padding: "20px",
+  width: "300px",
   background: "#fff",
 });
 
 export const UserSection = styled('div')({
   display: "flex",
-  flexDirection: "column",
   alignItems: "center",
   marginBottom: "20px",
 });
