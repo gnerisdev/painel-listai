@@ -10,17 +10,8 @@ export const WrapperFilter = styled('div')({
   margin: '24px 0'
 });
 
-export const WrapperForm = styled('div')({
-  width: '100%', 
-  minWidth: 400,
-  maxWidth: 450,
-  display: 'flex',
-  flexDirection: 'column',
-  gap: 16
-});
-
 export const TitleModal = styled('h2')({
-  color: '#000', 
+  color:  'var(--text-color)', 
   marginBottom: 8, 
   display: 'flex', 
   alignItems: 'center',
@@ -50,7 +41,7 @@ export const CardContent =  styled('div')({
 export const CardTitle = styled('h4')({
   fontSize: 18,
   marginBottom: 0,
-  color: '#000000',
+  color: 'var(--text-color)',
   textTransform: 'capitalize'
 });
 

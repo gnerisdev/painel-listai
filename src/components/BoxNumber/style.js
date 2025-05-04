@@ -10,7 +10,7 @@ export const BoxNumber = styled('div')({
   '.number': {
     fontSize: '1.8rem',
     fontWeight: 600,
-    color: '#1e242d'
+    color: 'var(--primary-color) '
   },
   '.text': {
     fontSize: '0.8rem',

@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import { AdminContext } from 'contexts/Admin';
 import Container from 'components/Container';
+import FormContainer from 'components/FormContainer';
 import TitlePage from 'components/TitlePage';
 import Header from 'components/Header';
 import Table from 'components/Table';
@@ -202,15 +203,10 @@ const Services = () => {
           ]}
         />
 
-        <Modal
-          active={showModal}
-          updateShow={() => setShowModal(false)}
-          background="#fff"
-          color="#000"
-        >
+        <Modal active={showModal} updateShow={() => setShowModal(false)}>
           <TitlePage title="Editar Serviço" icon="fa-solid fa-pen-to-square" />
 
-          <S.WrapperForm>
+          <FormContainer>
             <Input
               label="Título"
               type="text"
@@ -303,7 +299,7 @@ const Services = () => {
             />
 
             <Button isLoading={loading} onClick={handleSave} />
-          </S.WrapperForm>
+          </FormContainer>
         </Modal>
       </S.Main>
     </Container>

@@ -15,8 +15,8 @@ export const Table = styled('table')({
 });
 
 export const TableHeader = styled('thead')({
-  backgroundColor: '#1e242d',
-  color: '#ffffff',
+  backgroundColor: 'var(--primary-color) ',
+  color:  'var(--text-white)',
   fontWeight: 'bold',
   'th': {
     padding: '8px 0',

@@ -22,7 +22,7 @@ export const WrapperCep = styled('div')({
   alignItems: 'end',
   'button': {
     height: 44,
-    color: '#ffffff',
+    color:  'var(--text-white)',
     fontSize: 21,
     borderTopRightRadius: 5,
     borderEndEndRadius: 5,

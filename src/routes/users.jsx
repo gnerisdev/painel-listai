@@ -15,13 +15,14 @@ import ServicePackage from 'pages/users/ServicePackage';
 import Confirmations from 'pages/users/Confirmations';
 import Messages from 'pages/users/Messages';
 import GiftsReceived from 'pages/users/GiftsReceived';
+import LoadingLogo from 'components/LoadingLogo';
 
 const authRoutes = [
   {
     path: '/',
     children: [
       { path: 'login', element: <Login /> },
-      { path: '', element: <Navigate to="admin/login" /> },
+      { path: '', element: <Navigate to="login" /> },
       { path: 'register', element: <Register /> },
     ],
   },
@@ -58,7 +59,7 @@ export const UsersRoutes = () => {
 
   return (
     <>
-      {authState === 'checking' && 'Carregando...'}
+      {authState === 'checking' && <LoadingLogo />}
       {authState === 'authenticated' && <Main />}
       {authState === 'unauthorized' && <Auth />}
     </>

@@ -35,7 +35,7 @@ export const GuestInfo = styled.div({
 
 export const Tag = styled.span({
   backgroundColor: '#FFCE4B',
-  color: '#ffffff',
+  color:  'var(--text-white)',
   padding: '5px 10px',
   borderRadius: '20px',
   fontSize: '12px',
@@ -55,7 +55,7 @@ export const ButtonIcon = styled.button({
   padding: '10px',
   fontSize: '16px',
   cursor: 'pointer',
-  color: '#ffffff'
+  color:  'var(--text-white)'
 });
 
 export const ModalContent = styled.button({

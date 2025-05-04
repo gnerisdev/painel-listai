@@ -124,7 +124,7 @@ const Events = () => {
           actions={[
             {
               label: "<i className='fa-regular fa-eye'></i> Ver detalhes",
-              onClick: (row) => navigate(`/admin/events/${row.id}`),
+              onClick: (row) => navigate(`/event/${row.id}`),
             },
           ]}
         />

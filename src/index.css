@@ -1,6 +1,41 @@
-*,
-*::before,
-*::after {
+:root {
+  /* Cores principais */
+  --primary-color: #1e242d;         
+  --secondary-color: #432070;       
+  --accent-color: #432070;        
+
+  /* Texto e fundo */
+  --text-color: #000000;
+  --text-white: #ffffff;
+  --text-light-color: #666;
+  --background-color: #ffffff;
+  --background-alt-color: #f9f9f9;
+
+  /* Estados */
+  --success-color: #00f3ff;
+  --warning-color: #ffb30b;
+  --danger-color: #ff3d60;
+
+  /* Cinzas */
+  --gray-100: #ffffff;
+  --gray-200: #f9f9f9;
+  --gray-300: #f5f5f5;
+  --gray-400: #efefef;
+  --gray-500: #ccc5c5;
+  --gray-600: #ccc;
+  --gray-700: #a6a6a6;
+  --gray-800: #696969;
+  --gray-900: #333333;
+
+  /* Extras */
+  --highlight-color: #fc6e51;
+  --muted-color: #a6a6a6;
+
+  /* Gradiente */
+  --main-gradient: linear-gradient(to top, #f36a3e 0%, #ffb30b 100%);
+}
+
+*, *::before, *::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;

@@ -176,7 +176,7 @@ export const SectionGifts = styled('section')({
       position: 'absolute',
       bottom: -18,
       padding: '12px 20px',
-      color: '#ffffff',
+      color:  'var(--text-white)',
       borderRadius: 5,
       fontSize: 12,
       fontWeight: 500,
@@ -194,7 +194,7 @@ export const SectionMessage = styled('section')({
     padding: 0
   },
   '.content': {
-    color: '#ffffff',
+    color:  'var(--text-white)',
     textAlign: 'center',
     padding: '40px 20px',
     display: 'flex',
@@ -224,7 +224,7 @@ export const SectionInfo = styled('section')({
         gap: 8
       },
       p: {
-        color: '#000000',
+        color: 'var(--text-color)',
       },
       span: {
         fontSize: 40,
@@ -240,7 +240,7 @@ export const SectionConfirmation = styled('section')({
     padding: 0
   },
   '.content': {
-    color: '#ffffff',
+    color:  'var(--text-white)',
     textAlign: 'center',
     padding: '40px 20px',
     display: 'flex',
@@ -271,5 +271,5 @@ export const Footer = styled('footer')({
   height: 200,
   padding: '35px 0',
   textAlign: 'center',
-  color: '#ffffff',
+  color:  'var(--text-white)',
 });

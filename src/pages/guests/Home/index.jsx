@@ -437,8 +437,6 @@ const Home = () => {
       <Modal
         active={modalFormMessage}
         updateShow={() => setModalFormMessage(false)}
-        background="#fff"
-        color="#000"
         closeOut={false}
       >
         <S.TitleSection style={{ color: event.color }}>
@@ -514,8 +512,6 @@ const Home = () => {
       <Modal
         active={modalFormConfirmation}
         updateShow={() => setModalFormConfirmation(false)}
-        background="#fff"
-        color="#000"
         closeOut={false}
       >
         <S.TitleSection style={{ color: event.color }}>

@@ -44,7 +44,7 @@ export const ButtonIcon = styled.button({
   padding: '10px',
   fontSize: '16px',
   cursor: 'pointer',
-  color: '#ffffff'
+  color:  'var(--text-white)'
 });
 
 export const ModalContent = styled.button({

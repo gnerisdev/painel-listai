@@ -109,9 +109,9 @@ const Login = () => {
                 setLog({ ...log, password: '' });
               }}
             />
-          </FormContainer>
 
-          <Button text="Entrar" isLoading={loading} onClick={handleSubmit} />
+            <Button type="button" text="Entrar" isLoading={loading} onClick={handleSubmit} />
+          </FormContainer>
         </S.Content>
       </Container>
     </S.Main>

@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from 'react';
 import { AdminContext } from 'contexts/Admin';
 import { ApplicationUtils } from 'utils/ApplicationUtils';
 import Container from 'components/Container';
+import FormContainer from 'components/FormContainer';
 import TitlePage from 'components/TitlePage';
 import Header from 'components/Header';
 import Table from 'components/Table';
@@ -94,7 +95,6 @@ const ManageUsers = () => {
       const { data } = await apiService.get(`/admin/user-events/${id}`);
       if (data.events) {
         setModalUserEvents(true);
-        console.log(data)
         setUserEventsData(data.events);
       }
     } catch (error) {
@@ -102,17 +102,14 @@ const ManageUsers = () => {
         show: true,
         title: 'Erro!',
         type: 'error',
-        text: ApplicationUtils.getErrorMessage(
-          error,
-          'Erro ao recuperar informações do evento.',
-        ),
+        text: ApplicationUtils.getErrorMessage(error, 'Erro ao recuperar informações do evento.'),
       });
     }
   };
 
   useEffect(() => {
     getUsers(page);
-  }, []);
+  }, [page]);
 
   return (
     <Container>
@@ -158,26 +155,18 @@ const ManageUsers = () => {
       <Pagination
         currentPage={page}
         totalPages={totalPages}
-        onPageChange={(page) => {
-          setPage(page);
-          getUsers(filterValues);
-        }}
+        onPageChange={(page) => setPage(page)}
       />
       </S.Content>
 
       {/* Modal View Events  */}
-      <Modal
-        active={modalUserEvents}
-        updateShow={() => setModalUserEvents(false)}
-        background="#fff"
-        color="#000"
-      >
+      <Modal active={modalUserEvents} updateShow={() => setModalUserEvents(false)}>
         <S.TitleModal>
           <i className="fa-solid fa-calendar"></i>
           Eventos do usuário
         </S.TitleModal>
 
-        <S.WrapperForm>
+        <FormContainer>
           {userEventsData.map((event, index) => (
             <S.Card key={index}>
               <S.CardIcon>
@@ -202,24 +191,22 @@ const ManageUsers = () => {
                 </S.CardDetails>
               </S.CardContent>
             </S.Card>
-
           ))}
-        </S.WrapperForm>
+        </FormContainer>
       </Modal>
 
       {/* Modal update  */}
       <Modal
         active={modalUpdateUser}
         updateShow={() => setModalUpdateUser(false)}
-        background="#fff"
-        color="#000"
+        closeOut={false}
       >
         <S.TitleModal>
           <i className="fa-solid fa-user-pen"></i>
           Editar usuário
         </S.TitleModal>
 
-        <S.WrapperForm>
+        <FormContainer>
           <Input
             label="Nome"
             value={userData.firstName}
@@ -238,21 +225,16 @@ const ManageUsers = () => {
           <Input
             label="Número de telefone"
             value={userData.phoneNumber}
-            onChange={(value) =>
-              setUserData({ ...userData, phoneNumber: value })
-            }
+            onChange={(value) => setUserData({ ...userData, phoneNumber: value })}
           />
           <Select
             label="Ativo"
-            data={[
-              { title: 'Ativo', value: 1 },
-              { title: 'Desativo', value: 0 },
-            ]}
+            data={[ { title: 'Ativo', value: 1 }, { title: 'Desativo', value: 0 } ]}
             value={userData.active}
             onChange={(value) => setUserData({ ...userData, active: value })}
           />
           <Button text="Salvar" />
-        </S.WrapperForm>
+        </FormContainer>
       </Modal>
     </Container>
   );

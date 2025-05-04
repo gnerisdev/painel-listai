@@ -8,7 +8,7 @@ export const SwitchContainer = styled('label')({
 });
 
 export const Label = styled('span')({
-  color: '#000',
+  color:  'var(--text-color)',
   width: '100%', 
   fontWeight: 'bolder',
   margin: '0 0',

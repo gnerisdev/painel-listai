@@ -56,9 +56,15 @@ export const AdminProvider = (props) => {
         apiService
       }}
     >
-      <Modal active={alert.show} updateShow={(e) => setAlert(e)}>
-        <div style={{ textAlign: 'center' }}>
-          <span className="fa-regular fa-circle-question" style={{ fontSize: 40 }}></span>
+      <Modal 
+        active={alert.show} 
+        updateShow={(e) => setAlert(e)} 
+        zIndex={999}
+        background="var(--secondary-color)"
+        color="var(--text-white)"
+      >
+        <div style={{ textAlign: 'center',  color: 'var(--text-white)' }}>
+          <span className={alert.icon} style={{ fontSize: 40 }} />
           <h3>{alert.title}</h3>
           <small style={{ margin: 0 }} dangerouslySetInnerHTML={{ __html: alert.text }} />
         </div>

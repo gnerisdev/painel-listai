@@ -151,8 +151,6 @@ const Gifts = () => {
             <Modal
               active={modalSuggestion}
               updateShow={() => setModalSuggestion(false)}
-              background="#fff"
-              color="#000"
               closeOut={false}
             >
               <S.TitleModal>

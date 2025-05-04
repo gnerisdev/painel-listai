@@ -221,8 +221,6 @@ const Confirmations = () => {
       <Modal
         active={modal}
         updateShow={() => setModal(false)}
-        background="#fff"
-        color="#000"
         closeOut={false}
       >
         <h2 style={{ color }}>

@@ -20,7 +20,7 @@ export const WrapperForm = styled('div')({
 });
 
 export const TitleModal = styled('h2')({
-  color: '#000', 
+  color:  'var(--text-color)', 
   marginBottom: 8, 
   display: 'flex', 
   alignItems: 'center',

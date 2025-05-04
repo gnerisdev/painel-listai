@@ -118,7 +118,7 @@ export const Button = styled('button')({
   height: '36px',
   borderRadius: '50%',
   backgroundColor: '#3b82f6',
-  color: '#ffffff',
+  color:  'var(--text-white)',
   fontSize: '18px',
   border: 'none',
   cursor: 'pointer',

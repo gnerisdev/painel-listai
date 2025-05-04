@@ -13,7 +13,7 @@ export const Nav = styled('nav')({
   position: 'fixed',
   inset: 0,
   padding: '10px 0',
-  background: '#1e242d',
+  background: 'var(--primary-color) ',
   zIndex: 9,
 });
 
@@ -50,7 +50,7 @@ export const MenuList = styled('ul')({
 export const MenuItem = styled('li')({
   fontSize: 16,
   padding: '12px 0',
-  color: '#1e242d',
+  color: 'var(--primary-color) ',
   cursor: 'pointer',
   borderBottom: '1px solid #eee',
   transition: 'color 0.2s ease-in-out',

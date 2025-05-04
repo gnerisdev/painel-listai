@@ -60,6 +60,11 @@ export class ApplicationUtils {
 
   static getErrorMessage (error, defaultMessage = "Ocorreu um erro inesperado.") {  
     let message = error?.response?.data?.message || error?.message || defaultMessage;
-    return message === 'Network Error' ? 'Erro de rede.' : message;
+    if (message === 'Request failed with status code 404') {
+      message = 'Algo deu errado. Tente novamente mais tarde!';
+    }
+    if (message === 'Network Error') message = 'Erro de rede!';
+    
+    return message;
   };
 }

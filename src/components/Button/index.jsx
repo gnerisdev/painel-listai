@@ -1,9 +1,9 @@
 import * as S from './style';
 
-const Button = ({ text, color, background, margin, onClick, isLoading }) => {
+const Button = ({ text, color, background, margin, onClick, maxWidth='100%', isLoading }) => {
   return (
     <S.Button
-      style={{ color, background, margin }}
+      style={{ color, background, margin, maxWidth }}
       onClick={() => onClick()}
       type="button"
     >

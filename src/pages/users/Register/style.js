@@ -26,7 +26,7 @@ export const Steps = styled('div')((props) => ({
   },
 
   '.stepCurrent': {
-    background: '#432070'
+    background: 'var(--secondary-color) '
   },
 }));
 
@@ -62,9 +62,9 @@ export const ItemEventTypes = styled('div')({
     margin: 'auto'
   },
   '&:hover': {
-    border: '2px solid #432070'
+    border: '2px solid var(--secondary-color) '
   },
   '&.selected': {
-    border: '2px solid #432070'
+    border: '2px solid var(--secondary-color) '
   },
 });

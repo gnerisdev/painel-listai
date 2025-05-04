@@ -37,7 +37,7 @@ export const Content = styled("div")({
     fontSize: "0.9rem",
     lineHeight: "20px",
     fontWeight: 700,
-    color: "#1e242d",
+    color: "var(--primary-color) ",
   },
 
   ".text": {

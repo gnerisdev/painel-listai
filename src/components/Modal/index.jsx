@@ -42,16 +42,12 @@ const Modal = ({
 
   return (
     visible && (
-      <S.Modal
-        ref={modalRef}
-        className={active ? "show" : "hide"}
-        style={{ zIndex }}
-      >
+      <S.Modal ref={modalRef} className={active ? "show" : "hide"} style={{ zIndex }}>
         <S.Content ref={contentRef} style={background ? { background } : {}}>
           {children}
 
           <S.ButtonClose onClick={() => updateShow(false)}>
-            <span className="fa-solid fa-xmark" style={{ color }}></span>
+            <span className="fa-solid fa-xmark icon" style={color ? { color } : {}} />
           </S.ButtonClose>
         </S.Content>
       </S.Modal>

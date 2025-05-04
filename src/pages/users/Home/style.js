@@ -65,7 +65,7 @@ export const ButtonIcon = styled('button')({
   right: -4,
   bottom: 5,
   overflow: 'hidden',
-  color: '#ffffff'
+  color:  'var(--text-white)'
 });
 
 export const AvatarTitle = styled('div')({

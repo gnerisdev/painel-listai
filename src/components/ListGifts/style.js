@@ -65,7 +65,7 @@ export const Button = styled('button')({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  color: '#ffffff',
+  color:  'var(--text-white)',
   cursor: 'pointer',
   '&:hover': {
     transform: 'scale(.96)'

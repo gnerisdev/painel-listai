@@ -110,6 +110,7 @@ const EventUpdate = () => {
         <S.WrapperFloat>
           <h2>Informações</h2>
           <Button 
+            maxWidth='200px'
             text={`${disabled 
               ? "<i className='fa-solid fa-pen'></i> Editar" 
               : "<i className='fa-regular fa-eye'></i> Visualizar"

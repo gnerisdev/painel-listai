@@ -39,7 +39,7 @@ export const Label = styled('div')({
 export const WithdrawButton = styled('button')({
   padding: '10px 20px',
   backgroundColor: '#F06257',
-  color: '#fff',
+  color: 'var( --text-white)',
   border: 'none',
   borderRadius: '8px',
   cursor: 'pointer',

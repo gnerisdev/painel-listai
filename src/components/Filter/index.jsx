@@ -13,10 +13,8 @@ const Filter = ({ fields, onSearch, filterValues, isLoading }) => {
   };
 
   useEffect(() => {
-    if (Object.keys(filterValues).length > 0) {
-      setFilters(filterValues);
-    }
-  }, [])
+    if (Object.keys(filterValues).length > 0) setFilters(filterValues);
+  }, [filterValues])
 
   return (
     <S.WrapperSearch>
@@ -76,9 +74,10 @@ const Filter = ({ fields, onSearch, filterValues, isLoading }) => {
 
       <S.WrapperButton>
         <Button 
-          isLoading={isLoading} 
-          text="Buscar" 
+          maxWidth='200px'
           type="button" 
+          text="Buscar" 
+          isLoading={isLoading} 
           onClick={() => onSearch(filters)} 
         />
       </S.WrapperButton>

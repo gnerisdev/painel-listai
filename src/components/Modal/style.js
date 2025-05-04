@@ -26,23 +26,26 @@ export const Modal = styled('div')({
 });
 
 export const Content = styled('div')({
-  background: '#432070',
-  width: 'fit-content',
+  background: '#ffffff',
+  width: '100%',
   height: 'fit-content',
+  maxHeight: '100vh',
   padding: '32px 16px',
   display: 'flex',
   flexDirection: 'column',
   borderRadius: 8,
   margin: 'auto',
   minWidth: 160,
-  color: '#ffffff',
+  color: 'var(--text-color)',
   position: 'relative',
   transform: 'scale(0.9)',
   transition: 'transform 0.3s ease',
   boxShadow: '0 11px 15px -7px rgba(0, 0, 0, .2), 0 24px 38px 3px rgba(0, 0, 0, .14), 0 9px 46px 8px rgba(0, 0, 0, .12)',
   zIndex: 1,
   overflow: 'auto',
-
+  '@media(min-width: 440px)': {
+    width: 'fit-content',
+  },
   '&.show': {
     transform: 'scale(1)',
   },
@@ -59,6 +62,6 @@ export const ButtonClose = styled('div')({
   position: 'absolute',
   top: 16,
   right: 16,
-  color: '#ffffff',
+  color:  'var(--text-color)',
   cursor: 'pointer'
 });

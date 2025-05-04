@@ -28,7 +28,7 @@ export const Textarea = styled('textarea')({
 });
 
 export const Label = styled('label')({
-  color: '#000',
+  color:  'var(--text-color)',
   width: '100%', 
   fontWeight: 'bolder',
   margin: '0 0',

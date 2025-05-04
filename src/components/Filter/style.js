@@ -47,7 +47,7 @@ export const SearchButton = styled('button')({
   padding: '10px 15px',
   fontSize: '14px',
   backgroundColor: '#007bff',
-  color: '#fff',
+  color: 'var( --text-white)',
   border: 'none',
   borderRadius: '4px',
   cursor: 'pointer',

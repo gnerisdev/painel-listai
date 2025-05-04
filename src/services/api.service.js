@@ -20,7 +20,6 @@ export class ApiService {
       } else if (module === 'admin') {
         this.token = localStorage.getItem('adminToken')?.toString();
         this.id = localStorage.getItem('adminId')?.toString();
-        console.log('-----', this.token, this.id)
       }
     }
   }
