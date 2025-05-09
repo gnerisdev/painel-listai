@@ -9,7 +9,10 @@ export const Container = styled('div')({
 
 export const Content = styled('div')({
   display: 'flex',
+  justifyContent: 'center',
+  flexWrap: 'wrap',
   gap: 16,
+  marginTop: 4
 });
 
 export const Option = styled('div')({

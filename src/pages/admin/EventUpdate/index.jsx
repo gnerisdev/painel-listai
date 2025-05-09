@@ -9,14 +9,14 @@ import Input from 'components/Input';
 import FormContainer from 'components/FormContainer';
 import Select from 'components/Select';
 import Button from 'components/Button';
-import * as S from './style';
 import InputUrl from 'components/InputUrl';
 import SelectColor from 'components/SelectColor';
+import * as S from './style';
 
 const EventUpdate = () => {
   const { id } = useParams();
   const { apiService, setAlert } = useContext(AdminContext);
-  const [userEventsData, setUserEventsData] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [disabled, setDisabled] = useState(true);
   const [log, setLog] = useState({});
   const [event, setEvent] = useState({
@@ -26,7 +26,7 @@ const EventUpdate = () => {
     createdAt: '',
     description: '',
     details: {},
-    eventCategoriesId: '',
+    eventCategoryId: '',
     slug: '',
     subtitle: '',
     title: '',
@@ -35,20 +35,21 @@ const EventUpdate = () => {
   });
   const [details, setDetails] = useState({
     id: null,
-    eventId: null,
+    eventId: '',
     createdAt: '',
     updatedAt: '',
     eventDate: '',
     eventLocation: '',
     eventType: 'in-person',
     fullAddress: '',
-    latitude: null,
-    longitude: null,
-    postalCode: null,
-    startTime: null,
-    transmission: null,
-    transmissionLink: null,
-    transmissionPassword: null,
+    latitude: '',
+    longitude: '',
+    postalCode: '',
+    startTime: '',
+    endTime: '',
+    transmission: '',
+    transmissionLink: '',
+    transmissionPassword: '',
   });
 
   const eventType = [
@@ -56,46 +57,88 @@ const EventUpdate = () => {
     { title: 'Virtual', value: 'virtual' },
   ];
 
-  const getEventDetails = async () => {
+  const validateFields = () => {
+    const errors = {};
+    if (!event.title) errors.title = '* Campo obrigatório';
+    if (!event.subtitle) errors.subtitle = '* Campo obrigatório';
+    if (!event.slug) errors.slug = '* Campo obrigatório';
+    if (!details.eventDate) errors.eventDate = '* Campo obrigatório';
+    if (details.eventType === 'in-person') {
+      if (!details.eventLocation) errors.eventLocation = '* Campo obrigatório';
+      if (!details.fullAddress) errors.fullAddress = '* Campo obrigatório';
+    } else if (details.eventType === 'virtual') {
+      if (!details.transmission) errors.transmission = '* Campo obrigatório';
+      if (!details.transmissionLink) errors.transmissionLink = '* Campo obrigatório';
+    }
+    if (!details.startTime) errors.startTime = '* Campo obrigatório';
+    if (!details.endTime) errors.endTime = '* Campo obrigatório';
+    return errors;
+  };
+
+  const save = async () => {
+    const validationErrors = validateFields();
+    if (Object.keys(validationErrors).length > 0) {
+      setLog(validationErrors);
+      setAlert({
+        show: true,
+        title: 'Atenção!',
+        icon: 'fa-solid fa-exclamation-triangle',
+        text: 'Por favor, preencha todos os campos obrigatórios.',
+      });
+      return;
+    }
+
+    setLoading(true);
+
     try {
-      const { data } = await apiService.get(`/admin/event-details/${id}`);
-      if (!data.success) throw new Error(data?.message);
-      if (!data.event) {
-        setAlert({
-          show: true,
-          title: 'Sem dados extra!',
-          icon: 'fa-solid fa-circle-check',
-        });
-      } else if (data.event) {
-        setEvent(data.event);
-        if (data.details) setDetails(data.details);
-      }
+      const response = await apiService.put(`/admin/events/${id}`, { ...event, details: details });
+      const { success, message } = response.data;
+      if (!success) throw new Error(message || 'Erro ao atualizar o evento.');
+
+      setAlert({
+        show: true,
+        title: 'Sucesso!',
+        icon: 'fa-solid fa-check-circle',
+        text: 'Evento atualizado com sucesso!',
+      });
+      getEventDetails();
+      setDisabled(true);
     } catch (error) {
       setAlert({
         show: true,
         title: 'Erro!',
-        type: 'error',
+        icon: 'fa-solid fa-triangle-exclamation',
+        text: ApplicationUtils.getErrorMessage(error, 'Erro ao atualizar o evento.'),
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getEventDetails = async () => {
+    try {
+      const response = await apiService.get(`/admin/events/${id}`);
+      const { success, message, event } = response.data;
+      if (!success || !event) throw new Error(message);
+
+      setEvent(event);
+      if (event.details) setDetails(event.details);
+    } catch (error) {
+      setAlert({
+        show: true,
+        title: 'Erro!',
+        icon: 'fa-solid fa-triangle-exclamation',
         text: ApplicationUtils.getErrorMessage(error, 'Erro ao recuperar informações do evento.'),
       });
     }
   };
 
-  const save = async () => {
-    try {
-      const { data } = await apiService.get(`/admin/user-events/${id}`);
-      if (data.events) {
-        // setModalUserEvents(true);
-        setUserEventsData(data.events);
-      }
-    } catch (error) {
-      setAlert({
-        show: true,
-        title: 'Erro!',
-        type: 'error',
-        text: ApplicationUtils.getErrorMessage(error, 'Erro ao recuperar informações do evento.'),
-      });
-    }
-  };
+  const changeDetails = (name, value) => {
+    setDetails({ ...details,  [name]: value });
+    value === ''
+      ? setLog({ ...log, [name]: '* Campo obrigatório' })
+      : setLog({ ...log, [name]: '' });
+  }
 
   useEffect(() => {
     getEventDetails();
@@ -109,12 +152,12 @@ const EventUpdate = () => {
       <FormContainer margin="56px auto">
         <S.WrapperFloat>
           <h2>Informações</h2>
-          <Button 
+          <Button
             maxWidth='200px'
-            text={`${disabled 
-              ? "<i className='fa-solid fa-pen'></i> Editar" 
+            text={`${disabled
+              ? "<i className='fa-solid fa-pen'></i> Editar"
               : "<i className='fa-regular fa-eye'></i> Visualizar"
-            }`}
+              }`}
             onClick={() => setDisabled(!disabled)}
           />
         </S.WrapperFloat>
@@ -136,11 +179,11 @@ const EventUpdate = () => {
         <InputUrl
           disabled={disabled}
           label="URL - Link do evento"
-          url="https://sites.mimon.com.br/"
+          url="https://sites.listai.com.br/"
           messageError={log.slug}
           check={log.slug === ''}
           value={event.slug}
-          onBlur={(value) => {
+          onChange={(value) => {
             setEvent({ ...event, slug: value });
             value === ''
               ? setLog({ ...log, slug: '* O link www.mimon.com.br/aaaaa está em uso, por favor, crie outro' })
@@ -151,7 +194,7 @@ const EventUpdate = () => {
         <Select
           disabled={disabled}
           label="Ativo"
-          data={[{ title: 'Ativo', value: 1 }, { title: 'Desativo', value: 0 }]}
+          data={[{ title: 'Ativo', value: true }, { title: 'Desativo', value: false }]}
           value={event.active}
           onChange={(value) => setEvent({ ...event, active: value })}
         />
@@ -159,7 +202,7 @@ const EventUpdate = () => {
         <Input
           disabled={disabled}
           label="Título da Introdução"
-          value={event.titleDescription}
+          value={event.titleDescription || ''}
           check={log.titleDescription === ''}
           messageError={log.titleDescription}
           onChange={(value) => setEvent({ ...event, titleDescription: value })}
@@ -169,7 +212,7 @@ const EventUpdate = () => {
           disabled={disabled}
           label="Introdução"
           type="textarea"
-          value={event.description}
+          value={event.description || ''}
           check={log.description === ''}
           messageError={log.description}
           onChange={(value) => setEvent({ ...event, description: value })}
@@ -182,8 +225,16 @@ const EventUpdate = () => {
           messageError={log.color}
         />
 
-
         <br /> <h2>Detalhes</h2>
+        <Input
+          label="Data do evento"
+          type="date"
+          disabled={disabled}
+          value={details.eventDate}
+          check={log.eventDate === ''}
+          messageError={log.eventDate}
+          onChange={(value) => changeDetails('eventDate', value)}
+        />
 
         <S.Row>
           <Input
@@ -193,7 +244,7 @@ const EventUpdate = () => {
             value={details.startTime}
             check={log.startTime === ''}
             messageError={log.startTime}
-            onChange={(value) => setDetails({ ...details, startTime: value })}
+            onChange={(value) => changeDetails('startTime', value)}
           />
           <Input
             disabled={disabled}
@@ -202,22 +253,18 @@ const EventUpdate = () => {
             value={details.endTime}
             check={log.endTime === ''}
             messageError={log.endTime}
-            onChange={(value) => setDetails({ ...details, endTime: value })}
+            onChange={(value) => changeDetails('endTime', value)}
           />
         </S.Row>
 
         <Select
           disabled={disabled}
           label="Tipo do evento"
-          messageError={details.eventType}
           data={eventType}
-          value={details.eventType || ''}
-          onChange={(value) => {
-            setDetails({ ...details, eventType: value });
-            value === ''
-              ? setLog({ ...log, eventType: '* Campo obrigatório' })
-              : setLog({ ...log, eventType: '' });
-          }}
+          value={details.eventType}
+          messageError={log.eventType}
+          check={log.eventType === ''}
+          onChange={(value) => changeDetails('eventType', value)}
         />
 
         {/* Presencial */}
@@ -230,24 +277,16 @@ const EventUpdate = () => {
               value={details.eventLocation}
               check={log.eventLocation === ''}
               messageError={log.eventLocation}
-              onChange={(value) => setDetails({ ...details, eventLocation: value })}
+              onChange={(value) => changeDetails('eventLocation', value)}
             />
 
-            <S.WrapperCep>
-              <Input
-                disabled={disabled}
-                label="Cep"
-                placeholder="CEP"
-                value={details.postalCode}
-                onChange={(value) => setDetails({ ...details, postalCode: value })}
-              />
-              <button
-                type="button"
-              // onClick={getCepAndGeoLocation}
-              >
-                <span className="fa-solid fa-magnifying-glass"></span>
-              </button>
-            </S.WrapperCep>
+            <Input
+              disabled={disabled}
+              label="Cep"
+              placeholder="CEP"
+              value={details.postalCode}
+              onChange={(value) => changeDetails('postalCode', value)}
+            />
 
             <Input
               disabled={disabled}
@@ -256,20 +295,8 @@ const EventUpdate = () => {
               value={details.fullAddress}
               check={log.fullAddress === ''}
               messageError={log.fullAddress}
-              onChange={(value) => setDetails({ ...details, fullAddress: value })}
-            // onBlur={(value) => getGeolocation(value)}
+              onChange={(value) => changeDetails('fullAddress', value)}
             />
-
-            {/* {(details.latitude && details.longitude) && (
-                <iframe 
-                  width="100%" 
-                  height="350" 
-                  src={urlMap}
-                  style={{ border: 'none' }}
-                  title="mapa"
-                >
-                </iframe>
-              )} */}
           </>
         )}
 
@@ -283,7 +310,7 @@ const EventUpdate = () => {
               value={details.transmission}
               check={log.transmission === ''}
               messageError={log.transmission}
-              onChange={(value) => setDetails({ ...details, transmission: value })}
+              onChange={(value) => changeDetails('transmission', value)}
             />
 
             <Input
@@ -293,7 +320,7 @@ const EventUpdate = () => {
               value={details.transmissionLink}
               check={log.transmissionLink === ''}
               messageError={log.transmissionLink}
-              onChange={(value) => setDetails({ ...details, transmissionLink: value })}
+              onChange={(value) => changeDetails('transmissionLink', value)}
             />
 
             <Input
@@ -303,12 +330,12 @@ const EventUpdate = () => {
               value={details.transmissionPassword}
               check={log.transmissionPassword === ''}
               messageError={log.transmissionPassword}
-              onChange={(value) => setDetails({ ...details, transmissionPassword: value })}
+              onChange={(value) => changeDetails('transmissionPassword', value)}
             />
           </>
         )}
 
-        {!disabled && <Button text="Salvar" />}
+        {!disabled && <Button onClick={save} isLoading={loading} text="Salvar" />}
       </FormContainer>
     </Container>
   );

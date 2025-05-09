@@ -10,7 +10,7 @@ import Button from 'components/Button';
 import HeaderWithButton from 'components/HeaderWithButton';
 import * as S from './style';
 
-const Services = () => {
+const EventServices = () => {
   const navigate = useNavigate();
 
   const [services, setServices] = useState([]);
@@ -83,4 +83,4 @@ const Services = () => {
   );
 };
 
-export default Services;
+export default EventServices;

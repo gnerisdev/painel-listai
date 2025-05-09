@@ -12,6 +12,10 @@ import Gifts from 'pages/admin/Gifts';
 import GiftAdd from 'pages/admin/GiftAdd';
 import LoadingLogo from 'components/LoadingLogo';
 import EventTypes from 'pages/admin/EventTypes';
+import ServiceAdd from 'pages/admin/ServiceAdd';
+import EventMessages from 'pages/admin/EventMessages';
+import EventGuestConfirmations from 'pages/admin/EventGuestConfirmations';
+
 
 const authRoutes = [
   {
@@ -32,10 +36,15 @@ const mainRoutes = [
       { path: '', element: <Home /> },
       { path: 'users', element: <ManageUsers /> },
       { path: 'events', element: <Events /> },
-      { path: 'event/:id', element: <EventUpdate /> },
+      { path: 'events/:id', element: <EventUpdate /> },
+      { path: 'events/:id/messages', element: <EventMessages /> },
+      { path: 'events/:id/guests', element: <EventGuestConfirmations /> },
       { path: 'services', element: <Services /> },
+      { path: 'services/:id', element: <ServiceAdd title="Atualizar Serviço" /> },
+      { path: 'services/add', element: <ServiceAdd title="Novo Serviço" /> },
       { path: 'gifts', element: <Gifts /> },      
-      { path: 'gifts/create', element: <GiftAdd /> },
+      { path: 'gifts/:id', element: <GiftAdd title="Atualizar Presente" /> },
+      { path: 'gifts/create', element: <GiftAdd title="Novo Presente" /> },
       { path: 'event-types', element: <EventTypes /> }      
     ],
   },

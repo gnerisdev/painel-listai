@@ -1,157 +1,292 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState, useCallback } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { AdminContext } from 'contexts/Admin';
-import Container from "components/Container";
-import TitlePage from "components/TitlePage";
-import Header from "components/Header";
-import UploadImage from "components/UploadImage";
-import Input from "components/Input";
-import Button from "components/Button";
-import Select from "components/Select";
+import { ApplicationUtils } from 'utils/ApplicationUtils';
+import Container from 'components/Container';
+import TitlePage from 'components/TitlePage';
+import Header from 'components/Header';
+import UploadImage from 'components/UploadImage';
+import Input from 'components/Input';
+import Button from 'components/Button';
+import Select from 'components/Select';
+import HeaderWithButton from 'components/HeaderWithButton';
 import * as S from './style';
 
-const GiftAdd = () => {
-  const [quantity, setQuantity] = useState(1);
-  const [selectedItemId, setSelectedItemId] = useState('');
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [eventTypes, setEventTypes] = useState([]);
+const PRICE_REGEX = /^\d+(\,\d{2})?$/;
+
+const GiftAdd = ({ title }) => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+
   const { apiService, setAlert } = useContext(AdminContext);
-  const [name, setName] = useState('');
-  const [value, setValue] = useState('');
+  const [log, setLog] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [imageData, setImageData] = useState(null);
+  const [data, setData] = useState({
+    name: '',
+    description: '',
+    price: '0,00',
+    eventCategoryId: 0,
+    active: true,
+    image: null,
+  });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await apiService.get('/admin/event-categories');
-        setEventTypes(response.data.map(item => ({
-          title: item.name,
-          value: item.id.toString()
-        })));
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-    fetchData();
-  }, [apiService]);
-
-  const cleanFields = () => {
-    setName('');
-    setValue('');
-    setQuantity(1);
-    setSelectedItemId('');
-    setSelectedImage(null);
-  };
-  const handleSubmit = async () => {
+  const getGift = useCallback(async () => {
     try {
-      if (!name || !value || !selectedItemId || !selectedImage) {
-        setAlert({ show: true, title: 'Erro', text: 'Preencha todos os campos obrigatórios!' });
-        return;
-      }
-      const data = {
-        name: name,
-        value: value,
-        quantity: quantity === 'Ilimitado' ? -1 : quantity,
-        categoryId: selectedItemId,
-        image: selectedImage,
-      };
-      const reponse = await apiService.post('Caminho', data);
-      if (!reponse.data.success) {
-        cleanFields();
-        setAlert({ show: true, title: 'Sucesso', text: 'Presente adicionado com sucesso!' });
+      const response = await apiService.get(`/admin/gifts/${id}`);
+      const { gift, success, message } = response.data;
+
+      if (!success) throw new Error(message);
+      if (gift) {
+        setIsEditing(true);
+        setData(gift || {});
       }
     } catch (error) {
-      console.log(error);
-      setAlert({ show: true, title: 'Erro', text: 'Ocorreu um erro ao adicionar o presente. Por favor, tente novamente.' });
+      setAlert({
+        show: true,
+        title: 'Erro!',
+        icon: 'fa-solid fa-triangle-exclamation',
+        text: ApplicationUtils.getErrorMessage(error, 'Erro ao buscar presente.')
+      });
+    }
+  }, [apiService, setAlert, id]);
+
+  const getCategories = useCallback(async () => {
+    try {
+      const response = await apiService.get(`/admin/event-categories`);
+      const { eventCategories, success, message } = response.data;
+
+      if (!success) throw new Error(message);
+      const categories = eventCategories.map((cat) => ({ title: cat.name, value: cat.id })); 
+      setCategories(categories);
+    } catch (error) {
+      setAlert({
+        show: true,
+        title: 'Erro!',
+        icon: 'fa-solid fa-triangle-exclamation',
+        text: ApplicationUtils.getErrorMessage(error, 'Erro ao buscar categorias de presentes.'),
+      });
+    }
+  }, [apiService, setAlert]);
+
+  const save = async () => {
+
+    if (!validateFields()) {
+      setAlert({
+        show: true,
+        title: 'Atenção!',
+        icon: 'fa-solid fa-exclamation-circle',
+        text: 'Por favor, preencha todos os campos obrigatórios.',
+      });
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const formData = new FormData();
+      formData.append('name', data.name);
+      formData.append('description', data.description);
+      formData.append('price', ApplicationUtils.parsePrice(data.price));
+      formData.append('eventCategoryId', data.eventCategoryId);
+      formData.append('active', data.active);
+      if (imageData) formData.append('image', imageData);
+
+      let response;
+      if (isEditing && id) {
+        response = await apiService.put(`/admin/gifts/${id}`, formData, true);
+      } else {
+        response = await apiService.post('/admin/gifts', formData, true);
+      }
+
+      const { success, message } = response.data;
+      if (!success) throw new Error(message);
+
+      setAlert({
+        show: true,
+        title: 'Sucesso!',
+        icon: 'fa-solid fa-check-circle',
+        text: isEditing ? 'Presente atualizado com sucesso.' : 'Presente criado com sucesso.',
+      });
+
+      navigate('/gifts');
+    } catch (error) {
+      setAlert({
+        show: true,
+        title: 'Erro!',
+        icon: 'fa-solid fa-triangle-exclamation',
+        text: ApplicationUtils.getErrorMessage(error, isEditing ? 'Erro ao atualizar presente.' : 'Erro ao salvar presente.'),
+      });
     } finally {
+      setLoading(false);
     }
   };
-  const handleImageUpload = (image) => {
-    setSelectedImage(image);
+
+  const remove = async () => {
+    try {
+      const response = await apiService.delete(`/admin/gifts/${id}`);
+      const { success, message } = response.data;
+      if (!success) throw new Error(message);
+
+      setAlert({
+        show: true,
+        title: 'Sucesso!',
+        icon: 'fa-solid fa-check',
+        text: 'Presente removido com sucesso!',
+      });
+
+      navigate('/gifts');
+    } catch (error) {
+      setAlert({
+        show: true,
+        title: 'Erro!',
+        icon: 'fa-solid fa-triangle-exclamation',
+        text: ApplicationUtils.getErrorMessage(error, 'Erro ao remover presente.'),
+      });
+    }
   };
-  const handleSelectChange = (value) => {
-    setSelectedItemId(value);
+
+  const validateFields = () => {
+    let errorCount = 0;
+    const newLog = {};
+
+    if (!data.name) {
+      newLog.name = '* Campo obrigatório';
+      errorCount++;
+    }
+    if (!data.description) {
+      newLog.description = '* Campo obrigatório';
+      errorCount++;
+    }
+    if (!data.price) {
+      newLog.price = '* Campo obrigatório';
+      errorCount++;
+    } else if (ApplicationUtils.parsePrice(data.price) <= 0){
+      newLog.price = '* O preço deve ser maior que zero';
+    }
+    if (!data.eventCategoryId) {
+      newLog.eventCategoryId = '* Campo obrigatório';
+      errorCount++;
+    }
+    if (!data.image && !isEditing) {
+      newLog.image = '* Envie a imagem';
+      errorCount++;
+    }
+
+    setLog(newLog);
+    return errorCount === 0 ? true : false;
   };
+
+  const changeInput = (name, value) => {
+    setData({ ...data, [name]: value });
+    setLog({ ...log, [name]: '' });
+  };
+
+  const handleImageUpload = (file) => {
+    setImageData(file);
+    setData((prevData) => ({ ...prevData, image: file ? file.name : null }));
+    setLog({ ...log, image: '' });
+  };
+
+  useEffect(() => {
+    getCategories();
+    if (id) getGift();
+  }, [getGift, getCategories, id]);
 
   return (
-    <Container >
-      <Header />
-      <TitlePage
-        title="Lista de Presentes"
-        icon="fa-solid fa-gift"
-      />
+    <S.Main>
+      <Container>
+        <Header />
 
-      <S.ContainerRow>
-        <UploadImage onFileUpload={handleImageUpload} />
-        <S.ContainerColumn>
-          <Select
-            label="Categoria de presente"
-            data={eventTypes}
-            value={selectedItemId}
-            onChange={handleSelectChange}
-            messageError={selectedItemId ? '' : 'Por favor, selecione uma opção'}
+        <HeaderWithButton>
+          <TitlePage
+            title={title || (isEditing ? 'Editar Presente' : 'Adicionar Presente')}
+            icon="fa-solid fa-gift"
           />
-          <Input
-            label="Nome do presente"
-            placeholder="Digite o nome do presente"
-            type="text"
-            check={name !== ''}
-            onChange={(val) => setName(val)}
-            messageError={name === '' ? 'Por favor, preencha este campo' : ''}
+
+          {isEditing && (
+            <Button
+              onClick={remove}
+              text="<i class='fa-solid fa-trash'></i> Remover presente"
+              maxWidth="200px"
+              background="var(--danger-color)"
+            />
+          )}
+        </HeaderWithButton>
+
+        <S.FormContainer>
+          <UploadImage
+            onFileUpload={handleImageUpload}
+            previewUrl={data.imageUrl}
+            messageError={log.image}
           />
-          <Input
-            label="Valor do presente"
-            placeholder="Digite o valor do presente"
-            type="text"
-            check={value !== ''}
-            onChange={(val) => setValue(val)}
-            messageError={value === '' ? 'Por favor, preencha este campo' : ''}
-          />
-          <S.ContainerQuantity>
+
+          <div className="inputs">
             <Input
-              label="Quantidade"
-              placeholder="Digite a quantidade"
-              type="text"
-              value={quantity === -1 ? 'Ilimitado' : quantity}
-              onChange={(val) => {
-                if (val && val.toLowerCase() === 'ilimitado') {
-                  setQuantity(-1);
-                } else {
-                  const parsed = parseInt(val);
-                  setQuantity(isNaN(parsed) ? 0 : parsed);
-                }
-              }}
-              messageError={quantity < -1 ? 'Por favor, preencha este campo' : ''}
+              label="Nome do Presente"
+              placeholder="Digite o nome do presente"
+              value={data.name}
+              check={log.name === ''}
+              messageError={log.name}
+              onChange={(value) => changeInput('name', value)}
             />
-            <S.Button
-              type="button"
-              onClick={() =>
-                setQuantity(prev => {
-                  const numeric = prev === -1 ? 0 : prev;
-                  const next = numeric - 1;
-                  return next < 0 ? -1 : next;
-                })}
-              className="fa-solid fa-minus"
+
+            <Input
+              label="Descrição"
+              type="textarea"
+              placeholder="Descrição do presente"
+              value={data.description}
+              check={log.description === ''}
+              messageError={log.description}
+              onChange={(value) => changeInput('description', value)}
             />
-            <S.Button
-              type="button"
-              onClick={() =>
-                setQuantity(prev => {
-                  if (prev === -1) return 0;
-                  return prev + 1;
-                })}
-              className="fa-solid fa-plus"
+
+            <Input
+              label="Preço"
+              value={data.price}
+              check={log.price === ''}
+              messageError={log.price}
+              onChange={(value) => changeInput('price', ApplicationUtils.formatToInputPrice(value))}
             />
-          </S.ContainerQuantity>
-        </S.ContainerColumn>
-      </S.ContainerRow>
-      
-      <S.ContainerButton>
-        <Button
-          text="Salvar Presente"
-          type="button"
-          onClick={handleSubmit}
-        />
-      </S.ContainerButton>
-    </Container>
+
+            <Select
+              label="Categoria"
+              value={data.eventCategoryId}
+              check={log.eventCategoryId === ''}
+              messageError={log.eventCategoryId}
+              data={categories}
+              onChange={(value) => changeInput('eventCategoryId', value)}
+            />
+
+            {isEditing && (
+              <Select
+                label="Status"
+                value={data.active}
+                check={log.active === ''}
+                messageError={log.active}
+                data={[
+                  { title: 'Ativo', value: true },
+                  { title: 'Inativo', value: false },
+                ]}
+                onChange={(value) => changeInput('active', value)}
+              />
+            )}
+
+            <S.WrapperButton>
+              <Button
+                text="Salvar Presente"
+                type="button"
+                onClick={save}
+                margin="0 0 0 auto"
+                isLoading={loading}
+              />
+            </S.WrapperButton>
+          </div>
+        </S.FormContainer>
+      </Container>
+    </S.Main>
   );
 };
 

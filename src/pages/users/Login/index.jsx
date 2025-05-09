@@ -41,7 +41,6 @@ const Login = () => {
   };
 
   const validateFields = () => {
-    console.log(data)
     const newLog = { ...log };
     let errorCount = 0;
 

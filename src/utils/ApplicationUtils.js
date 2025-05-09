@@ -8,6 +8,20 @@ export class ApplicationUtils {
     );
   }
 
+  static formatToInputPrice = (value) => {
+    const numeric = value.replace(/\D/g, '');
+    const float = (parseInt(numeric, 10) / 100).toFixed(2);
+    return float.replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  };
+  
+  static parsePrice = (value) => {
+    if (typeof value === 'number' && value >= 0) return value;
+    if (!value) return 0;
+    const cleanedValue = value.replace(/\./g, '').replace(',', '.');
+    const numericValue = parseFloat(cleanedValue);
+    return isNaN(numericValue) ? 0 : numericValue;
+  };
+  
   static formatDate(dateString, includeTime = true, includeYear = true) {
     const date = new Date(dateString);
     if (!(date instanceof Date) || isNaN(date.getTime())) {
@@ -46,6 +60,14 @@ export class ApplicationUtils {
     const minutes = String(date.getMinutes()).padStart(2, '0');
     return `${hours}:${minutes}`;
   }
+
+  static formatToInputPhone = (value) => {
+    return value
+      .replace(/\D/g, '')
+      .replace(/^(\d{2})(\d)/, '($1) $2')
+      .replace(/(\d{5})(\d{1,4})/, '$1-$2')
+      .substring(0, 15);
+  };
   
   static convertHexToRgba(hex, alpha) {
     hex = hex.replace(/^#/, '');
@@ -67,4 +89,21 @@ export class ApplicationUtils {
     
     return message;
   };
+
+  static translateServiceType(key) {
+    switch (key.toUpperCase()) {
+      case 'PASSWORD':
+        return 'Senha';
+      case 'VIDEO':
+        return 'Vídeo';
+      case 'IMAGE':
+        return 'Imagem';
+      case 'PAGE':
+        return 'Página';
+      case 'EXTRA':
+        return 'Extra';
+      default:
+        return '-';
+    }
+  }
 }

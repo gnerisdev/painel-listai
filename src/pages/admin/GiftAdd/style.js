@@ -1,51 +1,29 @@
 import styled from "styled-components";
 
+export const Main = styled('main')({
+  margin: '16px 0'
+});
 
-export const ContainerRow = styled('div')({
-  display: 'flex',
-  flexDirection: 'row',
-  gap: '30px',
-  justifyContent: 'center',
-  alignItems: 'center',
-  maxWidth: '1200px',
-  '@media (max-width: 768px)': {
+export const FormContainer = styled('div')({
+  display: 'grid',
+  alignItems: 'start',
+  gap: '16px',
+  margin: '32px auto 0',
+  '@media(min-width: 576px)': {
+    gridTemplateColumns: '200px 1fr',
+  },
+  '.inputs': {
+    display: 'flex',
     flexDirection: 'column',
-  },
-});
-export const ContainerQuantity = styled('div')({
-  display: 'flex',
-  flexDirection: 'row',
-  gap: '10px',
-  alignItems: 'center',
-  "@media (max-width: 768px)": {
-    display: 'inline-block',
-  },
+    gap: 16
+  }
 });
 
-export const ContainerColumn = styled('div')({
-  flexDirection: 'column',
-  display: 'flex',
-  gap: '10px',
+export const WrapperButton = styled('div')({
+  textAlign: 'end',
+  '@media(min-width: 576px)': {
+    button: {
+      maxWidth: '200px !important'
+    },
+  }
 });
-
-export const ContainerButton = styled('div')({
-  margin: "0 auto", 
-  marginTop: '30px',
-  maxWidth: '600px',
-});
-
-export const Button = styled('button')({
-  width: 45,
-  height: 45,
-  alignItems: 'center',
-  background: 'var(--secondary-color) ',
-  outline: 'none',
-  color:  'var(--text-white)',
-  border: 'none',
-  borderRadius: '50%',
-  cursor: 'pointer',
-  "@media (max-width: 768px)": {
-    marginTop: '20px',
-  },
-});
-

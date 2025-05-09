@@ -67,7 +67,7 @@ const Events = () => {
   };
 
   useEffect(() => {
-    onSearch();
+    getEvents();
   }, []);
 
   return (
@@ -110,24 +110,42 @@ const Events = () => {
           />
         </S.WrapperFilter>
 
-        <Table
-          data={tableData}
-          columns={[
-            { label: "ID", name: "id" },
-            { label: "Criador", name: "userName" },
-            { label: "Título", name: "title" },
-            { label: "Url", name: "slug" },
-            { label: "Data de cadastro", name: "createdAt" },
-            { label: "Última atualização", name: "updatedAt" },
-            { label: "Status", name: "active" },
-          ]}
-          actions={[
-            {
-              label: "<i className='fa-regular fa-eye'></i> Ver detalhes",
-              onClick: (row) => navigate(`/event/${row.id}`),
-            },
-          ]}
-        />
+        <S.WrapperTable>
+          <Table
+            data={tableData}
+            columns={[
+              { label: "ID", name: "id" },
+              { label: "Criador", name: "userName" },
+              { label: "Título", name: "title" },
+              { label: "Url", name: "slug" },
+              { label: "Data de cadastro", name: "createdAt" },
+              { label: "Última atualização", name: "updatedAt" },
+              { label: "Status", name: "active" },
+            ]}
+            actions={[
+              {
+                label: "<i class='fa-solid fa-eye'></i> Ver detalhes",
+                onClick: (row) => navigate(`/events/${row.id}`),
+              },
+                 {
+                label: "<i class='fa-solid fa-envelope-open-text'></i> Recados recebido",
+                onClick: (row) => navigate(`/events/${row.id}/messages`),
+              },
+              {
+                label: "<i class='fa-solid fa-users'></i> Lista de presença",
+                onClick: (row) => navigate(`/events/${row.id}/guests`),
+              },
+              {
+                label: "<i class='fa-solid fa-box-open'></i> Serviços Adquiridos",
+                onClick: (row) => navigate(`/events/${row.id}`),
+              },
+              {
+                label: "<i class='fa-solid fa-gift'></i> Presentes recebido",
+                onClick: (row) => navigate(`/events/${row.id}`),
+              }           
+            ]}
+          />
+        </S.WrapperTable>
 
         <Pagination
           currentPage={page}

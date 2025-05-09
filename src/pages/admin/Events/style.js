@@ -10,3 +10,9 @@ export const WrapperFilter = styled('div')({
   justifyContent: 'end',
   margin: '24px 0'
 });
+
+export const WrapperTable = styled('div')({
+  'td, th': {
+    textAlign: 'start'
+  }
+});
