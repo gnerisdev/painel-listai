@@ -12,8 +12,6 @@ import Select from 'components/Select';
 import HeaderWithButton from 'components/HeaderWithButton';
 import * as S from './style';
 
-const PRICE_REGEX = /^\d+(\,\d{2})?$/;
-
 const GiftAdd = ({ title }) => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -72,7 +70,6 @@ const GiftAdd = ({ title }) => {
   }, [apiService, setAlert]);
 
   const save = async () => {
-
     if (!validateFields()) {
       setAlert({
         show: true,

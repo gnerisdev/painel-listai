@@ -1,9 +1,7 @@
 import styled from 'styled-components';
 
 export const Content = styled.div({
-  maxWidth: '600px',
-  margin: '0 auto',
-  padding: '20px',
+  padding: '32px 0'
 });
 
 export const ButtonGroup = styled.div({
@@ -19,18 +17,33 @@ export const SectionTitle = styled.h2({
   marginBottom: '20px',
 });
 
+export const Cards = styled.div({
+  display: 'grid',
+  gridTemplateColumns: '1fr',
+  gap: 24,
+  '@media(min-width: 992px)': {
+    gridTemplateColumns: '1fr 1fr',
+  },
+});
+
 export const Card = styled.div({
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
   padding: '20px 16px',
-  borderBottom: '1px solid #ccc',
+  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+  border: '2px solid var(--primary-color)',
+  borderRadius: 8,
+  p: {
+    wordBreak: 'break-word',
+    maxWidth: 480
+  }
 });
 
 export const Info = styled.div({
   display: 'flex',
   flexDirection: 'column',
   gap: '5px',
+  '.data': {
+    textAlign: 'end'
+  }
 });
 
 export const ActionButtons = styled.div({
@@ -58,16 +71,5 @@ export const ModalContent = styled.button({
   '.row': {
     display: 'flex', 
     gap: 16
-  }
-});
-
-export const Notfound = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  textAlign: 'center',
-  gap: 16,
-  '.icon': {
-    fontSize: 80,
-    opacity: 0.2
   }
 });

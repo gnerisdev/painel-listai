@@ -1,21 +1,21 @@
 import styled from 'styled-components';
 
 export const Main = styled('main')({
-  maxWidth: 400,
-  margin: '0 auto',
-  textAlign: 'center',
-  width: '100%',
-  padding: '8px 16px 40px',
   display: 'flex',
+  justifyContent: 'center',
+  textAlign: 'center',
   height: '100vh'
 });
 
-export const Content = styled('main')({
+export const Content = styled('div')({
   margin: 'auto',
+  width: '100%',
+  maxWidth: 400,
+  textAlign: 'center'
 });
 
 export const Logo = styled('img')({
-  width: 220,
+  width: 180,
   margin: '0 auto'
 });
 

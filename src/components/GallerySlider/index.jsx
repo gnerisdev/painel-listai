@@ -1,13 +1,6 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
-import {
-  Embla,
-  EmblaViewport,
-  EmblaContainer,
-  EmblaSlide,
-  EmblaButton,
-  SlideImage,
-} from './style';
+import * as S from './style';
 
 const GallerySlider = ({ gallery }) => {
   console.log(gallery)
@@ -19,20 +12,20 @@ const GallerySlider = ({ gallery }) => {
   if (!gallery?.length) return null;
 
   return (
-    <Embla>
-      <EmblaViewport ref={emblaRef}>
-        <EmblaContainer>
+    <S.Embla>
+      <S.EmblaViewport ref={emblaRef}>
+        <S.EmblaContainer>
           {gallery.map((item, index) => (
-            <EmblaSlide key={index}>
-              <SlideImage src={item.url} alt={`Slide ${index + 1}`} />
-            </EmblaSlide>
+            <S.EmblaSlide key={index}>
+              <S.SlideImage src={item.url} alt={`Slide ${index + 1}`} />
+            </S.EmblaSlide>
           ))}
-        </EmblaContainer>
-      </EmblaViewport>
+        </S.EmblaContainer>
+      </S.EmblaViewport>
 
-      <EmblaButton className="fa-solid fa-angle-left" onClick={scrollPrev} />
-      <EmblaButton className="fa-solid fa-angle-right" onClick={scrollNext} />
-    </Embla>
+      <S.EmblaButton className="fa-solid fa-angle-left" onClick={scrollPrev} />
+      <S.EmblaButton className="fa-solid fa-angle-right" onClick={scrollNext} />
+    </S.Embla>
   );
 };
 

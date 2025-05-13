@@ -4,6 +4,7 @@ import { ApplicationUtils } from 'utils/ApplicationUtils';
 import Header from 'components/Header';
 import TitlePage from 'components/TitlePage';
 import Container from 'components/Container';
+import NotFoundData from 'components/NotFoundData';
 import * as S from './style';
 
 const Messages = () => {
@@ -27,7 +28,7 @@ const Messages = () => {
     }
   };
 
-  const deleteGuest = async (id) => {
+  const remove = async (id) => {
     try {
       await apiService.delete(`/users/messages/${event.id}/${id}`);
       setAlert({
@@ -56,36 +57,45 @@ const Messages = () => {
     <main style={{ margin: '72px 0' }}>
       <Container>
         <Header back={-1} background={color} />
-        <TitlePage title="Recados" align="center" />
+        <TitlePage 
+          title="Recados" 
+          subtitle="Mensagens enviadas pelo os convidados"
+          align="center" 
+        />
 
-        <S.Content>
+         <S.Content>
           {messages.length <= 0 && (
-            <S.Notfound>
-              <span class="fa-regular fa-face-frown icon"></span>
-              Você ainda não recebeu nenhum... <br />
-              divulgue sua lista!
-            </S.Notfound>
+            <NotFoundData 
+              text="Nenhuma messagem para o evento..."  
+              icon="fa-regular fa-folder-open icon"
+            />
           )}
 
-          {messages.map((item) => (
-            <S.Card key={item.id}>
-              <S.Info>
-                <strong>
-                  {item.firstName} {item.lastName}
-                </strong>
-                <div>{item.email}</div>
-                <div>Mensagem: <p>{item.message}</p></div>
-              </S.Info>
+          <S.Cards>
+            {messages.map((item) => (
+              <S.Card key={item.id}>
+                <S.Info>
+                  <small className="data">{ApplicationUtils.formatDate(item.createdAt)}</small>
+                  <div>
+                    <strong>Enviado por:</strong>
+                    <br /> <p>{item.firstName} {item.lastName}</p>
+                  </div>
+                  <div>
+                    <strong>Email:</strong>
+                    <br /> <p>{item.email}</p>
+                  </div>
+                  <div>
+                    <strong>Mensagem:</strong>
+                    <br /> <p>{item.message}</p>
+                  </div>
+                </S.Info>
 
-              <S.ActionButtons>
-                <S.ButtonIcon
-                  style={{ background: color }}
-                  className="fa-solid fa-trash"
-                  onClick={() => deleteGuest(item.id)}
-                />
-              </S.ActionButtons>
-            </S.Card>
-          ))}
+                <S.ActionButtons>
+                  <S.ButtonIcon className="fa-solid fa-trash" onClick={() => remove(item.id)} />
+                </S.ActionButtons>
+              </S.Card>
+            ))}
+          </S.Cards>
         </S.Content>
       </Container>
     </main>

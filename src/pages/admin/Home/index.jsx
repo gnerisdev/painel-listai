@@ -1,26 +1,16 @@
 import { useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { AdminContext } from 'contexts/Admin';
 import Container from 'components/Container';
 import BoxNumber from 'components/BoxNumber';
 import CardTitle from 'components/CardTitle';
-import SidebarMenu from 'components/SidebarMenu';
 import HeaderAdmin from 'components/HeaderAdmin';
 import TitlePage from 'components/TitlePage';
 import * as S from './style';
-import { AdminContext } from 'contexts/Admin';
 
 const Home = () => {
   const navigate = useNavigate();
   const { admin } = useContext(AdminContext);
-
-  const menuItems = [
-    { icon: 'fa-solid fa-house', label: 'Home' },
-    { icon: 'fa-solid fa-gift', label: 'Presentes recebidos' },
-    { icon: 'fa-solid fa-check-square', label: 'Confirmação de presença' },
-    { icon: 'fa-solid fa-comment-dots', label: 'Recados' },
-    { icon: 'fa-solid fa-user', label: 'Perfil' },
-    { icon: 'fa-solid fa-right-from-bracket', label: 'Sair' },
-  ];
 
   const cardItems = [
     {
@@ -76,39 +66,28 @@ const Home = () => {
       <HeaderAdmin />
       <Container>
         <S.Content>
-          <div>
-            <TitlePage title="Painel Administrativo" icon="fa-solid fa-gauge" />
+          <TitlePage title="Painel Administrativo" icon="fa-solid fa-gauge" />
 
-            <S.WrapperCards>
-              <BoxNumber number="0" text="pessoas confirmadas" />
-              <BoxNumber number="0" text="presentes recebidos" />
-              <BoxNumber number="0" text="recados recebidos" />
-            </S.WrapperCards>
+          <S.WrapperCards>
+            <BoxNumber number="0" text="pessoas confirmadas" />
+            <BoxNumber number="0" text="presentes recebidos" />
+            <BoxNumber number="0" text="recados recebidos" />
+          </S.WrapperCards>
 
-            <S.Personalize>
-              <h2>Personalize</h2>
+          <h2>Central de Controle</h2>
 
-              <S.WrapperCardsTitle>
-                {cardItems.map((item, index) => (
-                  <CardTitle
-                    key={index}
-                    title={item.title}
-                    text={item.text}
-                    icon={item.icon}
-                    color={item.color}
-                    onClick={() => navigate(item.link)}
-                  />
-                ))}
-              </S.WrapperCardsTitle>
-            </S.Personalize>
-          </div>
-
-          <S.WrapperSidebar>
-            <SidebarMenu
-              menuItems={menuItems}
-              userName={admin.firstName + " " + admin.lastName}
-            />
-          </S.WrapperSidebar>
+          <S.WrapperCardsTitle>
+            {cardItems.map((item, index) => (
+              <CardTitle
+                key={index}
+                title={item.title}
+                text={item.text}
+                icon={item.icon}
+                color={item.color}
+                onClick={() => navigate(item.link)}
+              />
+            ))}
+          </S.WrapperCardsTitle>
         </S.Content>
       </Container>
     </S.Main>

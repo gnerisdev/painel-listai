@@ -50,10 +50,6 @@ export const AvatarTitle = styled('div')({
 });
 
 export const Content = styled('section')({
-  display: 'grid',
-  '@media(min-width: 1024px)': {
-    gridTemplateColumns: '1fr 280px',
-  },
   padding: '32px 0'
 });
 
@@ -68,16 +64,16 @@ export const WrapperCards = styled('div')({
   },
 });
 
-export const Personalize = styled('div')({
-  display: 'grid',
-});
-
 export const WrapperCardsTitle = styled('div')({
+  marginTop: 16,
   display: 'grid',
   gap: 16,
   '@media(min-width: 1024px)': {
     gridTemplateColumns: 'repeat(4, auto)'
   },
+  div: {
+    width: '100%'
+  }
 });
 
 export const WrapperSidebar = styled('div')({

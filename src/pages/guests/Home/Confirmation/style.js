@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const Header = styled.header({
   position: 'fixed',
   width: '100%',
-  zIndex: 1,
+  zIndex: 1000,
   background: '#fff',
   boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
 });
@@ -16,7 +16,9 @@ export const Nav = styled.nav({
 });
 
 export const Logo = styled.div({
-  img: { height: '32px'},
+  img: {
+    height: '32px',
+  },
 });
 
 export const MenuButton = styled.button({
@@ -131,6 +133,125 @@ export const SectionIntroduction = styled('section')({
         display: 'inline-block',
         width: '100%'
       }
+    }
+  }
+});
+
+export const SectionGifts = styled('section')({
+  padding: '40px 0',
+  '.content': {
+    display: 'grid',
+    gap: 32,
+    gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+    maxWidth: 800,
+    margin: 'auto'
+  },
+  '.gift': {
+    width: '100%',
+    height: 280,
+    padding: '24px',
+    position: 'relative',
+    display: 'flex',
+    flexFlow: 'column',
+    margin: '15px auto 30px',
+    boxShadow: '0 0 5px #9f9f9f',
+    borderRadius: 8,
+    textAlign: 'center',
+    '.title': {
+      margin: '20px 0 0',
+      fontSize: 16,
+      fontWeight: 500
+    },
+    '.price': {
+      margin: '0',
+      fontSize: 16,
+      color: '#929292'
+    },
+    img: {
+      height: 120,
+      width: 'auto',
+      objectFit: 'contain'
+    },
+    button: {
+      position: 'absolute',
+      bottom: -18,
+      padding: '12px 20px',
+      color:  'var(--text-white)',
+      borderRadius: 5,
+      fontSize: 12,
+      fontWeight: 500,
+      width: '90%',
+      left: '50%',
+      transform: 'translateX(-50%)',
+      cursor: 'pointer'
+    }
+  }
+});
+
+export const SectionMessage = styled('section')({
+  padding: '40px 0',
+  '& > div': {
+    padding: 0
+  },
+  '.content': {
+    color:  'var(--text-white)',
+    textAlign: 'center',
+    padding: '40px 20px',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: 40,
+    '.icon': {
+      fontSize: 128
+    },
+    button: {
+      maxWidth: 280
+    }
+  }
+});
+
+export const SectionInfo = styled('section')({
+  padding: '40px 0',
+  '.content': {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 24,
+      maxWidth: 800,
+      margin: 'auto',
+      '.text-info': {
+        display: 'flex',
+        alignItems: 'center',
+        gap: 8
+      },
+      p: {
+        color: 'var(--text-color)',
+      },
+      span: {
+        fontSize: 40,
+        textAlign: 'center',
+        width: 40
+      }
+  }
+});
+
+export const SectionConfirmation = styled('section')({
+  padding: '40px 0',
+  '& > div': {
+    padding: 0
+  },
+  '.content': {
+    color:  'var(--text-white)',
+    textAlign: 'center',
+    padding: '40px 20px',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: 40,
+    '.icon': {
+      fontSize: 128
+    },
+    button: {
+      maxWidth: 280
     }
   }
 });

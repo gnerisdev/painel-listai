@@ -30,10 +30,7 @@ const Gifts = () => {
         show: true,
         title: "Erro!",
         icon: "fa-solid fa-triangle-exclamation",
-        text: ApplicationUtils.getErrorMessage(
-          error,
-          "Erro ao recuperar lista de presentes."
-        ),
+        text: ApplicationUtils.getErrorMessage(error, "Erro ao recuperar lista de presentes.")
       });
     }
   };
@@ -44,10 +41,7 @@ const Gifts = () => {
 
       if (!suggestion.title) throw new Error("Preencha o título!");
 
-      const { data } = await apiService.post(
-        `/users/gifts/suggestion/${event.id}`,
-        { ...suggestion }
-      );
+      const { data } = await apiService.post(`/users/gifts/suggestion/${event.id}`, { ...suggestion });
 
       if (!data.success) throw new Error(data.message);
       if (data.giftSuggestions) setSuggestion(data.giftSuggestions);
@@ -61,7 +55,6 @@ const Gifts = () => {
 
       setModalSuggestion(false);
     } catch (error) {
-      console.log(error)
       setAlert({
         show: true,
         title: "Erro!",

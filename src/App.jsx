@@ -4,10 +4,12 @@ import { AdminRoutes } from 'routes/admin';
 import { UsersRoutes } from 'routes/users';
 import { GuestsRoutes } from 'routes/guests';
 import { GuestsProvider } from 'contexts/Guests';
+import ScrollToTop from 'pages/admin/ScrollToTop';
 
 const AdminRoutesProvider = () => {
   return (
     <AdminProvider>
+      <ScrollToTop />
       <AdminRoutes />
     </AdminProvider>
   );
@@ -16,6 +18,7 @@ const AdminRoutesProvider = () => {
 const UsersRoutesProvider = () => {
   return (
     <UsersProvider>
+      <ScrollToTop />
       <UsersRoutes />
     </UsersProvider>
   );

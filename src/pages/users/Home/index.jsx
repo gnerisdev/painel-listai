@@ -13,9 +13,7 @@ const Home = () => {
   const { user, event } = useContext(UsersContext);
   const [profileImage, setProfileImage] = useState(null);
 
-
   const menuItems = [
-    { icon: 'fa-solid fa-house', label: 'Home', link: '/' },
     { 
       icon: 'fa-solid fa-gift', 
       label: 'Presentes recebidos', 
@@ -120,9 +118,7 @@ const Home = () => {
               src="https://painel.mimon.com.br/assets/images/debutante-roxo-2.png"
               alt="Imagem de perfil"
             />
-            <S.ButtonIcon>
-              <span className="fas fa-camera" />
-            </S.ButtonIcon>
+            <S.ButtonIcon><span className="fas fa-camera" /></S.ButtonIcon>
           </S.Avatar>
 
           <S.AvatarTitle>
@@ -135,9 +131,8 @@ const Home = () => {
               background={event.color}
               onClick={() => {
                 let host = window.location.hostname
-                host = host
-                  .replace('users.', '')
-                  .replace('localhost', 'localhost:3001')
+                host = host.replace('users.', '')
+                .replace('localhost', 'localhost:3001')
                 const url = `http://sites.${host}/${event.slug}`
                 window.open(url, '_blank')
               }}

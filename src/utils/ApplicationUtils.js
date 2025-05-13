@@ -3,7 +3,7 @@ export class ApplicationUtils {
     if (!price) return;
 
     return (
-      price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) ||
+      Number(price).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) ||
       'R$ 0,00'
     );
   }
@@ -13,7 +13,7 @@ export class ApplicationUtils {
     const float = (parseInt(numeric, 10) / 100).toFixed(2);
     return float.replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
   };
-  
+
   static parsePrice = (value) => {
     if (typeof value === 'number' && value >= 0) return value;
     if (!value) return 0;
@@ -21,7 +21,7 @@ export class ApplicationUtils {
     const numericValue = parseFloat(cleanedValue);
     return isNaN(numericValue) ? 0 : numericValue;
   };
-  
+
   static formatDate(dateString, includeTime = true, includeYear = true) {
     const date = new Date(dateString);
     if (!(date instanceof Date) || isNaN(date.getTime())) {
@@ -68,7 +68,7 @@ export class ApplicationUtils {
       .replace(/(\d{5})(\d{1,4})/, '$1-$2')
       .substring(0, 15);
   };
-  
+
   static convertHexToRgba(hex, alpha) {
     hex = hex.replace(/^#/, '');
     const bigint = parseInt(hex, 16);
@@ -80,15 +80,45 @@ export class ApplicationUtils {
     return rgba;
   }
 
-  static getErrorMessage (error, defaultMessage = "Ocorreu um erro inesperado.") {  
+  static getErrorMessage(error, defaultMessage = "Ocorreu um erro inesperado.") {
     let message = error?.response?.data?.message || error?.message || defaultMessage;
     if (message === 'Request failed with status code 404') {
       message = 'Algo deu errado. Tente novamente mais tarde!';
     }
     if (message === 'Network Error') message = 'Erro de rede!';
-    
+
     return message;
   };
+
+  static translateTransitionStatus(key) {
+    switch (key.toUpperCase()) {
+      case 'APPROVED':
+        return 'Aprovado';
+      case 'PENDING':
+        return 'Pendente';
+      case 'RECUSED':
+        return 'Recusado';
+      case 'CANCELLED':
+        return 'Cancelado';
+      default:
+        return '-';
+    }
+  }
+
+  static translatePayoutStatus(key) {
+    switch (key.toUpperCase()) {
+      case 'PENDING':
+        return 'Pendente';
+      case 'PAID':
+        return 'Pago';
+      case 'FAILED':
+        return 'Falhou';
+      case 'CANCELLED':
+        return 'Cancelado';
+      default:
+        return '-';
+    }
+  }
 
   static translateServiceType(key) {
     switch (key.toUpperCase()) {

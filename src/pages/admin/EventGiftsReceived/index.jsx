@@ -9,7 +9,7 @@ import imageDefault from 'assets/default-image.jpg';
 import Button from 'components/Button';
 import * as S from './style';
 
-const GiftsReceived = () => {
+const EventGiftsReceived = () => {
   const { apiService, event, setAlert } = useContext(UsersContext);
   const [loading, setLoading] = useState(false);
   const [receivedGifts, setReceivedGifts] = useState([]);
@@ -182,7 +182,7 @@ const GiftsReceived = () => {
             ))
           ) : (
             <NotFoundData
-              text="Nenhum presente recebido ainda."
+              text="Nenhum presente para o evento."
               icon="fa-solid fa-box-open"
               active={receivedGifts.length === 0 && !loading}
             />
@@ -193,4 +193,4 @@ const GiftsReceived = () => {
   );
 };
 
-export default GiftsReceived;
+export default EventGiftsReceived;
