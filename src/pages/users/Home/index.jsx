@@ -1,23 +1,23 @@
-import { useContext, useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { UsersContext } from 'contexts/Users'
-import Container from 'components/Container'
-import Button from 'components/Button'
-import BoxNumber from 'components/BoxNumber'
-import CardTitle from 'components/CardTitle'
-import SidebarMenu from 'components/SidebarMenu'
-import * as S from './style'
+import { useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { UsersContext } from 'contexts/Users';
+import Container from 'components/Container';
+import Button from 'components/Button';
+import BoxNumber from 'components/BoxNumber';
+import CardTitle from 'components/CardTitle';
+import SidebarMenu from 'components/SidebarMenu';
+import * as S from './style';
 
 const Home = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { user, event } = useContext(UsersContext);
   const [profileImage, setProfileImage] = useState(null);
 
   const menuItems = [
-    { 
-      icon: 'fa-solid fa-gift', 
-      label: 'Presentes recebidos', 
-      link: '/gifts-received' 
+    {
+      icon: 'fa-solid fa-gift',
+      label: 'Presentes recebidos',
+      link: '/gifts-received'
     },
     {
       icon: 'fa-solid fa-check-square',
@@ -26,7 +26,7 @@ const Home = () => {
     },
     { icon: 'fa-solid fa-comment-dots', label: 'Recados', link: '/messages' },
     { icon: 'fa-solid fa-right-from-bracket', label: 'Sair', link: '/logout' },
-  ]
+  ];
 
   const cardItems = [
     {
@@ -76,8 +76,9 @@ const Home = () => {
       text: 'Clique para compartilhar com os amigos e familiares',
       icon: 'fa-regular fa-paper-plane',
       color: '#1d304c',
+      link: '/shared-whatsapp',
     },
-  ]
+  ];
 
   const handleFileUpload = (e, type) => {
     const file = e.target.files?.[0];
@@ -89,13 +90,20 @@ const Home = () => {
     newFormData.append('file', file);
     newFormData.append('fileType', type);
 
-   
+
+  };
+
+  const getUrlSite = () => {
+    let host = window.location.hostname;
+    host = host.replace('users.', '').replace('localhost', 'localhost:3001');
+    const url = `http://sites.${host}/${event.slug}`;
+    return url;
   };
 
   useEffect(() => {
     // getOrdersDashboard();
     // getTopSellingProducts();
-  }, [])
+  }, []);
 
   return (
     <S.Main>
@@ -129,13 +137,7 @@ const Home = () => {
             <Button
               text="Visitar meu site"
               background={event.color}
-              onClick={() => {
-                let host = window.location.hostname
-                host = host.replace('users.', '')
-                .replace('localhost', 'localhost:3001')
-                const url = `http://sites.${host}/${event.slug}`
-                window.open(url, '_blank')
-              }}
+              onClick={() => window.open(getUrlSite(), '_blank')}
             />
           </S.WrapperButton>
         </S.WrapperProfile>
@@ -161,7 +163,22 @@ const Home = () => {
                     text={item.text}
                     icon={item.icon}
                     color={item.color}
-                    onClick={() => navigate(item.link)}
+                    onClick={() => {
+                      if (item.link === '/shared-whatsapp') {
+                        const message = `
+                          Você é nosso convidado! Click no LINK para ver todas as informações 
+                          do evento, confirmação de presença, envio de recadinhos e lista de 
+                          presentes virtuais, onde você presenteia sem dúvidas, promovendo o 
+                          consumo consciente. ${getUrlSite()}
+                        `;
+
+                        const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message.trim())}`;
+                        window.open(whatsappUrl, '_blank');
+                        return;
+                      }
+
+                      navigate(item.link);
+                    }}
                   />
                 ))}
               </S.WrapperCardsTitle>
@@ -177,7 +194,7 @@ const Home = () => {
         </S.Content>
       </Container>
     </S.Main>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;

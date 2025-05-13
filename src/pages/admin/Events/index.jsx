@@ -136,13 +136,13 @@ const Events = () => {
                 onClick: (row) => navigate(`/events/${row.id}/guests`),
               },
               {
+                label: "<i class='fa-solid fa-gift'></i> Presentes recebido",
+                onClick: (row) => navigate(`/events/${row.id}/gifts-received`),
+              },           
+              {
                 label: "<i class='fa-solid fa-box-open'></i> Serviços Adquiridos",
                 onClick: (row) => navigate(`/events/${row.id}`),
               },
-              {
-                label: "<i class='fa-solid fa-gift'></i> Presentes recebido",
-                onClick: (row) => navigate(`/events/${row.id}`),
-              }           
             ]}
           />
         </S.WrapperTable>

@@ -17,7 +17,7 @@ export const WrapperInput = styled('div')({
   gap: '0.8rem',
   padding: '0',
   gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
-  '@media (max-width: 768px)': {  
+  '@media (max-width: 768px)': {
     gridTemplateColumns: '1fr',
   },
 });
@@ -52,7 +52,7 @@ export const SearchButton = styled('button')({
   borderRadius: '4px',
   cursor: 'pointer',
   transition: 'background-color 0.3s',
-  
+
   '&:hover': {
     backgroundColor: '#0056b3',
   },
@@ -65,5 +65,19 @@ export const WrapperButton = styled('div')({
   justifyContent: 'end',
   'button': {
     maxWidth: 200
+  }
+});
+
+export const ToggleButton = styled('button')({
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  background: 'transparent',
+  border: 'none',
+  cursor: 'pointer',
+  marginBottom: 8,
+  fontWeight: 600,
+  '&:hover': {
+    color: 'var(--primary-color)'
   }
 });

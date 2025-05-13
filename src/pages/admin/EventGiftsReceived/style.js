@@ -2,7 +2,6 @@ import styled from 'styled-components';
 
 export const Content = styled('div')({
   margin: '40px auto',
-  maxWidth: 800 
 });
 
 export const CardContainer = styled('div')({
@@ -31,17 +30,6 @@ export const Amount = styled('div')({
 export const Label = styled('div')({
   fontSize: '14px',
   color: '#777',
-});
-
-export const WithdrawButton = styled('button')({
-  padding: '10px 20px',
-  backgroundColor: '#F06257',
-  color: 'var( --text-white)',
-  border: 'none',
-  borderRadius: '8px',
-  cursor: 'pointer',
-  fontWeight: 'bold',
-  height: '50px',
 });
 
 export const RadioGroup = styled('div')({

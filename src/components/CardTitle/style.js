@@ -5,13 +5,15 @@ export const CardTitle = styled("div")({
   alignItems: "center",
   boxShadow: "1px 1px 10px #ccc5c5",
   borderRadius: 5,
+  width: '100%',
+  flexBasis: '100%',
   "&:hover": {
     boxShadow: "0 0 8px var(--hover-color, #f29157)",
   },
   '@media(min-width: 1024px)': { 
     width: 180, 
     height: 180,
-    boxShadow: '0 0 15px #f1f1f1'
+    boxShadow: "1px 1px 10px rgba(204, 197, 197, 0.5)",  
   },
 });
 

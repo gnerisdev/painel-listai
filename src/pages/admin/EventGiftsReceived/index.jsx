@@ -1,16 +1,18 @@
 import { useEffect, useState, useContext } from 'react';
-import { UsersContext } from 'contexts/Users';
+import { useParams } from 'react-router-dom';
+import { AdminContext } from 'contexts/Admin';
 import { ApplicationUtils } from 'utils/ApplicationUtils';
 import Header from 'components/Header';
 import TitlePage from 'components/TitlePage';
 import Container from 'components/Container';
 import NotFoundData from 'components/NotFoundData';
 import imageDefault from 'assets/default-image.jpg';
-import Button from 'components/Button';
 import * as S from './style';
 
 const EventGiftsReceived = () => {
-  const { apiService, event, setAlert } = useContext(UsersContext);
+  const { id } = useParams();
+  
+  const { apiService, event, setAlert } = useContext(AdminContext);
   const [loading, setLoading] = useState(false);
   const [receivedGifts, setReceivedGifts] = useState([]);
   const [totalReceived, setTotalReceived] = useState(0);
@@ -22,7 +24,7 @@ const EventGiftsReceived = () => {
     try {
       setLoading(true);
 
-      const response = await apiService.get(`/users/events/${event.id}/received-gifts`);
+      const response = await apiService.get(`/admin/events/${id}/received-gifts`);
       const { success, message, receivedGifts } = response.data;
 
       if (!success) throw new Error(message);
@@ -42,7 +44,7 @@ const EventGiftsReceived = () => {
   const getTransactions = async () => {
     setLoading(true);
     try {
-      const response = await apiService.get(`/users/events/${event.id}/transactions`);
+      const response = await apiService.get(`/admin/events/${id}/transactions`);
       const {
         success,
         message,
@@ -70,43 +72,18 @@ const EventGiftsReceived = () => {
     }
   };
 
-  const RequestPayout = async () => {
-    setLoading(true);
-    try {
-      const response = await apiService.get(`/users/events/${event.id}/payout-requests`);
-      const { success, message } = response.data;
-      if (!success) throw new Error(message);
-
-      setAlert({
-        show: true,
-        title: 'Sucesso!',
-        icon: 'fa-solid fa-check-circle',
-        text: message,
-      });
-    } catch (error) {
-      setAlert({
-        show: true,
-        title: 'Erro!',
-        icon: 'fa-solid fa-triangle-exclamation',
-        text: ApplicationUtils.getErrorMessage(error, 'Erro ao solicitar o repasse.'),
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    if (!event?.id) return;
+    if (!id) return;
     getTransactions();
     getReceivedGifts();
-  }, [event?.id]);
+  }, []);
 
   return (
     <main style={{ marginTop: 72 }}>
       <Container>
         <Header back={-1} background={event?.color} />
 
-        <TitlePage title="Presentes Recebidos" align="center" />
+        <TitlePage title="Presentes Recebidos" icon="fa-solid fa-gift" />
 
         <S.Content>
           <S.CardContainer>
@@ -126,29 +103,20 @@ const EventGiftsReceived = () => {
               <S.Amount>{ApplicationUtils.formatPrice(totalAvailable)}</S.Amount>
               <S.Label>Disponível</S.Label>
               <br />
-              {totalPending > 0 ? (
+              {totalPending && (
                 <S.Label>
                   Repasse Pendente:{" "}
                   <strong style={{ color: 'red' }}>
                     {ApplicationUtils.formatPrice(totalPending)}
                   </strong>
                 </S.Label>
-              ) : (
-                <Button
-                  text="Solicitar repasse"
-                  maxWidth={500}
-                  margin="8px auto"
-                  onClick={RequestPayout}
-                  loading={loading}
-                  disabled={loading || totalAvailable <= 0}
-                />
               )}
             </S.Card>
           </S.CardContainer>
 
           <S.Divider />
 
-          <h3>Todos os Presentes Recebidos</h3>
+          <h2>Todos os Presentes Recebidos</h2> <br />
           {receivedGifts.length ? (
             receivedGifts.map((gift) => (
               <S.GiftCard key={gift.id}>

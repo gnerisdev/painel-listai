@@ -15,7 +15,8 @@ import EventTypes from 'pages/admin/EventTypes';
 import ServiceAdd from 'pages/admin/ServiceAdd';
 import EventMessages from 'pages/admin/EventMessages';
 import EventGuestConfirmations from 'pages/admin/EventGuestConfirmations';
-
+import EventGiftsReceived from 'pages/admin/EventGiftsReceived';
+import Payouts from 'pages/admin/Payouts';
 
 const authRoutes = [
   {
@@ -25,7 +26,7 @@ const authRoutes = [
       { path: '', element: <Navigate to="login" /> },
     ],
   },
-  { path: '*', element: <Navigate to="/login" /> }, 
+  { path: '*', element: <Navigate to="/login" /> },
 ];
 
 const mainRoutes = [
@@ -39,13 +40,15 @@ const mainRoutes = [
       { path: 'events/:id', element: <EventUpdate /> },
       { path: 'events/:id/messages', element: <EventMessages /> },
       { path: 'events/:id/guests', element: <EventGuestConfirmations /> },
+      { path: 'events/:id/gifts-received', element: <EventGiftsReceived /> },
       { path: 'services', element: <Services /> },
       { path: 'services/:id', element: <ServiceAdd title="Atualizar Serviço" /> },
       { path: 'services/add', element: <ServiceAdd title="Novo Serviço" /> },
-      { path: 'gifts', element: <Gifts /> },      
+      { path: 'gifts', element: <Gifts /> },
       { path: 'gifts/:id', element: <GiftAdd title="Atualizar Presente" /> },
       { path: 'gifts/create', element: <GiftAdd title="Novo Presente" /> },
-      { path: 'event-types', element: <EventTypes /> }      
+      { path: 'event-types', element: <EventTypes /> },
+      { path: 'payouts', element: <Payouts /> },
     ],
   },
   { path: '*', element: <Navigate to="/" /> }

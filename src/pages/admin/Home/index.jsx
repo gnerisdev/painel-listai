@@ -49,6 +49,13 @@ const Home = () => {
       link: '/services',
     },
     {
+      title: 'Repasses',
+      text: 'Gerencie as solicitações de repasse',
+      icon: 'fa-solid fa-money-bill-transfer',
+      color: 'var(--primary-color)',
+      link: '/payouts',
+    },
+    {
       title: 'Configurações',
       text: 'Ajuste configurações gerais e de segurança',
       icon: 'fa-solid fa-gear',

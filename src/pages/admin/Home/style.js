@@ -69,7 +69,7 @@ export const WrapperCardsTitle = styled('div')({
   display: 'grid',
   gap: 16,
   '@media(min-width: 1024px)': {
-    gridTemplateColumns: 'repeat(4, auto)'
+    gridTemplateColumns: 'repeat(4, minmax(200px, 1fr))'
   },
   div: {
     width: '100%'

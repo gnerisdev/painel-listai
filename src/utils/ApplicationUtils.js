@@ -17,7 +17,11 @@ export class ApplicationUtils {
   static parsePrice = (value) => {
     if (typeof value === 'number' && value >= 0) return value;
     if (!value) return 0;
-    const cleanedValue = value.replace(/\./g, '').replace(',', '.');
+    const cleanedValue = value
+      .replace(/\./g, '')
+      .replace('R$', '')
+      .replace(',', '.');
+    console.log(cleanedValue, '-ok-')
     const numericValue = parseFloat(cleanedValue);
     return isNaN(numericValue) ? 0 : numericValue;
   };
