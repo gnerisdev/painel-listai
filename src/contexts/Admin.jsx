@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState, useMemo } from 'react';
+import { createContext, useEffect, useState, useMemo, useContext } from 'react';
 import { useLocation } from 'react-router-dom';
 import { ApiService } from 'services/api.service';
 import Modal from 'components/Modal';
@@ -8,7 +8,7 @@ export const AdminContext = createContext();
 export const AdminProvider = (props) => {
   const location = useLocation();
   const pathname = location.pathname.replace(/\/$/, '');
-  const isAuthPage = pathname === '/admin/login';
+  const isAuthPage = pathname === '/login';
   const apiService = useMemo(
     () => new ApiService({ module: 'admin', auth: !isAuthPage }),
     [isAuthPage],
@@ -74,3 +74,5 @@ export const AdminProvider = (props) => {
     </AdminContext.Provider>
   );
 };
+
+export const useAdmin = () => useContext(AdminContext);

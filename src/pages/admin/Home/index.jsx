@@ -1,16 +1,19 @@
-import { useEffect, useContext } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AdminContext } from 'contexts/Admin';
+import { useAdmin } from 'contexts/Admin';
 import Container from 'components/Container';
 import BoxNumber from 'components/BoxNumber';
 import CardTitle from 'components/CardTitle';
 import HeaderAdmin from 'components/HeaderAdmin';
 import TitlePage from 'components/TitlePage';
+import { ApplicationUtils } from 'utils/ApplicationUtils';
 import * as S from './style';
 
 const Home = () => {
   const navigate = useNavigate();
-  const { admin } = useContext(AdminContext);
+  const { apiService, setAlert } = useAdmin();
+  const [totals, setTotals] = useState({ totals: { events: 0, gifts: 0, pendingPayouts: 0 } });
+  const hasFetchedRef = useRef(false);
 
   const cardItems = [
     {
@@ -61,12 +64,37 @@ const Home = () => {
       icon: 'fa-solid fa-gear',
       color: 'var(--primary-color) ',
     },
+    {
+      title: 'Sair',
+      text: 'Encerrar sessão e sair do sistema',
+      icon: 'fa-solid fa-right-from-bracket',
+      color: 'var(--primary-color) ',
+    },
   ];
 
-  useEffect(() => {
-    // getOrdersDashboard();
-    // getTopSellingProducts();
+  const fetchDashboardTotals = useCallback(async () => {
+    try {
+      const response = await apiService.get(`/admin/dashboard/retrieve`);
+      const { success, message, totals } = await response.data;
+
+      if (!success) throw new Error(message);
+      if (totals) setTotals(totals);
+    } catch (error) {
+      setAlert({
+        show: true,
+        title: 'Erro!',
+        icon: 'fa-solid fa-triangle-exclamation',
+        text: ApplicationUtils.getErrorMessage(error, 'Erro ao recuperar lista de transações.')
+      });
+    }
   }, []);
+
+  useEffect(() => {
+    if (!hasFetchedRef.current) {
+      fetchDashboardTotals();
+      hasFetchedRef.current = true;
+    }
+  }, [fetchDashboardTotals]);
 
   return (
     <S.Main>
@@ -76,9 +104,9 @@ const Home = () => {
           <TitlePage title="Painel Administrativo" icon="fa-solid fa-gauge" />
 
           <S.WrapperCards>
-            <BoxNumber number="0" text="pessoas confirmadas" />
-            <BoxNumber number="0" text="presentes recebidos" />
-            <BoxNumber number="0" text="recados recebidos" />
+            <BoxNumber number={totals.events} text="Eventos ativos" />
+            <BoxNumber number={totals.gifts} text="Presentes ativos" />
+            <BoxNumber number={totals.pendingPayouts} text="Repasses pendentes" />
           </S.WrapperCards>
 
           <h2>Central de Controle</h2>
@@ -91,7 +119,16 @@ const Home = () => {
                 text={item.text}
                 icon={item.icon}
                 color={item.color}
-                onClick={() => navigate(item.link)}
+                onClick={() => {
+                  if (item.title === 'Sair') {
+                    localStorage.removeItem('adminToken');
+                    localStorage.removeItem('adminId');
+                    window.location.reload();
+                    return;
+                  }
+
+                  navigate(item.link);
+                }}
               />
             ))}
           </S.WrapperCardsTitle>

@@ -1,7 +1,14 @@
 import { Link } from 'react-router-dom';
 import * as S from './style';
 
-const SidebarMenu = ({ menuItems, userName, message }) => {
+const SidebarMenu = ({ menuItems, userName }) => {
+  const handleLogout = () => {
+    console.log('ok')
+    localStorage.removeItem('userToken');
+    localStorage.removeItem('userId');
+    window.location.reload();
+  };
+
   return (
     <S.Sidebar>
       <S.UserSection>
@@ -14,9 +21,23 @@ const SidebarMenu = ({ menuItems, userName, message }) => {
       <S.MenuList>
         {menuItems.map((item, index) => (
           <S.MenuItem key={index}>
-            <Link to={item.link || ""} style={{ textDecoration: 'none', color: 'inherit' }}>
-              <span className={item.icon + " icon"}></span> {item.label}
-            </Link>
+            {
+              item.link === '/logout' ? (
+                <span
+                  style={{ textDecoration: 'none', color: 'inherit' }}
+                  onClick={handleLogout}
+                >
+                  <span className={item.icon + " icon"}></span> {item.label}
+                </span>
+              ) : (
+                <Link
+                  to={item.link || ""}
+                  style={{ textDecoration: 'none', color: 'inherit' }}
+                >
+                  <span className={item.icon + " icon"}></span> {item.label}
+                </Link>
+              )
+            }
           </S.MenuItem>
         ))} 
       </S.MenuList>

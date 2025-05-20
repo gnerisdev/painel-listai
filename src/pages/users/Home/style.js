@@ -65,7 +65,13 @@ export const ButtonIcon = styled('button')({
   right: -4,
   bottom: 5,
   overflow: 'hidden',
-  color:  'var(--text-white)'
+  color:  'var(--text-white)',
+  input: {
+    width: '100%',
+    height: '100%',
+    opacity: 0,
+    position: 'absolute'
+  }
 });
 
 export const AvatarTitle = styled('div')({
