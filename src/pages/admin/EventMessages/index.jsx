@@ -2,7 +2,6 @@ import { useState, useContext, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { AdminContext } from 'contexts/Admin';
 import { ApplicationUtils } from 'utils/ApplicationUtils';
-import Header from 'components/Header';
 import TitlePage from 'components/TitlePage';
 import Container from 'components/Container';
 import * as S from './style';
@@ -56,8 +55,6 @@ const EventMessages = () => {
   return (
     <main style={{ margin: '72px 0' }}>
       <Container>
-        <Header back={-1} />
-
         <TitlePage icon="fa-regular fa-message icon" title="Mensagens do evento" />
 
         <S.Content>

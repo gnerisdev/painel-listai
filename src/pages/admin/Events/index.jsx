@@ -4,7 +4,6 @@ import { AdminContext } from "contexts/Admin";
 import { ApplicationUtils } from "utils/ApplicationUtils";
 import Container from "components/Container";
 import TitlePage from "components/TitlePage";
-import Header from "components/Header";
 import Table from "components/Table";
 import Filter from "components/Filter";
 import Pagination from "components/Pagination";
@@ -72,7 +71,6 @@ const Events = () => {
 
   return (
     <Container>
-      <Header />
       <TitlePage title="Eventos" icon="fa-solid fa-calendar-days" />
 
       <S.Content>
@@ -140,8 +138,8 @@ const Events = () => {
                 onClick: (row) => navigate(`/events/${row.id}/gifts-received`),
               },           
               {
-                label: "<i class='fa-solid fa-box-open'></i> Serviços Adquiridos",
-                onClick: (row) => navigate(`/events/${row.id}`),
+                label: "<i class='fa-solid fa-box-open'></i> Serviços",
+                onClick: (row) => navigate(`/events/${row.id}/services`),
               },
             ]}
           />

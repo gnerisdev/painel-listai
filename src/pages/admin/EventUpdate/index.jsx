@@ -4,7 +4,6 @@ import { AdminContext } from 'contexts/Admin';
 import { ApplicationUtils } from 'utils/ApplicationUtils';
 import Container from 'components/Container';
 import TitlePage from 'components/TitlePage';
-import Header from 'components/Header';
 import Input from 'components/Input';
 import FormContainer from 'components/FormContainer';
 import Select from 'components/Select';
@@ -146,7 +145,6 @@ const EventUpdate = () => {
 
   return (
     <Container>
-      <Header />
       <TitlePage title="Evento" icon="fa-solid fa-calendar-days" />
 
       <FormContainer margin="56px auto">

@@ -9,52 +9,65 @@ import CardTitle from 'components/CardTitle';
 import SidebarMenu from 'components/SidebarMenu';
 import naviagtionItems from './NavigationItems';
 import * as S from './style';
+import ListEventServices from 'components/ListEventServices';
+import TitlePage from 'components/TitlePage';
 
 const Home = () => {
   const navigate = useNavigate();
-  const { user, event, apiService } = useContext(UsersContext);
-  const [profileImage, setProfileImage] = useState('https://painel.mimon.com.br/assets/images/debutante-roxo-2.png');
-  const [backgroundImage, setBackgroundImage] = useState('https://painel.mimon.com.br/assets/images/capa-debutante.jpg');
-  const [uploading, setUploading] = useState(false);
-  const [uploadError, setUploadError] = useState(null);
+  const { user, event, apiService, setAlert } = useContext(UsersContext);
+  const [profileImage, setProfileImage] = useState(
+    event.avatarUrl ||
+    'https://painel.mimon.com.br/assets/images/debutante-roxo-2.png'
+  );
+  const [backgroundImage, setBackgroundImage] = useState(
+    event.bannerUrl ||
+    'https://painel.mimon.com.br/assets/images/capa-debutante.jpg'
+  );
 
   const handleFileUpload = async (e, type) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
     if (!file.type.startsWith('image/')) {
-      setUploadError('Por favor, selecione um arquivo de imagem.');
-      setTimeout(() => setUploadError(null), 3000);
+      setAlert({
+        show: true,
+        title: 'Erro!',
+        icon: 'fa-solid fa-triangle-exclamation',
+        text: 'Por favor, selecione um arquivo de imagem.'
+      });
+
       return;
     }
 
-    setUploading(true);
-    setUploadError(null);
-
     const formData = new FormData();
     formData.append('file', file);
-    formData.append('fileType', type);
 
     try {
-      const response = await apiService.post(`/users/upload/${type}`, formData, true);
-
-      const { success, message, imageUrl } = await response.data;
+      const response = await apiService.post(`/users/event/${event.id}/upload/${type}`, formData, true);
+      const { success, message, bannerUrl, avatarUrl} = await response.data;
 
       if (!success) throw new Error(message);
-
-      if (imageUrl) {
+      if (bannerUrl || avatarUrl) {
         if (type === 'avatar') {
-          setProfileImage(imageUrl);
-        } else if (type === 'background') {
-          setBackgroundImage(imageUrl);
+          setProfileImage(avatarUrl);
+        } else if (type === 'banner') {
+          setBackgroundImage(bannerUrl);
         }
-      } else {
-        setUploadError('Resposta do servidor inválida: URL da imagem não encontrada.');
-      }
+
+        setAlert({
+          show: true,
+          title: 'Sucesso!',
+          icon: 'fa-solid fa-check',
+          text: 'Imagem atualizada!',
+        });
+      } 
     } catch (error) {
-      setUploadError(ApplicationUtils.getErrorMessage(error, 'Erro ao realizar o upload da imagem.'));
-    } finally {
-      setUploading(false);
+      setAlert({
+        show: true,
+        title: 'Erro!',
+        icon: 'fa-solid fa-triangle-exclamation',
+        text: ApplicationUtils.getErrorMessage(error, 'Erro ao realizar o upload da imagem.'),
+      });
     }
   };
 
@@ -74,7 +87,7 @@ const Home = () => {
           <input
             type="file"
             accept="image/*"
-            onChange={(e) => handleFileUpload(e, 'background')}
+            onChange={(e) => handleFileUpload(e, 'banner')}
           />
         </S.ButtonIcon>
       </S.WrapperBackground>
@@ -120,7 +133,7 @@ const Home = () => {
             </S.WrapperCards>
 
             <S.Personalize>
-              <h2>Personalize</h2>
+              <TitlePage title="Personalize" align="center" />
 
               <S.WrapperCardsTitle>
                 {naviagtionItems.cardItems.map((item, index) => (
@@ -151,8 +164,9 @@ const Home = () => {
               </S.WrapperCardsTitle>
             </S.Personalize>
 
-            {uploading && <p>Enviando imagem...</p>}
-            {uploadError && <p style={{ color: 'red' }}>{uploadError}</p>}
+            <br />
+
+            <ListEventServices displayType="turbo" />
           </div>
 
           <S.WrapperSidebar>

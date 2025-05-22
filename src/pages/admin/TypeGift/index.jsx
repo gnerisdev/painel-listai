@@ -2,7 +2,6 @@ import { useNavigate } from 'react-router-dom';
 import CardTitle from "components/CardTitle";
 import Container from "components/Container";
 import TitlePage from "components/TitlePage";
-import Header from "components/Header";
 import * as S from "./style";
 
 const TypeGift = () => {
@@ -16,7 +15,6 @@ const TypeGift = () => {
 
   return (
     <Container>
-      <Header />
       <TitlePage
         title="Minha Lista de Presentes em Dinheiro"
         icon="fa-solid fa-gift"

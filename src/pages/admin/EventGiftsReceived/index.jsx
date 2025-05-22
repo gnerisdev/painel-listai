@@ -2,7 +2,6 @@ import { useEffect, useState, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { AdminContext } from 'contexts/Admin';
 import { ApplicationUtils } from 'utils/ApplicationUtils';
-import Header from 'components/Header';
 import TitlePage from 'components/TitlePage';
 import Container from 'components/Container';
 import NotFoundData from 'components/NotFoundData';
@@ -81,8 +80,6 @@ const EventGiftsReceived = () => {
   return (
     <main style={{ marginTop: 72 }}>
       <Container>
-        <Header back={-1} background={event?.color} />
-
         <TitlePage title="Presentes Recebidos" icon="fa-solid fa-gift" />
 
         <S.Content>

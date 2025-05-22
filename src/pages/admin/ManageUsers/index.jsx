@@ -4,7 +4,6 @@ import { ApplicationUtils } from 'utils/ApplicationUtils';
 import Container from 'components/Container';
 import FormContainer from 'components/FormContainer';
 import TitlePage from 'components/TitlePage';
-import Header from 'components/Header';
 import Table from 'components/Table';
 import Filter from 'components/Filter';
 import Modal from 'components/Modal';
@@ -113,7 +112,6 @@ const ManageUsers = () => {
 
   return (
     <Container>
-      <Header />
       <TitlePage title="Usuários" icon="fa-solid fa-users" />
 
       <S.Content>

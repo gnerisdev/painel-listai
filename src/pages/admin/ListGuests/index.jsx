@@ -1,24 +1,18 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable no-unused-vars */
-import { useState, useEffect, useContext } from 'react';
+import { useState, useContext } from 'react';
 import { AdminContext } from 'contexts/Admin';
 import { ApplicationUtils } from 'utils/ApplicationUtils';
 import Container from 'components/Container';
 import TitlePage from 'components/TitlePage';
-import Header from 'components/Header';
 import Table from 'components/Table';
 import Filter from 'components/Filter';
-import * as S from './style';
 import { mockApiService } from '../../../services/mockApiServer';
+import * as S from './style';
 
 
 const ListGuests = () => {
-  const { apiService, setAlert } = useContext(AdminContext);
+  const { setAlert } = useContext(AdminContext);
   const [tableData, setTableData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [searchParams, setSearchParams] = useState({
-    id: '',
-  });
 
   const handleSearch = async (filters) => {
     const eventId = filters.id;
@@ -73,19 +67,10 @@ const ListGuests = () => {
     }
   };
 
-
-  const resetSearch = () => {
-    setSearchParams({
-      eventId: '',
-    });
-    setTableData([]);
-  };
-
   if (loading) return <div>loading....</div>;
 
   return (
     <Container>
-      <Header />
       <TitlePage title="Listar Convidados de um Evento" icon="fa-solid fa-users" />
 
       <S.Content>

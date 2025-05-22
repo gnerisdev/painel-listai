@@ -3,7 +3,6 @@ import { AdminContext } from 'contexts/Admin';
 import { ApplicationUtils } from 'utils/ApplicationUtils';
 import Container from 'components/Container';
 import TitlePage from 'components/TitlePage';
-import Header from 'components/Header';
 import Button from 'components/Button';
 import DefaultImage from 'assets/default-image.jpg';
 import FormEventCategoryModal from './FormEventCategoryModal';
@@ -45,8 +44,6 @@ const EventTypes = () => {
 
   return (
     <Container>
-      <Header />
-
       <TitlePage title="Tipos de evento" icon="fa-solid fa-folder-tree" />
 
       <S.Content>

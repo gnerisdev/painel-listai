@@ -4,7 +4,6 @@ import { AdminContext } from 'contexts/Admin';
 import { ApplicationUtils } from 'utils/ApplicationUtils';
 import Container from "components/Container";
 import TitlePage from "components/TitlePage";
-import Header from "components/Header";
 import Input from "components/Input";
 import Button from "components/Button";
 import Select from "components/Select";
@@ -206,8 +205,6 @@ const ServiceAdd = ({ title }) => {
 
   return (
     <Container>
-      <Header />
-
       <HeaderWithButton>
         <TitlePage
           title={title || (isEditing ? 'Editar Serviço' : 'Adicionar Serviço')}

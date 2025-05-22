@@ -2,7 +2,6 @@ import { useState, useContext, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { AdminContext } from 'contexts/Admin';
 import { ApplicationUtils } from 'utils/ApplicationUtils';
-import Header from 'components/Header';
 import TitlePage from 'components/TitlePage';
 import Container from 'components/Container';
 import Button from 'components/Button';
@@ -71,8 +70,6 @@ const EventGuestConfirmations = () => {
   return (
     <main style={{ margin: '72px 0' }}>
       <Container>
-        <Header back={-1} />
-
         <HeaderWithButton>
           <TitlePage title="Lista de Presença" icon="fa-solid fa-clipboard-list" />
           <Button 

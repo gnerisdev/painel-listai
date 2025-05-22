@@ -12,43 +12,6 @@ export const Background = styled('img')({
   width: '100%',
 });
 
-export const WrapperProfile = styled('div')({
-  width: '100%',
-  display: 'grid',
-  gridTemplateColumns: '1fr',
-  justifyContent: 'center',
-  textAlign: 'center',
-  '@media(min-width: 1024px)': { 
-    gridTemplateColumns: '180px 1fr 1fr',
-  },
-})
-
-export const Avatar = styled('div')({
-  width: 'fit-content',
-  height: 'fit-content',
-  margin: '-63px auto 0',
-  boxShadow: '0 0 2px #a0a6b7',
-  borderRadius: '50%',  
-  border: '8px solid #ffffff',
-  'img': {
-    width: 125,
-    height: 125,
-    borderRadius: '50%'
-  }
-});
-
-export const AvatarTitle = styled('div')({
-  textAlign: 'start',
-  'h2': {
-    fontSize: '1.5rem',
-    fontWeight: 'bolder'
-  },
-  'h6': {
-    fontSize: '1rem',
-    fontWeight: 400
-  },
-});
-
 export const Content = styled('section')({
   padding: '32px 0'
 });

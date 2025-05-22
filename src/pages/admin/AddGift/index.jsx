@@ -2,7 +2,6 @@ import { useContext, useEffect, useState } from 'react';
 import { AdminContext } from 'contexts/Admin';
 import Container from "components/Container";
 import TitlePage from "components/TitlePage";
-import Header from "components/Header";
 import UploadImage from "components/UploadImage";
 import Input from "components/Input";
 import Button from "components/Button";
@@ -73,7 +72,6 @@ const AddGift = () => {
 
   return (
     <Container >
-      <Header />
       <TitlePage
         title="Lista de Presentes"
         icon="fa-solid fa-gift"

@@ -4,7 +4,6 @@ import { AdminContext } from 'contexts/Admin';
 import { ApplicationUtils } from 'utils/ApplicationUtils';
 import Container from 'components/Container';
 import TitlePage from 'components/TitlePage';
-import Header from 'components/Header';
 import Table from 'components/Table';
 import Button from 'components/Button';
 import HeaderWithButton from 'components/HeaderWithButton';
@@ -49,8 +48,6 @@ const Services = () => {
   
   return (
     <Container>
-      <Header />
-
       <HeaderWithButton>
         <TitlePage title="Serviços" icon="fa-solid fa-hand-holding-dollar" />
         <Button 

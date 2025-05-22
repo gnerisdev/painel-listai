@@ -17,6 +17,7 @@ import EventMessages from 'pages/admin/EventMessages';
 import EventGuestConfirmations from 'pages/admin/EventGuestConfirmations';
 import EventGiftsReceived from 'pages/admin/EventGiftsReceived';
 import Payouts from 'pages/admin/Payouts';
+import EventServices from 'pages/admin/EventServices';
 
 const authRoutes = [
   {
@@ -41,6 +42,7 @@ const mainRoutes = [
       { path: 'events/:id/messages', element: <EventMessages /> },
       { path: 'events/:id/guests', element: <EventGuestConfirmations /> },
       { path: 'events/:id/gifts-received', element: <EventGiftsReceived /> },
+      { path: 'events/:id/services', element: <EventServices /> },      
       { path: 'services', element: <Services /> },
       { path: 'services/:id', element: <ServiceAdd title="Atualizar Serviço" /> },
       { path: 'services/add', element: <ServiceAdd title="Novo Serviço" /> },

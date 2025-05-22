@@ -6,7 +6,6 @@ import { AdminContext } from 'contexts/Admin';
 import { ApplicationUtils } from 'utils/ApplicationUtils';
 import Container from 'components/Container';
 import TitlePage from 'components/TitlePage';
-import Header from 'components/Header';
 import Table from 'components/Table';
 import Button from 'components/Button';
 import DefaultImage from 'assets/default-image.jpg';
@@ -71,8 +70,6 @@ const Gifts = () => {
 
   return (
     <Container>
-      <Header />
-
       <HeaderWithButton>
         <TitlePage title="Presentes" icon="fa-solid fa-gifts" />
         <Button 

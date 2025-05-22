@@ -4,7 +4,6 @@ import { AdminContext } from 'contexts/Admin';
 import { ApplicationUtils } from 'utils/ApplicationUtils';
 import Container from 'components/Container';
 import TitlePage from 'components/TitlePage';
-import Header from 'components/Header';
 import UploadImage from 'components/UploadImage';
 import Input from 'components/Input';
 import Button from 'components/Button';
@@ -195,8 +194,6 @@ const GiftAdd = ({ title }) => {
   return (
     <S.Main>
       <Container>
-        <Header />
-
         <HeaderWithButton>
           <TitlePage
             title={title || (isEditing ? 'Editar Presente' : 'Adicionar Presente')}

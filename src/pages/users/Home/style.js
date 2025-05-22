@@ -106,9 +106,11 @@ export const WrapperCards = styled('div')({
 
 export const Personalize = styled('div')({
   display: 'grid',
+  marginTop: 48
 });
 
 export const WrapperCardsTitle = styled('div')({
+  marginTop: 16,
   display: 'grid',
   gap: 16,
   '@media(min-width: 1024px)': {

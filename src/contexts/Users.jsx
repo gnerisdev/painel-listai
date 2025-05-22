@@ -1,13 +1,14 @@
-import { createContext, useEffect, useState, useMemo } from 'react';
+import { createContext, useEffect, useState, useMemo, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { ApiService } from 'services/api.service';
 import Modal from 'components/Modal';
 
 export const UsersProvider = (props) => {
+  const alertRef = useRef(false);
+
   const location = useLocation();
   const normalizedPathname = location.pathname.replace(/\/$/, '');
-  const isAuthPage = (normalizedPathname === '/login' 
-  || normalizedPathname === '/register');
+  const isAuthPage = (normalizedPathname === '/login' || normalizedPathname === '/register');
   const apiService = useMemo(
     () => new ApiService({ module: 'users', auth: !isAuthPage }),
     [isAuthPage],
@@ -16,12 +17,7 @@ export const UsersProvider = (props) => {
   const [user, setUser] = useState({});
   const [event, setEvent] = useState({});
   const [token, setToken] = useState(localStorage.getItem('userToken') || '');
-  const [alert, setAlert] = useState({
-    show: false,
-    icon: '',
-    title: '',
-    text: '',
-  });
+  const [alert, setAlert] = useState({ show: false, icon: '', title: '', text: '' });
   const [authState, setAuthState] = useState('checking');
 
   const getUser = async () => {
@@ -45,6 +41,10 @@ export const UsersProvider = (props) => {
     if (authState === 'checking') getUser();
   }, [authState]);
 
+  useEffect(() => {
+
+  }, [alert])
+
   if (authState === 'checking') return <div>Carregando...</div>;
 
   return (
@@ -62,13 +62,15 @@ export const UsersProvider = (props) => {
         apiService,
       }}
     >
-      <Modal active={alert.show} updateShow={(e) => setAlert(e)} zIndex={20}>
-        <div style={{ textAlign: "center" }}>
-          <span className={alert.icon} style={{ fontSize: 40 }}></span>
-          <h3>{alert.title}</h3>
-          <p style={{ margin: 0 }} dangerouslySetInnerHTML={{ __html: alert.text }}></p>
-        </div>
-      </Modal>
+      {alert.show && (
+        <Modal active={alert.show} updateShow={(e) => setAlert(e)} zIndex={20}>
+          <div style={{ textAlign: "center" }}>
+            <span className={alert.icon} style={{ fontSize: 40 }}></span>
+            <h3>{alert.title}</h3>
+            <p style={{ margin: 0 }} dangerouslySetInnerHTML={{ __html: alert.text }}></p>
+          </div>
+        </Modal>
+      )}
 
       {props.children}
     </UsersContext.Provider>

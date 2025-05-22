@@ -15,6 +15,10 @@ const Modal = ({
   const contentRef = useRef(null);
 
   useEffect(() => {
+    if (active) handleScroll(true);
+  }, [active]);
+
+  const handleScroll = (active) => {
     if (active) {
       setVisible(true);
       document.body.style.overflowY = "hidden";
@@ -22,12 +26,13 @@ const Modal = ({
       setTimeout(() => setVisible(false), 300);
       document.body.style.overflowY = "auto";
     }
-  }, [active]);
+  };
 
   const handleOutsideClick = (e) => {
     if (closeOut) {
       if (modalRef.current && !contentRef.current.contains(e.target)) {
         updateShow(false);
+        handleScroll(false);
       }
     }
   };
@@ -46,7 +51,12 @@ const Modal = ({
         <S.Content ref={contentRef} style={background ? { background } : {}}>
           {children}
 
-          <S.ButtonClose onClick={() => updateShow(false)}>
+          <S.ButtonClose 
+            onClick={() => {
+              updateShow(false);
+              handleScroll(false);
+            }}
+          >
             <span className="fa-solid fa-xmark icon" style={color ? { color } : {}} />
           </S.ButtonClose>
         </S.Content>
