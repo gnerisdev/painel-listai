@@ -5,16 +5,6 @@ import InputUrl from 'components/InputUrl';
 import Button from 'components/Button';
 import * as S from './style';
 
-const socialMediaList = [
-  { title: 'Facebook', value: 'facebook' },
-  { title: 'Instagram', value: 'instagram' },
-  { title: 'Twitter', value: 'twitter' },
-  { title: 'LinkedIn', value: 'linkedin' },
-  { title: 'TikTok', value: 'tiktok' },
-  { title: 'YouTube', value: 'youtube' },
-  { title: 'WhatsApp', value: 'whatsapp' },
-];
-
 const Step1 = ({ data, eventCategories, isLoading, getData, next }) => {
   const [log, setLog] = useState({
     event: null,
@@ -59,14 +49,7 @@ const Step1 = ({ data, eventCategories, isLoading, getData, next }) => {
     } else {
       newLog.slug = '';
     }
-
-    if (!data.source) {
-      newLog.source = '* Campo obrigatório';
-      errorCount++;
-    } else {
-      newLog.source = '';
-    }
-
+    
     setLog(newLog);
 
     if (errorCount === 0) next();
@@ -134,21 +117,8 @@ const Step1 = ({ data, eventCategories, isLoading, getData, next }) => {
           onChange={(value) => {
             getData({ slug: value });
             value === ''
-              ? setLog({ ...log, slug:'* O link www.mimon.com.br/aaaaa está em uso, por favor, crie outro' })
+              ? setLog({ ...log, slug:'* O link está em uso, por favor, crie outro' })
               : setLog({ ...log, slug: '' });
-          }}
-        />
-
-        <Select
-          label="Como nos conheceu?"
-          messageError={log.source}
-          data={socialMediaList}
-          value={data.source || ''}
-          onChange={(value) => {
-            getData({ source: value });
-            value === ''
-              ? setLog({ ...log, source: '* Campo obrigatório' })
-              : setLog({ ...log, sourceSocialMedia: '' });
           }}
         />
       </S.WrapperForm>

@@ -132,7 +132,7 @@ const Login = () => {
 
         <S.TextSmall>
           Uma empresa do grupo iBabySite & Wegadr  <br />
-          © Mimon. Todos os direitos reservados.
+          © Listai. Todos os direitos reservados.
         </S.TextSmall>
       </Container>
     </S.Main>

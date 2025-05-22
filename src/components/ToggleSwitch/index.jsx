@@ -5,7 +5,11 @@ const ToggleSwitch = ({ label, checked, onChange }) => {
     <S.SwitchContainer>
       <S.Label>{label}</S.Label>
       <S.Switch>
-        <S.Checkbox type="checkbox" checked={checked} onChange={onChange} />
+        <S.Checkbox 
+          type="checkbox" 
+          checked={checked} 
+          onChange={e => onChange(e.target.checked)} 
+        />
         <S.Slider />
       </S.Switch>
     </S.SwitchContainer>

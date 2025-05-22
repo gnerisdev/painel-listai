@@ -2,7 +2,6 @@ import { useContext } from 'react';
 import { UsersContext } from 'contexts/Users';
 import Container from 'components/Container';
 import TitlePage from 'components/TitlePage';
-import Header from 'components/Header';
 import ListEventServices from 'components/ListEventServices';
 import * as S from './style';
 
@@ -12,7 +11,6 @@ const ServicePackage = () => {
   return (
     <S.Main>
       <Container>
-        <Header back={-1} background={event.color} />
         <TitlePage
           title="Pacote de Serviços"
           subtitle="Serviços inclusos e para personalizar ainda mais"

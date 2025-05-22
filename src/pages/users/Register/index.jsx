@@ -7,6 +7,7 @@ import Step1 from './Step-1';
 import Step2 from './Step-2';
 import Step3 from './Step-3';
 import logo from 'assets/logo-2.png';
+import imageDefault from 'assets/default-banner.jpg';
 import * as S from './style';
 
 const Register = () => {
@@ -167,7 +168,7 @@ const Register = () => {
                   onClick={() => setData({ ...data, eventType: item.id })}
                   className={`${item.id === data?.eventType ? 'selected' : ''}`}
                 >
-                  <img src={'https://painel.mimon.com.br/marry-2.7adc72fe1af1953464b3.png'} alt={item.title} />
+                  <img src={item.image_url || imageDefault} alt={item.title} />
                   <small>{item.name}</small>
                 </S.ItemEventTypes>
               ))}

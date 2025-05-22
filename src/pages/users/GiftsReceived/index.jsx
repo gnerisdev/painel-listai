@@ -1,7 +1,6 @@
 import { useEffect, useState, useContext } from 'react';
 import { UsersContext } from 'contexts/Users';
 import { ApplicationUtils } from 'utils/ApplicationUtils';
-import Header from 'components/Header';
 import TitlePage from 'components/TitlePage';
 import Container from 'components/Container';
 import NotFoundData from 'components/NotFoundData';
@@ -104,8 +103,6 @@ const GiftsReceived = () => {
   return (
     <main style={{ marginTop: 72 }}>
       <Container>
-        <Header back={-1} background={event?.color} />
-
         <TitlePage title="Presentes Recebidos" align="center" />
 
         <S.Content>

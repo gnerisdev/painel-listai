@@ -53,13 +53,15 @@ const Info = ({ event, urlMap }) => (
               </div>
             </div>
 
-            <iframe
-              width="100%"
-              height="350"
-              src={urlMap}
-              style={{ border: 'none' }}
-              title="mapa"
-            />
+            {urlMap && (
+              <iframe
+                width="100%"
+                height="350"
+                src={urlMap}
+                style={{ border: 'none' }}
+                title="mapa"
+              />
+            )}
           </>
         )}
       </div>

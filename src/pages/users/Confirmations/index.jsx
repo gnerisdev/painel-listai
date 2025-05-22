@@ -1,7 +1,6 @@
 import { useState, useContext, useEffect } from 'react';
 import { UsersContext } from 'contexts/Users';
 import { ApplicationUtils } from 'utils/ApplicationUtils';
-import Header from 'components/Header';
 import TitlePage from 'components/TitlePage';
 import Container from 'components/Container';
 import Button from 'components/Button';
@@ -155,7 +154,6 @@ const Confirmations = () => {
   return (
     <main style={{ margin: '72px 0' }}>
       <Container>
-        <Header back={-1} background={color} />
         <TitlePage title="Lista de Presença" align="center" />
 
         <S.Content>

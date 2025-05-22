@@ -10,19 +10,15 @@ import SidebarMenu from 'components/SidebarMenu';
 import naviagtionItems from './NavigationItems';
 import ListEventServices from 'components/ListEventServices';
 import TitlePage from 'components/TitlePage';
+import defaultBanner from 'assets/default-banner.jpg';
+import defaultAvatar from 'assets/default-avatar-event.avif';
 import * as S from './style';
 
 const Home = () => {
   const navigate = useNavigate();
   const { user, event, apiService, setAlert } = useContext(UsersContext);
-  const [profileImage, setProfileImage] = useState(
-    event.avatarUrl ||
-    'https://painel.mimon.com.br/assets/images/debutante-roxo-2.png'
-  );
-  const [backgroundImage, setBackgroundImage] = useState(
-    event.bannerUrl ||
-    'https://painel.mimon.com.br/assets/images/capa-debutante.jpg'
-  );
+  const [profileImage, setProfileImage] = useState(event.avatarUrl || defaultAvatar);
+  const [backgroundImage, setBackgroundImage] = useState(event.bannerUrl || defaultBanner);
 
   const handleFileUpload = async (e, type) => {
     const file = e.target.files?.[0];
@@ -81,7 +77,7 @@ const Home = () => {
   return (
     <S.Main>
       <S.WrapperBackground>
-        <S.Background src={backgroundImage} />
+        <S.Background src={backgroundImage} test={backgroundImage} />
         <S.ButtonIcon style={{ position: 'absolute', top: '10px', right: '10px', zIndex: 1 }}>
           <span className="fa-solid fa-pencil" />
           <input

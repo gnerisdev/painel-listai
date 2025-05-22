@@ -111,6 +111,7 @@ const Messages = ({ event }) => {
             background="#FFFFFF"
             color={event.color}
             onClick={() => setModalFormMessage(true)}
+            maxWidth={300}
           />
         </div>
 
@@ -190,6 +191,7 @@ const Messages = ({ event }) => {
           background={event.color}
           onClick={sendMessage}
           isLoading={loading}
+          maxWidth={300}
         />
       </S.WrapperForm>
     </Modal>

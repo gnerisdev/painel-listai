@@ -99,7 +99,7 @@ const ShoppingCart = () => {
             </div>
             <S.Inputs>
               <Input
-                label="Nome do doador"
+                label="Seu nome"
                 name="name"
                 value={data.name}
                 onChange={value => setData({ ...data, name: value})}
@@ -116,7 +116,8 @@ const ShoppingCart = () => {
         </S.ModalContent>
       </S.ModalBackdrop>
     ) : (
-      <S.ButtonOpen onClick={openCart} />
+      cartItems.length > 0 && 
+      <S.ButtonOpen className="fa-solid fa-cart-shopping" onClick={openCart} />
     )
   );
 };

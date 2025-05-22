@@ -15,7 +15,7 @@ const ListGifts = ({ data, selected, getData, mode="add" }) => {
           <S.Item key={`item-${item.id}`} onClick={() => getData(item.id)}>
             <S.Image
               className="image ng-star-inserted"
-              src="https://b2cproduct-dev-mimonprod.s3.us-west-2.amazonaws.com/public/product/system/casamento/lua-de-mel/202202.jpg"
+              src={item.imageUrl}
               alt="Sunset View Lunch"
             />
 

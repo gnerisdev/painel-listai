@@ -8,12 +8,18 @@ import Messages from './Messages';
 import GiftList from './GiftList';
 import Info from './Info';
 import Confirmation from './Confirmation';
+import defaultBanner from 'assets/default-banner.jpg'
+import defaultAvatar from 'assets/default-avatar-event.avif';
 import * as S from './style';
 
 const Home = () => {
   const { event, setEvent } = useContext(GuestsContext);
   const [isOpen, setIsOpen] = useState(false);
   const [urlMap, setUrlMap] = useState(null);
+
+  const profileImage = event.avatarUrl || defaultAvatar;
+  const bannerImage = event.bannerUrl || defaultBanner;
+  console.log(bannerImage)
 
   useEffect(() => {
     if (!event?.description) {
@@ -45,7 +51,7 @@ const Home = () => {
               <i className="fa-solid fa-bars" />
             </S.MenuButton>
             <S.Logo>
-              <img src={logo} alt="Mimon" />
+              <img src={logo} alt="Logo listai" />
             </S.Logo>
           </S.Nav>
 
@@ -60,15 +66,12 @@ const Home = () => {
         </Container>
       </S.Header>
 
-      <S.Background src="https://painel.mimon.com.br/assets/images/capa-debutante.jpg" />
+      <S.Background src={bannerImage} />
 
       <Container>
         <S.WrapperProfile>
           <S.Avatar>
-            <img
-              src="https://painel.mimon.com.br/assets/images/debutante-roxo-2.png"
-              alt="Imagem de perfil"
-            />
+            <img src={profileImage} alt="Imagem de perfil" />
           </S.Avatar>
           <S.EventTitle>
             <h1 style={{ color: event?.color }}>{event.title}</h1>
@@ -104,7 +107,7 @@ const Home = () => {
       <S.Footer style={{ background: event.color }}>
         <Container>
           <small><i className="fa-solid fa-lock"></i> Ambiente seguro</small> <br />
-          <small> © Mimon. Todos os direitos reservados.</small>
+          <small> © Listai. Todos os direitos reservados.</small>
           <small style={{ display: 'block', marginTop: -4 }}>CNPJ - 17.624.249/0001-70</small>
         </Container>
       </S.Footer>

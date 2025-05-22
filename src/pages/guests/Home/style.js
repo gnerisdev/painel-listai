@@ -3,8 +3,10 @@ import styled from 'styled-components';
 export const Header = styled.header({
   position: 'fixed',
   width: '100%',
+  height: 56,
   zIndex: 1,
   background: '#fff',
+  inset: 0,
   boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
 });
 
@@ -64,7 +66,7 @@ export const Background = styled('img')({
   minHeight: '40vh',
   objectFit: 'cover',
   maxWidth: 1168,
-  margin: 'auto',
+  margin: '56px auto auto',
   width: '100%',
 });
 

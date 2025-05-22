@@ -1,7 +1,6 @@
 import { useEffect, useState, useContext } from 'react';
 import { UsersContext } from 'contexts/Users';
 import { ApplicationUtils } from 'utils/ApplicationUtils';
-import Header from 'components/Header';
 import FormContainer from 'components/FormContainer';
 import Button from 'components/Button';
 import Input from 'components/Input';
@@ -224,8 +223,6 @@ const Info = () => {
   return (
     <main style={{ marginTop: 70 }}>
       <Container>
-        <Header back={-1} background={event.color} />
-
         <TitlePage
           title="Informações do Evento"
           subtitle="Tudo em um só lugar para seu convidado"

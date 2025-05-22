@@ -1,7 +1,6 @@
 import { useState, useContext, useEffect } from 'react';
 import { UsersContext } from 'contexts/Users';
 import { ApplicationUtils } from 'utils/ApplicationUtils';
-import Header from 'components/Header';
 import TitlePage from 'components/TitlePage';
 import Container from 'components/Container';
 import * as S from './style';
@@ -87,7 +86,6 @@ const Gallery = () => {
   return (
     <main style={{ margin: '72px 0' }}>
       <Container>
-        <Header back={-1} background={event.color} />
         <TitlePage
           title="Galeria de Fotos e Vídeos"
           subtitle="Contrate mais espaço logo abaixo em serviços"

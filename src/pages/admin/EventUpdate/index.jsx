@@ -184,7 +184,7 @@ const EventUpdate = () => {
           onChange={(value) => {
             setEvent({ ...event, slug: value });
             value === ''
-              ? setLog({ ...log, slug: '* O link www.mimon.com.br/aaaaa está em uso, por favor, crie outro' })
+              ? setLog({ ...log, slug: '* O link está em uso, por favor, crie outro' })
               : setLog({ ...log, slug: '' });
           }}
         />

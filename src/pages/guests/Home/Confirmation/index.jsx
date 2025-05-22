@@ -130,6 +130,7 @@ const Confirmation = ({ event }) => {
               text="Confirmar presença"
               background="#FFFFFF"
               color={event.color}
+              maxWidth={300}
             />
           </div>
 
@@ -216,6 +217,7 @@ const Confirmation = ({ event }) => {
             background={event.color}
             onClick={sendConfirmation}
             isLoading={loading}
+            maxWidth={300}
           />
         </S.WrapperForm>
       </Modal>

@@ -101,7 +101,9 @@ export const ButtonOpen = styled('button')({
   transform: 'translateX(-50%)',
   width: 40,
   height: 40,
-  background: 'var(--primary-color)'
+  background: 'var(--primary-color)',
+  borderRadius: '50%',
+  color: '#ffffff'
 });
 
 export const ModalBackdrop = styled('div')({

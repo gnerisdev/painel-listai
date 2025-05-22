@@ -1,13 +1,13 @@
 import { useEffect, useState, useContext } from 'react';
 import { UsersContext } from 'contexts/Users';
 import { ApplicationUtils } from 'utils/ApplicationUtils';
-import Header from 'components/Header';
 import FormContainer from 'components/FormContainer';
 import Button from 'components/Button';
 import TitlePage from 'components/TitlePage';
 import Container from 'components/Container';
 import ToggleSwitch from 'components/ToggleSwitch';
 import InputUrl from 'components/InputUrl';
+import Input from 'components/Input';
 
 const Settings = () => {
   const { apiService, event, setAlert } = useContext(UsersContext);
@@ -17,41 +17,41 @@ const Settings = () => {
     showGuestMessages: true,
     showEventInfo: true,
     allowGuestConfirmation: true,
-    eventSlug: '',
+    slug: '',
+    password: ''
   });
 
-  const getData = async () => {
-    try {
-      const { data } = await apiService.get(`/users/event-settings/${event.id}`);
-      if (!data.success) throw new Error(data.message);
-      setData({
-        showGiftList: data.settings.showGiftList,
-        showGuestMessages: data.settings.showGuestMessages,
-        showEventInfo: data.settings.showEventInfo,
-        allowGuestConfirmation: data.settings.allowGuestConfirmation,
-        eventSlug: data.settings.eventSlug || '',
-      });
-    } catch (error) {
+  const validateForm = () => {
+    let errorMessage = '';
+
+    if (!data.slug.trim()) {
+      errorMessage = 'O link do evento não pode ser vazio.';
+    } else if (data.password && data.password.length < 6) {
+      errorMessage = 'A senha deve ter pelo menos 6 caracteres.';
+    }
+
+    if (errorMessage) {
       setAlert({
         show: true,
-        title: 'Erro!',
+        title: 'Atenção!',
+        text: errorMessage,
         icon: 'fa-solid fa-triangle-exclamation',
-        text: ApplicationUtils.getErrorMessage(error, 'Erro ao recuperar configurações do evento.'),
       });
+      return false;
     }
+    return true;
   };
 
   const save = async () => {
+    const isValid = validateForm();
+    if (!isValid) {
+      return;
+    }
+
     try {
       setLoading(true);
 
-      const response = await apiService.put(`/settings/${event.id}`, {
-        showGiftList: data.showGiftList,
-        showGuestMessages: data.showGuestMessages,
-        showEventInfo: data.showEventInfo,
-        allowGuestConfirmation: data.allowGuestConfirmation,
-        eventSlug: data.eventSlug,
-      });
+      const response = await apiService.put(`/users/event/${event.id}/settings`, data);
 
       if (!response.data.success) throw new Error(response.data.message);
 
@@ -62,7 +62,6 @@ const Settings = () => {
         icon: 'fa-solid fa-check',
       });
     } catch (error) {
-      console.log(error);
       setAlert({
         show: true,
         title: 'Erro!',
@@ -73,6 +72,23 @@ const Settings = () => {
     }
   };
 
+  const getData = async () => {
+    try {
+      const response = await apiService.get(`/users/event/${event.id}/settings`);
+      const { success, message, settings } = response.data;
+
+      if (!success) throw new Error(message);
+      if (settings) setData(settings);
+    } catch (error) {
+      setAlert({
+        show: true,
+        title: 'Erro!',
+        icon: 'fa-solid fa-triangle-exclamation',
+        text: ApplicationUtils.getErrorMessage(error, 'Erro ao recuperar configurações do evento.'),
+      });
+    }
+  };
+
   useEffect(() => {
     getData();
   }, []);
@@ -80,10 +96,8 @@ const Settings = () => {
   return (
     <main style={{ marginTop: 70 }}>
       <Container>
-        <Header back={-1} background={event.color} />
-
         <TitlePage 
-          title="Configurações do Evento" 
+          title="Configurações" 
           subtitle="Depois de alterar, é só clicar em salvar"
           align="center" 
         />
@@ -92,31 +106,38 @@ const Settings = () => {
           <ToggleSwitch
             label="Lista de Presentes"
             checked={data.showGiftList}
-            onChange={(e) => setData({ ...data, showGiftList: e.target.checked })}
+            onChange={value => setData({ ...data, showGiftList: value })}
           />
 
           <ToggleSwitch
             label="Recados"
             checked={data.showGuestMessages}
-            onChange={(e) => setData({ ...data, showGuestMessages: e.target.checked })}
+            onChange={value => setData({ ...data, showGuestMessages: value })}
           />
 
           <ToggleSwitch
             label="Informações do Evento"
             checked={data.showEventInfo}
-            onChange={(e) => setData({ ...data, showEventInfo: e.target.checked })}
+            onChange={value => setData({ ...data, showEventInfo: value })}
           />
 
           <ToggleSwitch
             label="Confirmação de Presença"
             checked={data.allowGuestConfirmation}
-            onChange={(e) => setData({ ...data, allowGuestConfirmation: e.target.checked })}
+            onChange={value => setData({ ...data, allowGuestConfirmation: value })}
           />
 
           <InputUrl
             label="URL - Link do evento"
-            value={data.eventSlug}
-            onChange={(e) => setData({ ...data, eventSlug: e.target.value })}
+            url="https://sites.listai.com.br/"
+            value={data.slug}
+            onChange={value => setData({ ...data, slug: value })}
+          />
+
+          <Input
+            label="Senha"
+            value={data.password}
+            onChange={value => setData({ ...data, password: value })}
             onBlur={() => {}}
           />
 
