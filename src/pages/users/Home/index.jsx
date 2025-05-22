@@ -8,9 +8,9 @@ import BoxNumber from 'components/BoxNumber';
 import CardTitle from 'components/CardTitle';
 import SidebarMenu from 'components/SidebarMenu';
 import naviagtionItems from './NavigationItems';
-import * as S from './style';
 import ListEventServices from 'components/ListEventServices';
 import TitlePage from 'components/TitlePage';
+import * as S from './style';
 
 const Home = () => {
   const navigate = useNavigate();
