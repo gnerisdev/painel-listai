@@ -177,7 +177,7 @@ const EventUpdate = () => {
         <InputUrl
           disabled={disabled}
           label="URL - Link do evento"
-          url="https://sites.listai.com.br/"
+          url="https://site.listai.com.br/"
           messageError={log.slug}
           check={log.slug === ''}
           value={event.slug}

@@ -70,7 +70,7 @@ const Home = () => {
   const getUrlSite = () => {
     let host = window.location.hostname;
     host = host.replace('users.', '').replace('localhost', 'localhost:3001');
-    const url = `http://sites.${host}/${event.slug}`;
+    const url = `http://site.${host}/${event.slug}`;
     return url;
   };
 

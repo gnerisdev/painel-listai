@@ -129,7 +129,7 @@ const Settings = () => {
 
           <InputUrl
             label="URL - Link do evento"
-            url="https://sites.listai.com.br/"
+            url="https://site.listai.com.br/"
             value={data.slug}
             onChange={value => setData({ ...data, slug: value })}
           />
