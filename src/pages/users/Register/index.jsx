@@ -61,7 +61,6 @@ const Register = () => {
 
       try {
         setLoading(true);
-
         const response = await apiService.get(`/users/event-categories?event_type_id=${data.eventType}`, data);
 
         setEventCategories(response.data);
@@ -78,7 +77,7 @@ const Register = () => {
         setLoading(true);
 
         const response = await apiService.get(
-          `/users/fetch-gifts-slug?event_categories_id=${data.eventType}&slug=${data.slug}`,
+          `/users/fetch-gifts-slug?event_category_id=${data.event}&slug=${data.slug}`,
           data
         );
 
