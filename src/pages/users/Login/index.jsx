@@ -122,7 +122,7 @@ const Login = () => {
 
         <S.TextSmall>
           Não possui conta? {" "}
-          <S.Link href="users/register">
+          <S.Link href="/register">
             Clique
           </S.Link> {" "}
           para cadastrar.
