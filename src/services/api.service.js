@@ -32,9 +32,9 @@ export class ApiService {
       headers['Authorization'] = `Bearer ${this.token.replace(/"/g, '')}`;
 
       if (this.module === 'users') {
-        headers['user_id'] = this.id.replace(/"/g, '');
+        headers['X-User-Id'] = this.id.replace(/"/g, '');
       } else if (this.module === 'admin') {
-        headers['admin_id'] = this.id.replace(/"/g, '');
+        headers['X-Admin-Id'] = this.id.replace(/"/g, '');
       }
     }
 
