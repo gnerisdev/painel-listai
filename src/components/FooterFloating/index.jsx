@@ -22,6 +22,14 @@ const FooterFloating = () => {
             onClick={() => navigate('/confirmations')}
           />
 
+          <S.Center>
+            <S.Icon 
+              className="fa-solid fa-home" 
+              style={{ color: 'white' }}
+              onClick={() => navigate('/')}
+            />
+          </S.Center>
+
           <S.Icon 
             className="fa-solid fa-envelope" 
             style={{ color: 'var(--primary-color)' }}

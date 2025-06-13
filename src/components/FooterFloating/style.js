@@ -7,7 +7,8 @@ export const FooterFloating = styled('footer')({
   position: 'fixed',
   bottom: 0,
   zIndex: 9,
-  height: 48,
+  height: 56,
+
   'div': {
     height: '100%'
   },
@@ -20,8 +21,7 @@ export const Nav = styled('nav')({
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
-  height: '100%'
-
+  height: '100%',
 });
 
 export const Icon = styled('span')({
@@ -29,14 +29,12 @@ export const Icon = styled('span')({
   cursor: 'pointer'
 });
 
-export const IconLogo = styled('span')({
-  width: 40,
-  height: 40,
+export const Center = styled('div')({
+  width: 38,
+  height: '39px !important',
+  background: 'var(--primary-color)',
   borderRadius: '50%',
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  'img': {
-    width: '100%'
-  }
 });

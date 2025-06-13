@@ -13,11 +13,16 @@ const Gallery = () => {
   const [fileType, setFileType] = useState(null);
   const [loading, setLoading] = useState(false);
   const [gallery, setGallery] = useState([]);
+  const [videoQuantity, setVideoQuantity] = useState(0);
+  const [imageQuantity, setImageQuantity] = useState(0);
 
   const getGallery = async () => {
     try {
       const response = await apiService.get(`/users/event-gallery/${event.id}`);
-      const { gallery } = response.data;
+      const { gallery, videoQuantity, imageQuantity } = response.data;
+
+      setVideoQuantity(videoQuantity || 0)
+      setImageQuantity(imageQuantity || 0)
 
       if (gallery) setGallery(gallery);
     } catch (error) { }
@@ -64,6 +69,7 @@ const Gallery = () => {
 
       setAlert({ show: true, title: 'Sucesso!', icon: 'fa-solid fa-check', text: 'Mídia salva.' });
       handleRemoveMedia();
+      getGallery();
     } catch (error) {
       setAlert({
         show: true,
@@ -102,7 +108,11 @@ const Gallery = () => {
             <S.Card>
               <S.Icon className="fa-solid fa-camera" />
               <S.Title>ADICIONAR FOTOS</S.Title>
-              <S.Subtitle>Incluso 5 fotos</S.Subtitle>
+              <S.Subtitle>
+                {imageQuantity === 0 
+                  ? 'Nenhuma foto incluída' 
+                  : `Inclusa${imageQuantity > 1 ? 's' : ''} ${imageQuantity} foto${imageQuantity > 1 ? 's' : ''}`}
+              </S.Subtitle>            
             </S.Card>
           </S.UploadLabel>
 
@@ -115,7 +125,11 @@ const Gallery = () => {
             <S.Card>
               <S.Icon className="fa-solid fa-video" />
               <S.Title>ADICIONAR VÍDEO</S.Title>
-              <S.Subtitle>Incluso 1 vídeo</S.Subtitle>
+              <S.Subtitle>
+                {videoQuantity === 0 
+                  ? 'Nenhum vídeo incluído' 
+                  : `${videoQuantity} vídeo${videoQuantity > 1 ? 's' : ''} incluído${videoQuantity > 1 ? 's' : ''}`}
+              </S.Subtitle>
             </S.Card>
           </S.UploadLabel>
         </S.Content>
