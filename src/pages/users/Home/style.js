@@ -27,7 +27,6 @@ export const Background = styled('img')({
 export const WrapperProfile = styled('div')({
   width: '100%',
   display: 'grid',
-  gridTemplateColumns: '1fr',
   justifyContent: 'center',
   textAlign: 'center',
   '@media(min-width: 1024px)': { 

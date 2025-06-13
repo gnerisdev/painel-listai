@@ -2,6 +2,7 @@ import { createContext, useEffect, useState, useMemo, useContext } from 'react';
 import { ApiService } from 'services/api.service';
 import Modal from 'components/Modal';
 import ShoppingCart from 'components/ShoppingCart';
+import LoadingLogo from 'components/LoadingLogo';
 
 const getSlugFromPath = () => {
   const pathParts = window.location.pathname.split('/');
@@ -69,7 +70,7 @@ export const GuestsProvider = (props) => {
     getEvent();
   }, []);
 
-  if (state === 'loading') return <div>Carregando...</div>;
+  if (state === 'loading') return <LoadingLogo />;
 
   return (
     <GuestsContext.Provider

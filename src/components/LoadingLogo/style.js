@@ -11,8 +11,8 @@ export const Wrapper = styled('div')({
 
 export const SpinnerWrapper = styled('div')({
   position: 'relative',
-  width: 160,
-  height: 160,
+  width: 120,
+  height: 120,
 });
 
 export const Spinner = styled('div')({
@@ -27,7 +27,7 @@ export const Spinner = styled('div')({
 });
 
 export const LogoImg = styled('img')({
-  width: 120,
+  width: 80,
   height: 'auto',
   position: 'absolute',
   top: '50%',

@@ -2,6 +2,7 @@ import { createContext, useEffect, useState, useMemo, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { ApiService } from 'services/api.service';
 import Modal from 'components/Modal';
+import LoadingLogo from 'components/LoadingLogo';
 
 export const UsersProvider = (props) => {
   const alertRef = useRef(false);
@@ -32,6 +33,9 @@ export const UsersProvider = (props) => {
       setUser(user);
       setEvent(event);
       setAuthState('authenticated');
+
+      // Chage color
+      document.documentElement.style.setProperty('--primary-color', event.color);
     } catch (e) {
       setAuthState('unauthorized');
     }
@@ -45,7 +49,7 @@ export const UsersProvider = (props) => {
 
   }, [alert])
 
-  if (authState === 'checking') return <div>Carregando...</div>;
+  if (authState === 'checking') return <LoadingLogo />;
 
   return (
     <UsersContext.Provider

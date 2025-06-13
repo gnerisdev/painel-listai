@@ -7,6 +7,7 @@ import Input from 'components/Input';
 import TitlePage from 'components/TitlePage';
 import Container from 'components/Container';
 import Select from 'components/Select';
+import InputDate from 'components/InputDate';
 import * as S from './style';
 
 const Info = () => {
@@ -15,9 +16,9 @@ const Info = () => {
   const [log, setLog] = useState({});
   const [urlMap, setUrlMap] = useState(null);
   const [data, setData] = useState({
-    date: '',
-    startTime: '',
-    endTime: '',
+    eventDate: null,
+    startTime: null,
+    endTime: null,
     eventType: '',
     eventLocation: '',
     postalCode: '',
@@ -30,7 +31,7 @@ const Info = () => {
   });
 
   const eventType = [
-    { title: 'Prensencial', value: 'in-person' },
+    { title: 'Presencial', value: 'in-person' },
     { title: 'Virtual', value: 'virtual' },
   ];
 
@@ -43,6 +44,17 @@ const Info = () => {
         'get', null, {},
       );
 
+      if (!response.data.logradouro) {
+        setAlert({
+          show: true,
+          title: 'Cep não encontrado!',
+          icon: 'fa-solid fa-triangle-exclamation',
+          text: 'Não foi possível encontrar o cep'
+        });
+
+        setUrlMap(null);
+      }
+      
       const { uf, logradouro, bairro, localidade } = response.data;
 
       getGeolocation(`${logradouro}, ${bairro}, ${localidade}, ${uf}`);
@@ -52,7 +64,6 @@ const Info = () => {
   };
 
   const getGeolocation = async (fullAddress) => {
-    console.log(fullAddress)
     if (!fullAddress) return;
     try {
       const response = await apiService.externalQuery(
@@ -65,49 +76,60 @@ const Info = () => {
       if (places.length > 0) {
         const { lat, lon, name } = places[0];
         setData({ ...data, latitude: lat, longitude: lon, fullAddress: name });
-        console.log(places)
         const mapUrl = `/marker-map.html?lat=${lat}&lon=${lon}&color=${event.color}`;
         setUrlMap(mapUrl);
-      } else {
-
       }
     } catch (error) {
       console.error('Erro ao buscar localização:', error);
     }
   };
 
+  const startMap = async (fullAddress) => {
+    const response = await apiService.externalQuery(
+      `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(fullAddress)}`,
+      'get', null, {}
+    );
+
+    const places = response.data;
+    if (!places || places.length <= 0) return;
+     
+    const { lat, lon } = places[0];
+    const mapUrl = `/marker-map.html?lat=${lat}&lon=${lon}`;
+    setUrlMap(mapUrl);
+  };
+
   const validateFields = () => {
     const newLog = { ...log };
     let errorCount = 0;
-  
-    if (!data.date) {
-      newLog.date = '* Campo Data é obrigatório';
+
+    if (!data.eventDate) {
+      newLog.eventDate = '* Campo Data é obrigatório';
       errorCount++;
     } else {
-      newLog.date = '';
+      newLog.eventDate = '';
     }
-  
+
     if (!data.startTime) {
       newLog.startTime = '* Campo Horário de Início é obrigatório';
       errorCount++;
     } else {
       newLog.startTime = '';
     }
-  
+
     if (!data.endTime) {
       newLog.endTime = '* Campo Horário de Término é obrigatório';
       errorCount++;
     } else {
       newLog.endTime = '';
     }
-  
+
     if (!data.eventType) {
       newLog.eventType = '* Campo Tipo do Evento é obrigatório';
       errorCount++;
     } else {
       newLog.eventType = '';
     }
-  
+
     if (data.eventType === 'in-person') {
       if (!data.eventLocation) {
         newLog.eventLocation = '* Campo Local do Evento é obrigatório';
@@ -115,7 +137,7 @@ const Info = () => {
       } else {
         newLog.eventLocation = '';
       }
-  
+
       if (!data.postalCode) {
         newLog.postalCode = '* Campo CEP é obrigatório';
         errorCount++;
@@ -128,7 +150,7 @@ const Info = () => {
           newLog.postalCode = '';
         }
       }
-  
+
       if (!data.fullAddress) {
         newLog.fullAddress = '* Campo Endereço é obrigatório';
         errorCount++;
@@ -136,7 +158,7 @@ const Info = () => {
         newLog.fullAddress = '';
       }
     }
-  
+
     if (data.eventType === 'virtual') {
       if (!data.transmission) {
         newLog.transmission = '* Campo Transmissão é obrigatório';
@@ -144,14 +166,14 @@ const Info = () => {
       } else {
         newLog.transmission = '';
       }
-  
+
       if (!data.transmissionLink) {
         newLog.transmissionLink = '* Campo Link da Transmissão é obrigatório';
         errorCount++;
       } else {
         newLog.transmissionLink = '';
       }
-  
+
       if (!data.transmissionPassword) {
         newLog.transmissionPassword = '* Campo Senha da Transmissão é obrigatório';
         errorCount++;
@@ -159,15 +181,15 @@ const Info = () => {
         newLog.transmissionPassword = '';
       }
     }
-  
+    console.log(newLog)
     setLog(newLog);
-  
+
     return errorCount > 0 ? false : true;
   };
 
-  const getValue = async (name, value) => {
+  const handleChange = (name, value) => {
     setData({ ...data, [name]: value });
-    value === ''
+    value === null || value === '' 
       ? setLog({ ...log, [name]: '* Campo obrigatório' })
       : setLog({ ...log, [name]: '' });
   };
@@ -179,12 +201,8 @@ const Info = () => {
       if (!success) throw new Error(message);
 
       if (eventDetails) {
-        setData({ 
-          ...eventDetails, 
-          date: ApplicationUtils.formatToInputDate(eventDetails.eventDate),
-          startTime: ApplicationUtils.formatToInputTime(eventDetails.startTime),
-          endTime: ApplicationUtils.formatToInputTime(eventDetails.endTime),
-        });
+        setData({ ...eventDetails });
+        if (eventDetails.fullAddress) startMap(eventDetails.fullAddress);
       }
     } catch (error) {
       setAlert({
@@ -201,9 +219,27 @@ const Info = () => {
       setLoading(true);
 
       if (!validateFields()) throw new Error('Verifique os campos.');
-      const { data: response } = await apiService.put(`/users/event-details/${event.id}`, data);
 
-      if (response.eventDetails) setData(response.eventDetails);
+      const dataToSend = {
+        ...data,
+        eventDate: data.eventDate ? ApplicationUtils.formatToInputDate(data.eventDate) : null,
+        startTime: data.startTime ? ApplicationUtils.formatToInputTime(data.startTime) : null,
+        endTime: data.endTime ? ApplicationUtils.formatToInputTime(data.endTime) : null,
+      };
+
+      const response  = await apiService.put(`/users/event-details/${event.id}`, dataToSend);
+      const { success, message } = response.data;
+
+      if (!success) throw new Error(message);
+
+      setAlert({
+        show: true,
+        title: 'Sucesso!',
+        icon: 'fa-solid fa-check',
+        text: 'Informações atualizadas!'
+      });
+
+      getEventDetails();
     } catch (error) {
       setAlert({
         show: true,
@@ -230,49 +266,43 @@ const Info = () => {
         />
 
         <FormContainer margin="2rem auto">
-          <Input
+          <InputDate
             label="Data"
-            type="date"
-            value={data.date}
-            check={log.date === ''}
-            messageError={log.date}
-            onChange={(value) => getValue('date', value)}
+            value={data.eventDate}
+            onChange={(value) => handleChange('eventDate', value)}
+            check={log.eventDate === ''}
+            messageError={log.eventDate}
+            placeholder="Selecione a data"
           />
 
-          <S.Row>
-            <Input
-              label="Horário de início"
-              type="time"
-              value={data.startTime}
-              check={log.startTime === ''}
-              messageError={log.startTime}
-              onChange={(value) => getValue('startTime', value)}
-            />
+          <InputDate
+            type="time"
+            label={"Horário de início"}
+            value={data.startTime}
+            onChange={(value) => handleChange('startTime', value)}
+            check={log.startTime === ''}
+            messageError={log.startTime}
+            placeholder="Selecione a hora"
+          />
 
-            <Input
-              label="Horário de término"
-              type="time"
-              value={data.endTime}
-              check={log.endTime === ''}
-              messageError={log.endTime}
-              onChange={(value) => getValue('endTime', value)}
-            />
-          </S.Row>
+          <InputDate
+            type="time"
+            label="Horário de término"
+            value={data.endTime}
+            onChange={(value) => handleChange('endTime', value)}
+            check={log.endTime === ''}
+            messageError={log.endTime}
+            placeholder="Selecione a hora"
+          />
 
           <Select
             label="Tipo do evento"
             messageError={log.eventType}
             data={eventType}
             value={data.eventType || ''}
-            onChange={(value) => {
-              getValue('eventType', value);
-              value === ''
-                ? setLog({ ...log, eventType: '* Campo obrigatório' })
-                : setLog({ ...log, eventType: '' });
-            }}
+            onChange={(value) => handleChange('eventType', value)}
           />
 
-          {/* Presencial */}
           {data?.eventType === 'in-person' && (
             <>
               <Input
@@ -281,7 +311,7 @@ const Info = () => {
                 value={data.eventLocation}
                 check={log.eventLocation === ''}
                 messageError={log.eventLocation}
-                onChange={(value) => getValue('eventLocation', value)}
+                onChange={(value) => handleChange('eventLocation', value)}
               />
 
               <S.WrapperCep>
@@ -289,7 +319,7 @@ const Info = () => {
                   label="Cep"
                   placeholder="CEP"
                   value={data.postalCode}
-                  onChange={(value) => getValue('postalCode', value)}
+                  onChange={(value) => handleChange('postalCode', value)}
                 />
                 <button
                   type="button"
@@ -300,19 +330,20 @@ const Info = () => {
                 </button>
               </S.WrapperCep>
 
+
               <Input
                 label="Endereço"
                 placeholder="Endereço completo ou local"
                 value={data.fullAddress}
                 check={log.fullAddress === ''}
                 messageError={log.fullAddress}
-                onChange={(value) => getValue('fullAddress', value)}
+                onChange={(value) => handleChange('fullAddress', value)}
               />
 
-              {(data.latitude && data.longitude) && (
-                <iframe 
-                  width="100%" 
-                  height="350" 
+              {urlMap && (
+                <iframe
+                  width="100%"
+                  height="350"
                   src={urlMap}
                   style={{ border: 'none' }}
                   title="mapa"
@@ -322,7 +353,6 @@ const Info = () => {
             </>
           )}
 
-          {/* Virtual */}
           {data?.eventType === 'virtual' && (
             <>
               <Input
@@ -331,7 +361,7 @@ const Info = () => {
                 value={data.transmission}
                 check={log.transmission === ''}
                 messageError={log.transmission}
-                onChange={(value) => getValue('transmission', value)}
+                onChange={(value) => handleChange('transmission', value)}
               />
 
               <Input
@@ -340,7 +370,7 @@ const Info = () => {
                 value={data.transmissionLink}
                 check={log.transmissionLink === ''}
                 messageError={log.transmissionLink}
-                onChange={(value) => getValue('transmissionLink', value)}
+                onChange={(value) => handleChange('transmissionLink', value)}
               />
 
               <Input
@@ -349,7 +379,7 @@ const Info = () => {
                 value={data.transmissionPassword}
                 check={log.transmissionPassword === ''}
                 messageError={log.transmissionPassword}
-                onChange={(value) => getValue('transmissionPassword', value)}
+                onChange={(value) => handleChange('transmissionPassword', value)}
               />
             </>
           )}

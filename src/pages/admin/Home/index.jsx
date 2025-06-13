@@ -60,9 +60,10 @@ const Home = () => {
     },
     {
       title: 'Configurações',
-      text: 'Ajuste configurações gerais e de segurança',
+      text: 'Ajuste configurações gerais',
       icon: 'fa-solid fa-gear',
-      color: 'var(--primary-color) ',
+      color: 'var(--primary-color)',
+      link: '/settings',
     },
     {
       title: 'Sair',

@@ -26,12 +26,15 @@ export const AdminProvider = (props) => {
   const getAdmin = async () => {
     try {
       const response = await apiService.get(`/admin/me`);
-      const { admin } = await response.data;
+      const { admin, color, colorSecondary } = await response.data;
 
       if (response.status === 401 || response.status === 404) {
         return setAuthState('unauthorized');
       }
 
+      document.documentElement.style.setProperty('--primary-color', color);
+      document.documentElement.style.setProperty('--secondary-color', colorSecondary);
+        
       setAdmin(admin);
       setAuthState('authenticated');
     } catch (e) {

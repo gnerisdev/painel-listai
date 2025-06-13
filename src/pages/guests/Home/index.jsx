@@ -108,7 +108,6 @@ const Home = () => {
         <Container>
           <small><i className="fa-solid fa-lock"></i> Ambiente seguro</small> <br />
           <small> © Listai. Todos os direitos reservados.</small>
-          <small style={{ display: 'block', marginTop: -4 }}>CNPJ - 17.624.249/0001-70</small>
         </Container>
       </S.Footer>
     </S.Main>

@@ -41,8 +41,7 @@ export const WrapperIcons = styled('div')({
   gap: 8
 });
 
-
-export const Check = styled('img')({
+export const Check = styled('span')({
   width: 18,
   height: 18
 });

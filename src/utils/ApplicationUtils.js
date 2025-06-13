@@ -26,6 +26,12 @@ export class ApplicationUtils {
     return isNaN(numericValue) ? 0 : numericValue;
   };
 
+  static toDateString(dateStr) {
+    if (!dateStr) return null;
+    const date = new Date(dateStr);
+    return isNaN(date.getTime()) ? null : date;
+  }
+
   static formatDate(dateString, includeTime = true, includeYear = true) {
     const date = new Date(dateString);
     if (!(date instanceof Date) || isNaN(date.getTime())) {

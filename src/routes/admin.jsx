@@ -18,6 +18,7 @@ import EventGuestConfirmations from 'pages/admin/EventGuestConfirmations';
 import EventGiftsReceived from 'pages/admin/EventGiftsReceived';
 import Payouts from 'pages/admin/Payouts';
 import EventServices from 'pages/admin/EventServices';
+import Settings from 'pages/admin/Settings';
 
 const authRoutes = [
   {
@@ -51,6 +52,7 @@ const mainRoutes = [
       { path: 'gifts/create', element: <GiftAdd title="Novo Presente" /> },
       { path: 'event-types', element: <EventTypes /> },
       { path: 'payouts', element: <Payouts /> },
+      { path: 'settings', element: <Settings /> },
     ],
   },
   { path: '*', element: <Navigate to="/" /> }

@@ -5,7 +5,7 @@ import * as S from './style';
 
 const Step3 = ({ data, isLoading, getData, next }) => {
   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
   const phoneRegex = /^\(\d{2}\) \d{5}-\d{4}$/;
 
   const [log, setLog] = useState({

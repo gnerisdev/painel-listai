@@ -5,35 +5,42 @@ import * as S from './style';
 const FooterFloating = () => {
   const navigate = useNavigate();
   return (
+    <>
+    <div style={{ height: 40  }}></div>
     <S.FooterFloating>
       <Container>
         <S.Nav>
           <S.Icon 
-            onClick={() => navigate('/messages')}
-            className="fa-solid fa-comment-dots" 
-            style={{ color: '#5d9ce' }}
-          />
-
-          <S.Icon 
-            onClick={() => navigate('/gifts-received')}
             className="fa-solid fa-gift" 
-            style={{ color: '#5d9ce' }}
+            style={{ color: 'var(--primary-color)' }}
+            onClick={() => navigate('/gifts-received')}
           />
 
           <S.Icon 
-            onClick={() => navigate('/confirmations')}
             className="fa-solid fa-list" 
-            style={{ color: '#5d9ce' }}
+            style={{ color: 'var(--primary-color)' }}
+            onClick={() => navigate('/confirmations')}
           />
 
           <S.Icon 
-            onClick={() => navigate(-1)}
-            className="fa-regular fa-user" 
-            style={{ color: '#5d9ce' }}
+            className="fa-solid fa-envelope" 
+            style={{ color: 'var(--primary-color)' }}
+            onClick={() => navigate('/messages')}
+          />
+
+          <S.Icon 
+            className="fa-solid fa-right-from-bracket"
+            style={{ color: 'var(--primary-color)' }}
+            onClick={() => {
+              localStorage.removeItem('userToken');
+              localStorage.removeItem('userId');
+              window.location.reload();
+            }}
           />
         </S.Nav>
       </Container>
     </S.FooterFloating>
+    </>
   );
 };
 
