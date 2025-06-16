@@ -16,7 +16,7 @@ const TypeGift = () => {
   return (
     <Container>
       <TitlePage
-        title="Minha Lista de Presentes em Dinheiro"
+        title="Minha Lista de Presentes"
         icon="fa-solid fa-gift"
       />
 

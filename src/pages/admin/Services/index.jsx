@@ -7,16 +7,19 @@ import TitlePage from 'components/TitlePage';
 import Table from 'components/Table';
 import Button from 'components/Button';
 import HeaderWithButton from 'components/HeaderWithButton';
+import LoadingLogo from 'components/LoadingLogo';
 import * as S from './style';
 
 const Services = () => {
   const navigate = useNavigate();
-
+  const [loading, setLoading] = useState(false);
   const [services, setServices] = useState([]);
   const { setAlert, apiService } = useContext(AdminContext);
 
   const getServices = useCallback(async () => {
     try {
+      setLoading(true);
+
       const response = await apiService.get(`/admin/services`);
       const { services, success, message } = response.data;
 
@@ -39,6 +42,8 @@ const Services = () => {
         icon: 'fa-solid fa-triangle-exclamation',
         text: ApplicationUtils.getErrorMessage(error, 'Erro ao buscar tipos de eventos.'),
       });
+    } finally {
+      setLoading(false);
     }
   }, [apiService, setAlert]);
 
@@ -76,6 +81,8 @@ const Services = () => {
           ]}
         />
       </S.Main>
+
+      {loading && <LoadingLogo />}
     </Container>
   );
 };

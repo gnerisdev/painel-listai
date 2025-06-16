@@ -114,13 +114,13 @@ const Confirmation = ({ event }) => {
 
   return (
     <>
-      <S.SectionConfirmation>
+      <S.SectionConfirmation id="confirmation">
         <Container>
           <div style={{ marginBottom: -2 }}>
-            <WaveEffect color={event.color} />
+            <WaveEffect color="var(--primary-color)" />
           </div>
 
-          <div className="content" style={{ background: event.color }}>
+          <div className="content" style={{ background: 'var(--primary-color)' }}>
             <div>
               <S.TitleSection>Contamos com a sua presença</S.TitleSection>
             </div>
@@ -129,13 +129,13 @@ const Confirmation = ({ event }) => {
               onClick={() => setModalFormConfirmation(true)}
               text="Confirmar presença"
               background="#FFFFFF"
-              color={event.color}
+              color="var(--primary-color)"
               maxWidth={300}
             />
           </div>
 
           <div style={{ marginTop: -2 }}>
-            <WaveEffect color={event.color} inverted={true} />
+            <WaveEffect color="var(--primary-color)" inverted={true} />
           </div>
         </Container>
       </S.SectionConfirmation>
@@ -145,7 +145,7 @@ const Confirmation = ({ event }) => {
         updateShow={() => setModalFormConfirmation(false)}
         closeOut={false}
       >
-        <S.TitleSection style={{ color: event.color }}>
+        <S.TitleSection style={{ color: "var(--primary-color)" }}>
           <i className="fa-solid fa-check"></i>
           {'  '}Confirme sua presença
         </S.TitleSection>
@@ -214,7 +214,7 @@ const Confirmation = ({ event }) => {
           <Button
             text="CONFIRMAR PRESENÇA"
             color="#FFFFFF"
-            background={event.color}
+            background="var(--primary-color)"
             onClick={sendConfirmation}
             isLoading={loading}
             maxWidth={300}

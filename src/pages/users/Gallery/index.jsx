@@ -82,6 +82,32 @@ const Gallery = () => {
     }
   };
 
+  const handleRemoveMediaFromGallery = async (id) => {
+    try {
+      const response = await apiService.delete(`/users/event-gallery/${event.id}/media/${id}`);
+      const { success, message } = response.data;
+      if (!success) throw new Error(message); 
+
+      setAlert({ 
+        show: true, 
+        title: 'Sucesso!', 
+        icon: 'fa-solid fa-check', 
+        text: 'Mídia removida.' 
+      });
+
+      getGallery();
+    } catch (error) {
+      setAlert({
+        show: true,
+        title: 'Erro!',     
+        icon: 'fa-solid fa-triangle-exclamation',
+        text: ApplicationUtils.getErrorMessage(error, 'Erro ao remover mídia.'),
+      });
+    } finally {
+      setLoading(false);
+    }
+  }
+
   useEffect(() => {
     getGallery();
   }, []);
@@ -164,6 +190,11 @@ const Gallery = () => {
             <S.GalleryGrid>
               {gallery.map((item) => (
                 <S.GalleryItem key={item.id}>
+                  <S.RemoveButton 
+                    className="fa-solid fa-trash" 
+                    onClick={() => handleRemoveMediaFromGallery(item.id)} 
+                  />
+
                   {item.type === 'image' ? (
                     <img src={item.url} alt={`Imagem ${item.id}`} />
                   ) : (

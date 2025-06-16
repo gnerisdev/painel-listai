@@ -8,12 +8,17 @@ import Input from 'components/Input';
 import HeaderWithButton from 'components/HeaderWithButton';
 import SelectColor from 'components/SelectColor';
 import Modal from 'components/Modal';
+import LoadingLogo from 'components/LoadingLogo';
 import * as S from './style';
 
 const Settings = () => {
   const { apiService, event, setAlert } = useAdmin();
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState({ percentageGift: 15 });
+  const [data, setData] = useState({
+    percentageGift: 0,
+    color: '',
+    colorSecondary: '',
+  });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [password, setPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -41,6 +46,8 @@ const Settings = () => {
     }
 
     try { 
+      setLoading(true);
+
       const response = await apiService.put(`/admin/password`, { 
         newPassword: newPassword, currentPassword: password,
       });
@@ -56,6 +63,9 @@ const Settings = () => {
       });
 
       setIsModalOpen(false);
+      setNewPassword('');
+      setPassword('');
+      setRepeatPassword('');
     } catch (error) {
       setAlert({
         show: true,
@@ -234,9 +244,12 @@ const Settings = () => {
         <Button 
           text="Salvar"   
           onClick={changePassword}   
+          isLoading={loading}
         />
         </S.ContentModal>
       </Modal>
+
+      {(loading && data.percentageGift === 0) && <LoadingLogo />}
     </Container>
   );
 };

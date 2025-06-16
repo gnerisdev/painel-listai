@@ -143,6 +143,7 @@ export const GalleryItem = styled('div')({
   overflow: 'hidden',
   boxShadow: '0 2px 6px rgba(0,0,0,0.1)',
   backgroundColor: '#fff',
+  position: 'relative',
 
   img: {
     width: '100%',
@@ -160,4 +161,19 @@ export const GalleryItem = styled('div')({
 export const GalleryTitle = styled('h3')({
   marginTop: 56,
   textAlign: 'center'
+});
+
+export const RemoveButton = styled('button')({
+  position: 'absolute',
+  top: 8,
+  right: 8,
+  width: 32,
+  height: 32,
+  borderRadius: '50%',
+  background: 'var(--primary-color)',
+  color: 'white',
+  border: 'none',
+  cursor: 'pointer',
+  fontSize: '0.9rem',
+  zIndex: 1,
 });

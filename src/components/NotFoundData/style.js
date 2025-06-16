@@ -9,6 +9,7 @@ export const NotFoundData = styled('div')({
   padding: 8,
   color: '#666',
   fontSize: '1rem',
+  lineHeight: 1.1,
   '.icon': {
     fontSize: 80, 
     marginBottom: '0.5rem', 

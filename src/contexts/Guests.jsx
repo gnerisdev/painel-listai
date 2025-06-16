@@ -1,23 +1,15 @@
-import { createContext, useEffect, useState, useMemo, useContext } from 'react';
+import { createContext, useState, useMemo, useContext } from 'react';
 import { ApiService } from 'services/api.service';
-import Modal from 'components/Modal';
 import ShoppingCart from 'components/ShoppingCart';
-import LoadingLogo from 'components/LoadingLogo';
-
-const getSlugFromPath = () => {
-  const pathParts = window.location.pathname.split('/');
-  return pathParts[1] || null;
-};
+import Modal from 'components/Modal';
 
 export const GuestsContext = createContext();
 
 export const GuestsProvider = (props) => {
-  const slug = getSlugFromPath();
   const apiService = useMemo(() => new ApiService({ module: 'users', auth: false }), []);
-  const [state, setState] = useState('loading');
-  const [event, setEvent] = useState({});
   const [alert, setAlert] = useState({ show: false, icon: '', title: '', text: '' });
   const [cartItems, setCartItems] = useState([]);
+  const [event, setEvent] = useState(null);
 
   const addToCart = (item, quantity) => {
     const existingItemIndex = cartItems.findIndex((cartItem) => cartItem.id === item.id);
@@ -37,9 +29,15 @@ export const GuestsProvider = (props) => {
   };
 
   const updateQuantity = (itemId, newQuantity) => {
+    if(newQuantity === 0) {
+      removeFromCart(itemId);
+      return;
+    }
+
     const updatedCartItems = cartItems.map((item) =>
       item.id === itemId ? { ...item, quantity: parseInt(newQuantity, 10) || 1 } : item
     );
+
     setCartItems(updatedCartItems);
   };
 
@@ -47,36 +45,9 @@ export const GuestsProvider = (props) => {
     return cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
   };
 
-  const getEvent = async () => {
-    try {
-      const response = await apiService.get(`/guests/event/${slug}`);
-
-      const { success, message, event } = response.data;
-      if (!success || !event) throw new Error(message);
-
-      setEvent(event);
-      setState('ready');
-    } catch (error) {
-      // setAlert({
-      //   show: true,
-      //   title: 'Erro!',
-      //   icon: 'fa-solid fa-triangle-exclamation',
-      //   text: ApplicationUtils.getErrorMessage(error, 'Erro ao buscar serviços.')
-      // });
-    }
-  };
-
-  useEffect(() => {
-    getEvent();
-  }, []);
-
-  if (state === 'loading') return <LoadingLogo />;
-
   return (
     <GuestsContext.Provider
       value={{
-        event,
-        setEvent,
         alert,
         setAlert,
         apiService,
@@ -85,10 +56,11 @@ export const GuestsProvider = (props) => {
         removeFromCart,
         updateQuantity,
         getTotal,
+        event,
+        setEvent,
       }}
     >
       <Modal
-        background={event.color}
         active={alert.show}
         updateShow={(e) => setAlert(e)}
         zIndex={20}

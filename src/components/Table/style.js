@@ -24,7 +24,14 @@ export const TableHeader = styled('thead')({
   }
 });
 
+export const ContainerTableBody = styled('div')({
+  maxHeight: '60vh',
+  overflowY: 'auto',
+  width: '100%'
+});
+
 export const TableBody = styled('tbody')({
+  overflow: 'visible',
   'tr:nth-child(even)': {
     backgroundColor: '#f9f9f9',
   },

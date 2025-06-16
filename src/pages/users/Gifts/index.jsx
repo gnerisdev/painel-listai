@@ -102,7 +102,7 @@ const Gifts = () => {
       <Container>
         <TitlePage
           title="Lista de Presentes"
-          subtitle="Minha Lista de Presentes em Dinheiro"
+          subtitle="Minha Lista de Presentes"
           align="center"
         />
 

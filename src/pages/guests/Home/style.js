@@ -5,9 +5,18 @@ export const Header = styled.header({
   width: '100%',
   height: 56,
   zIndex: 1,
-  background: '#fff',
+  background: 'var(--primary-color)',
   inset: 0,
   boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+  '.background': {
+    content: '',
+    position: 'fixed',
+    height: '100vh',
+    width: '100%',
+    background: 'rgba(0,0,0,0.2)',
+    inset: 0,
+    zIndex: 0
+  },
 });
 
 export const Nav = styled.nav({
@@ -15,17 +24,25 @@ export const Nav = styled.nav({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
+  '.avatar': {
+    width: 38,
+    height: 38,
+    objectFit: 'cover',
+    border: '1px solid #fff',
+    borderRadius: '50%'
+  }
 });
 
 export const Logo = styled.div({
-  img: { height: '32px'},
+  img: { height: '24px'},
 });
 
 export const MenuButton = styled.button({
   background: 'none',
   border: 'none',
-  fontSize: '24px',
+  fontSize: '22px',
   cursor: 'pointer',
+  color: 'var(--text-white)'
 });
 
 export const SideMenu = styled('div')({
@@ -36,18 +53,44 @@ export const SideMenu = styled('div')({
   background: '#fff',
   boxShadow: '2px 0 5px rgba(0,0,0,0.1)',
   transition: 'left 0.3s ease-in-out',
-  zIndex: 1050,
-  left: -250,
+  zIndex: 1,
+  right: -250,
   '&.open': {
-    left: 0,
+    right: 0,
+  },
+  
+  '.header': {
+    height: 56,
+    background: 'var(--primary-color)',
+    color: 'var(--text-white)',
+    display: 'flex',
+    alignItems: 'center',
+    padding: '0 16px',
+    gap: 16,
+    fontSize: '1.1rem',
+    i: {
+      width: 24, 
+      height: 24, 
+      borderRadius: '50%',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      background: 'var(--text-white)',
+      color: 'var(--primary-color)',
+      cursor: 'pointer'
+    },
   },
   ul: {
     listStyle: 'none',
-    padding: '20px',
-    margin: 0,
+    margin: '0 0',
   },
   li: {
-    marginBottom: '16px',
+    padding: '12px 16px',
+    cursor: 'pointer',
+    '&:hover': {
+      background: 'var(--primary-color)',
+      color: '#fff'
+    }
   },
   a: {
     textDecoration: 'none',
@@ -143,8 +186,14 @@ export const TitleSection = styled('h2')({
   textAlign: 'center',
 });
 
-export const WrapperForm = styled('div')({
-  display: 'grid',
+export const ContainerNotFound = styled('div')({
+  height: '100vh', 
+  width: '100%',
+  display: 'flex', 
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
+  padding: '0 16px',
   gap: 16
 });
 

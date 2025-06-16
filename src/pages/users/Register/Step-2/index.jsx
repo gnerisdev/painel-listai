@@ -23,7 +23,7 @@ const Step2 = ({ data, isLoading, getData, next, gifts }) => {
     gifts && (
       <div>
         <S.Subtitle>
-          Lista de Presentes em Dinheiro
+          Lista de Presentes
           {data?.giftList?.length > 0 && (
             <S.ListNumber>{data.giftList.length}</S.ListNumber>
           )}

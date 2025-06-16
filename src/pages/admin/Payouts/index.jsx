@@ -8,9 +8,10 @@ import Filter from 'components/Filter';
 import Modal from 'components/Modal';
 import FormContainer from 'components/FormContainer';
 import Input from 'components/Input';
-import * as S from './style';
 import Button from 'components/Button';
 import ConfirmAction from 'components/ConfirmAction';
+import LoadingLogo from 'components/LoadingLogo';
+import * as S from './style';
 
 const Payouts = () => {
   const { apiService, event, setAlert } = useContext(AdminContext);
@@ -183,6 +184,8 @@ const Payouts = () => {
           </ConfirmAction>
         </FormContainer>
       </Modal>
+
+      {loading && <LoadingLogo />}
     </main>
   );
 };

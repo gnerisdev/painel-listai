@@ -2,76 +2,141 @@ import { useState, useContext, useEffect } from 'react';
 import { GuestsContext } from 'contexts/Guests';
 import Container from 'components/Container';
 import GallerySlider from 'components/GallerySlider';
-import logo from 'assets/logo-2.png';
 import imageDefaultEvent from 'assets/default-image-event.avif';
+import NotFoundData from 'components/NotFoundData';
+import Button from 'components/Button';
+import LoadingLogo from 'components/LoadingLogo';
 import Messages from './Messages';
 import GiftList from './GiftList';
 import Info from './Info';
 import Confirmation from './Confirmation';
 import defaultBanner from 'assets/default-banner.jpg'
 import defaultAvatar from 'assets/default-avatar-event.avif';
+import logo from 'assets/logo.png';
 import * as S from './style';
 
-const Home = () => {
-  const { event, setEvent } = useContext(GuestsContext);
-  const [isOpen, setIsOpen] = useState(false);
-  const [urlMap, setUrlMap] = useState(null);
+const getSlugFromPath = () => {
+  const pathParts = window.location.pathname.split('/');
+  return pathParts[1] || null;
+};
 
-  const profileImage = event.avatarUrl || defaultAvatar;
-  const bannerImage = event.bannerUrl || defaultBanner;
-  console.log(bannerImage)
+const Home = () => {
+  const slug = getSlugFromPath();  
+  const { apiService, event, setEvent } = useContext(GuestsContext);
+  const [isOpen, setIsOpen] = useState(false);
+  const [state, setState] = useState('loading'); //ready || erro
+
+  const scrollToId = (id) => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+    setIsOpen(false);
+  }
+
+  const getEvent = async () => {
+    try {
+      const response = await apiService.get(`/guests/event/${slug}`);      
+      const { success, message, event } = response.data;
+      if (!success || !event) throw new Error(message);
+      
+      setEvent(event);
+      setState('ready');
+
+      if (!event?.description) {
+        setEvent({
+          ...event,
+          titleDescription: event?.titleDescription || `Sejam bem-vindos!`,
+          description: `
+            Estamos organizando esse evento com muito amor e carinho. Criamos esse espaço para facilitar para todos.
+            
+            E para aqueles que querem presentear com um MIMO, criamos uma lista de presentes online para evitar dúvidas, economizar tempo e incentivar o consumo consciente
+            
+            Por favor, confirmem a presença no site logo abaixo e deixem um recadinho!
+          `
+        });
+      }
+
+      document.documentElement.style.setProperty('--primary-color', event.color);
+    } catch (error) {
+      if (error?.response?.status === 404) {
+        setState('not-found');
+        return;
+      }
+
+      setState('error');
+    }
+  };
 
   useEffect(() => {
-    if (!event?.description) {
-      setEvent({
-        ...event,
-        titleDescription: event?.titleDescription || `Sejam bem-vindos!`,
-        description: `
-          Estamos organizando esse evento com muito amor e carinho. Criamos esse espaço para facilitar para todos.
-          
-          E para aqueles que querem presentear com um MIMO, criamos uma lista de presentes online para evitar dúvidas, economizar tempo e incentivar o consumo consciente
-          
-          Por favor, confirmem a presença no site logo abaixo e deixem um recadinho!
-        `
-      });
-    }
-
-    setUrlMap(`/marker-map.html?lat=${-23.5505}&lon=${-46.6333}&color=${event.color}`);
-
+    getEvent();
   }, []);
+
+  if (state === 'loading') return <LoadingLogo />;
   
-  if (!event) return <div>Deu ruim!</div> 
+  if (state === 'not-found' || state === 'error') return (
+    <S.ContainerNotFound>
+      <NotFoundData
+        textSize="1.7rem"
+        iconSize="120px"
+        text={state === 'not-found' ? 'Evento não encontrado!' : 'Erro ao carregar o evento.'}
+        icon='fa-solid fa-face-frown'
+        active={true}
+      />
+
+      <Button
+        text="Voltar ao início"
+        maxWidth={240}
+        onClick={() => (window.location.href = 'https://listai.com.br')}
+      />
+    </S.ContainerNotFound>
+  );
 
   return (
     <S.Main>
       <S.Header>
         <Container>
           <S.Nav>
-            <S.MenuButton onClick={() => setIsOpen(!isOpen)}>
-              <i className="fa-solid fa-bars" />
-            </S.MenuButton>
+            <img 
+              className="avatar" 
+              src={event.avatarUrl || defaultAvatar} 
+              alt="Imagem de perfil" 
+            />
             <S.Logo>
               <img src={logo} alt="Logo listai" />
             </S.Logo>
-          </S.Nav>
 
+            <S.MenuButton onClick={() => setIsOpen(!isOpen)}>
+              <i className="fa-solid fa-bars" />
+            </S.MenuButton>
+          </S.Nav>
+            
+         {isOpen && <div className="background" />}
+          
           <S.SideMenu className={`${isOpen ? 'open' : ''}`}>
+            <div className="header">
+              <i className="fa-solid fa-xmark" onClick={() => setIsOpen(false)} />
+              <h3>Navegação</h3>
+            </div>
             <ul>
-              <li><a href="/">Início</a></li>
-              <li><a href="/presentes">Lista de Presentes</a></li>
-              <li><a href="/confirmar">Confirmação</a></li>
-              <li><a href="/mensagens">Recadinhos</a></li>
+              <li onClick={() => scrollToId('gifts')}>
+                Lista de Presentes
+              </li>
+              <li onClick={() => scrollToId('confirmation')}>
+                Confirmação
+              </li>
+              <li onClick={() => scrollToId('messages')}>
+                Recadinhos
+              </li>
             </ul>
           </S.SideMenu>
         </Container>
       </S.Header>
 
-      <S.Background src={bannerImage} />
+      <S.Background src={event.bannerUrl || defaultBanner} />
 
       <Container>
         <S.WrapperProfile>
           <S.Avatar>
-            <img src={profileImage} alt="Imagem de perfil" />
+            <img src={event.avatarUrl || defaultAvatar} alt="Imagem de perfil" />
           </S.Avatar>
           <S.EventTitle>
             <h1 style={{ color: event?.color }}>{event.title}</h1>
@@ -104,7 +169,7 @@ const Home = () => {
 
       <Confirmation event={event} />
 
-      <S.Footer style={{ background: event.color }}>
+      <S.Footer style={{ background: "var(--primary-color)" }}>
         <Container>
           <small><i className="fa-solid fa-lock"></i> Ambiente seguro</small> <br />
           <small> © Listai. Todos os direitos reservados.</small>

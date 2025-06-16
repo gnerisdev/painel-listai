@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export class ApiService {
-  #baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:3000/api';
+  #baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:3000';
   isAuth = false;
   #module;
   #token;

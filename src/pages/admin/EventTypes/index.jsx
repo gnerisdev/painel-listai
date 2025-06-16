@@ -7,10 +7,12 @@ import Button from 'components/Button';
 import DefaultImage from 'assets/default-image.jpg';
 import FormEventCategoryModal from './FormEventCategoryModal';
 import FormEventTypeModal from './FormEventTypeModal';
+import LoadingLogo from 'components/LoadingLogo';
 import * as S from './style';
 
 const EventTypes = () => {
   const { apiService, setAlert } = useContext(AdminContext);
+  const [loading, setLoading] = useState(false);
   const [eventTypesData, setEventTypesData] = useState([]);
   const [showModalForm, setShowModalForm] = useState({ type: false, category: false });
   const [toEdit, setToEdit] = useState(null);
@@ -18,6 +20,8 @@ const EventTypes = () => {
 
   const getEventTypesWithCategories = useCallback(async () => {
     try {
+      setLoading(true);
+
       const response = await apiService.get(`/admin/event-types-with-categories`);
       const { eventTypes, success, message } = response.data;
       if (!success) throw new Error(message);
@@ -29,6 +33,8 @@ const EventTypes = () => {
         icon: 'fa-solid fa-triangle-exclamation',
         text: ApplicationUtils.getErrorMessage(error, 'Erro ao buscar tipos de eventos.'),
       });
+    } finally {
+      setLoading(false);
     }
   }, [apiService, setAlert]);
 
@@ -119,6 +125,8 @@ const EventTypes = () => {
         selectedTypeId={selectedTypeId}
         onUpdate={getEventTypesWithCategories}
       />
+
+      {loading && <LoadingLogo />}
     </Container>
   );
 };

@@ -7,10 +7,12 @@ import TitlePage from "components/TitlePage";
 import Table from "components/Table";
 import Filter from "components/Filter";
 import Pagination from "components/Pagination";
+import LoadingLogo from "components/LoadingLogo";
 import * as S from "./style";
 
 const Events = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
   const { apiService, setAlert } = useContext(AdminContext);
   const [tableData, setTableData] = useState([]);
   const [filters, setFilters] = useState({});
@@ -35,6 +37,8 @@ const Events = () => {
 
   const getEvents = async (queryParams) => {
     try {
+      setLoading(true);
+
       const { data } = await apiService.get(`/admin/events${queryParams || ''}`);
       if (!data.success) throw new Error(data?.message);
       if (data.events) {
@@ -62,6 +66,8 @@ const Events = () => {
         icon: "fa-solid fa-triangle-exclamation",
         text: ApplicationUtils.getErrorMessage(error, "Erro ao buscar eventos."),
       });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -154,6 +160,8 @@ const Events = () => {
           }}
         />
       </S.Content>
+
+      {loading && <LoadingLogo />}
     </Container>
   );
 };

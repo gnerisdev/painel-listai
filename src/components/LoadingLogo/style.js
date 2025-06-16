@@ -1,12 +1,17 @@
 import styled from 'styled-components';
 
 export const Wrapper = styled('div')({
+  position: 'fixed',
+  inset: 0,
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
   height: '100vh',
+  width: '100%',
+  background: '#ffffff',
   flexDirection: 'column',
-  overflow: 'hidden'
+  overflow: 'hidden',
+  zIndex: 999,
 });
 
 export const SpinnerWrapper = styled('div')({

@@ -60,6 +60,15 @@ export const Details = styled('details')({
     border: '1px solid var(--danger-color)',
     padding: 4,
     marginRight: 8
+  },
+  '.react-tabs__tab-list': {
+    position: 'sticky',
+    top: 56,
+    background: '#fff'
+  },
+  '.react-tabs__tab--selected': {
+    borderColor: 'var(--primary-color)',
+    borderWidth: 2
   }
 });
 

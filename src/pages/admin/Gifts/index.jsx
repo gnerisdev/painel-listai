@@ -1,23 +1,27 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, useCallback } from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import { useNavigate } from 'react-router-dom';
 import { AdminContext } from 'contexts/Admin';
 import { ApplicationUtils } from 'utils/ApplicationUtils';
+import { CalculationUtils } from 'utils/CalculationUtils';
 import Container from 'components/Container';
 import TitlePage from 'components/TitlePage';
 import Table from 'components/Table';
 import Button from 'components/Button';
 import DefaultImage from 'assets/default-image.jpg';
 import HeaderWithButton from 'components/HeaderWithButton';
+import LoadingLogo from 'components/LoadingLogo';
 import * as S from './style';
 
 const Gifts = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const { apiService, setAlert } = useContext(AdminContext);
   const [giftsByCategory, setGiftsByCategory] = useState([]);
   const [tables, setTables] = useState({});
   const [categoriesCurrent, setCategoriesCurrent] = useState({});
+  const [percentageGift, setPercentageGift] = useState(0);
 
   const transformGiftList = (gifts) => {
     const dataTable = gifts.map((gift) => ({
@@ -25,6 +29,7 @@ const Gifts = () => {
       name: gift.name,
       description: gift.description,
       price: ApplicationUtils.formatPrice(gift.price),
+      pricePercentage: CalculationUtils.addPercentage(percentageGift, gift.price),
       createdAt: ApplicationUtils.formatDate(gift.createdAt),
       updatedAt: ApplicationUtils.formatDate(gift.updatedAt),
     }));
@@ -38,10 +43,15 @@ const Gifts = () => {
 
   const getEventTypesWithCategories = async () => {
     try {
+      setLoading(true);
+
       const response = await apiService.get(`/admin/gifts/categories`);
       const { giftsByCategory, success, message } = response.data;
 
       if (!success) throw new Error(message);
+
+      getPercentageGift();
+
       if (giftsByCategory?.length > 0) {
         setGiftsByCategory(giftsByCategory);
 
@@ -61,8 +71,27 @@ const Gifts = () => {
         icon: 'fa-solid fa-triangle-exclamation',
         text: ApplicationUtils.getErrorMessage(error, 'Erro ao buscar lista de presentes.'),
       });
+    } finally {
+      setLoading(false);
     }
   };
+
+  const getPercentageGift = useCallback(async () => {
+    try {
+      const response = await apiService.get(`/admin/settings/percentage-gift`);
+      const { success, message, percentageGift } = response.data;
+
+      if (!success) throw new Error(message);
+      if (percentageGift) setPercentageGift(percentageGift);
+    } catch (error) {
+      setAlert({
+        show: true,
+        title: 'Erro!',
+        icon: 'fa-solid fa-triangle-exclamation',
+        text: ApplicationUtils.getErrorMessage(error, 'Erro ao buscar porcentagem de presente.'),
+      });
+    }
+  }, [apiService, setAlert]);
 
   useEffect(() => {
     getEventTypesWithCategories();
@@ -80,7 +109,7 @@ const Gifts = () => {
       </HeaderWithButton>
 
       <S.Content>
-        <small>
+        <small style={{ display: 'block', marginBottom: 16 }}>
           <strong style={{ color: 'red' }}>OBS.:</strong> Clique para expandir e
           ver os presentes de cada categoria.
         </small>
@@ -118,9 +147,8 @@ const Gifts = () => {
                       columns={[
                         { label: "ID", name: "id" },
                         { label: "Nome", name: "name" },
-                        { label: "Descrição", name: "description" },
                         { label: "Preço", name: "price" },
-                        { label: "Criado em", name: "createdAt" },
+                        { label: "Preço Final", name: "pricePercentage" },
                       ]}
                       actions={[
                         {
@@ -136,6 +164,8 @@ const Gifts = () => {
           </S.Details>
         ))}
       </S.Content>
+
+      {loading && <LoadingLogo />}
     </Container>
   );
 };

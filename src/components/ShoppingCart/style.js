@@ -12,6 +12,7 @@ export const Cart = styled('div')({
     display: 'flex',
     justifyContent: 'end',
     fontWeight: 'bold',
+    gap: 8
   },
   button: {
     backgroundColor: '#007bff',
@@ -56,6 +57,7 @@ export const ListItem = styled('li')({
     alignItems: 'center',
     marginLeft: 'auto',
     width: 'fit-content',
+    gap: 4,
     button: {
       background: 'none',
       color: '#000',
@@ -69,15 +71,16 @@ export const ListItem = styled('li')({
     '.quantity-control': {
       display: 'flex',
       alignItems: 'center',
+      border: '1px solid #c6c6c6',
+      borderRadius: 4,
       '.show-value': {
-        border: '1px solid #c6c6c6',
         width: 32,
         height: 24,
         textAlign: 'center'
       },
       button: {
         padding: '5px 8px',
-        margin: '0 5px',
+        margin: '0',
         borderRadius: 4,
       },
       'input[type="number"]': {
@@ -103,7 +106,9 @@ export const ButtonOpen = styled('button')({
   height: 40,
   background: 'var(--primary-color)',
   borderRadius: '50%',
-  color: '#ffffff'
+  color: '#ffffff',
+  cursor: 'pointer',
+  border: '2px solid #fff',
 });
 
 export const ModalBackdrop = styled('div')({
@@ -146,4 +151,10 @@ export const Inputs =  styled('div')({
   flexDirection: 'column',
   gap: 8,
   padding: '0 8px'
+});
+
+export const WrapperButton =  styled('div')({
+  display: 'flex',
+  justifyContent: 'center',
+  marginTop: 24
 });

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { ApplicationUtils } from 'utils/ApplicationUtils';
 import { useGuests } from 'contexts/Guests';
 import Container from 'components/Container';
@@ -60,7 +60,6 @@ const Messages = ({ event }) => {
     return errorCount === 0;
   };
 
-
   const sendMessage = async () => {
     try {
       if (!validateFormMessage()) return;
@@ -94,13 +93,13 @@ const Messages = ({ event }) => {
     }
   };
   return (<>
-    <S.SectionMessage>
+    <S.SectionMessage id="messages">
       <Container>
         <div style={{ marginBottom: -2 }}>
-          <WaveEffect color={event.color} />
+          <WaveEffect color="var(--primary-color)" />
         </div>
 
-        <div className="content" style={{ background: event.color }}>
+        <div className="content" style={{ background: "var(--primary-color)" }}>
           <div>
             <S.TitleSection>Recados dos Convidados</S.TitleSection>
             <p>Deixe uma mensagem especial</p>
@@ -109,14 +108,14 @@ const Messages = ({ event }) => {
           <Button
             text="ENVIAR RECADO"
             background="#FFFFFF"
-            color={event.color}
+            color="var(--primary-color)"
             onClick={() => setModalFormMessage(true)}
             maxWidth={300}
           />
         </div>
 
         <div style={{ marginTop: -2 }}>
-          <WaveEffect color={event.color} inverted={true} />
+          <WaveEffect color="var(--primary-color)" inverted={true} />
         </div>
       </Container>
     </S.SectionMessage>
@@ -188,10 +187,9 @@ const Messages = ({ event }) => {
         <Button
           text="ENVIAR RECADO"
           color="#FFFFFF"
-          background={event.color}
+          background="var(--primary-color)"
           onClick={sendMessage}
           isLoading={loading}
-          maxWidth={300}
         />
       </S.WrapperForm>
     </Modal>

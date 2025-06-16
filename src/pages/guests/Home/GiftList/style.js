@@ -11,7 +11,6 @@ export const SectionGifts = styled('section')({
   },
   '.gift': {
     width: 240,
-    height: 280,
     padding: '24px',
     position: 'relative',
     display: 'flex',
@@ -23,10 +22,11 @@ export const SectionGifts = styled('section')({
     '.title': {
       margin: '20px 0 0',
       fontSize: 16,
-      fontWeight: 500
+      fontWeight: 500,
+      lineHeight: 1.3
     },
     '.price': {
-      margin: '0',
+      margin: '8px 0',
       fontSize: 16,
       color: '#929292'
     },
@@ -46,7 +46,14 @@ export const SectionGifts = styled('section')({
       width: '90%',
       left: '50%',
       transform: 'translateX(-50%)',
-      cursor: 'pointer'
+      cursor: 'pointer',
+      background: 'var(--primary-color)'
     }
   }
+});
+
+export const TitleSection = styled('h2')({
+  marginBottom: 5,
+  fontSize: 22,
+  textAlign: 'center',
 });

@@ -57,7 +57,7 @@ const Step1 = ({ data, eventCategories, isLoading, getData, next }) => {
 
   return (
     <div>
-      <S.Subtitle>Lista de Presentes em Dinheiro</S.Subtitle>
+      <S.Subtitle>Lista de Presentes</S.Subtitle>
 
       <S.Text>
         Escolha no mínimo 4 presentes para seguir. <br />

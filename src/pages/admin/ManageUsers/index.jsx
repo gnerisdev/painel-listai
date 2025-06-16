@@ -11,6 +11,7 @@ import Input from 'components/Input';
 import Select from 'components/Select';
 import Pagination from 'components/Pagination';
 import Button from 'components/Button';
+import LoadingLogo from 'components/LoadingLogo';
 import * as S from './style';
 
 const ManageUsers = () => {
@@ -109,7 +110,7 @@ const ManageUsers = () => {
   useEffect(() => {
     getUsers(page);
   }, [page]);
-
+  
   return (
     <Container>
       <TitlePage title="Usuários" icon="fa-solid fa-users" />
@@ -234,6 +235,8 @@ const ManageUsers = () => {
           <Button text="Salvar" />
         </FormContainer>
       </Modal>
+
+      {loading && <LoadingLogo />}
     </Container>
   );
 };

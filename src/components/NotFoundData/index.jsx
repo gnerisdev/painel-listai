@@ -1,10 +1,15 @@
 import * as S from './style';
 
-const NotFoundData = ({ active, text, icon }) => (
+const NotFoundData = ({ active, text, icon, textSize, iconSize }) => (
   active && (
     <S.NotFoundData>
-      <i className={`${icon} icon`} />
-      <span>{text}</span>
+      <i 
+        className={`${icon} icon`}
+        style={iconSize ? { fontSize: iconSize } : {}} 
+      />
+      <span style={textSize ? { fontSize: textSize } : {}}>
+        {text}
+      </span>
     </S.NotFoundData>
   )
 );

@@ -10,37 +10,43 @@ const ShoppingCart = () => {
   const { event, cartItems, updateQuantity, getTotal, setAlert, apiService } = useGuests();
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState({ name: '', contact: '' });
+  const [data, setData] = useState({ name: '', email: '' });
 
   const openCart = () => setIsCartOpen(true);
   const closeCart = () => setIsCartOpen(false);
 
-  useEffect(() => {
-    if (!isFirstRender.current) {
-      if (cartItems.length > 0) setIsCartOpen(true);
-      return;
-    } 
-    
-    isFirstRender.current = false;
-  }, [cartItems]);
-
-  const sendPurchaseRequest = async () => {
-    console.log(data)
-    if (!data.name.trim() || !data.contact.trim()) {
+  const validation = () => {
+    if (!data.name.trim() || !data.email.trim()) {
       setAlert({
         show: true,
         title: 'Atenção!',
         icon: 'fa-solid fa-exclamation-triangle',
         text: `
-          Por favor, preencha seu nome e contato \n
-          para que o dono do evento saiba quem 
-          está presenteando.
+          Por favor, preencha seu nome e email 
+          para prosseguir com o pagamento.
         `
       });
 
-      return;
+      return false;
     }
 
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
+      setAlert({
+        show: true,
+        title: 'Atenção!',
+        icon: 'fa-solid fa-exclamation-triangle',
+        text: `Por favor, preencha um email válido.`
+      });
+
+      return false;
+    }
+
+    return true;
+  }
+
+  const sendPurchaseRequest = async () => {
+    if (!validation()) return;
+    
     try {
       setLoading(true);
 
@@ -48,15 +54,17 @@ const ShoppingCart = () => {
       const response = await apiService.post(`/guests/purchase`, {
         items,
         eventId: event.id,
-        guestName: data.name,
-        guestContact: data.contact,
+        name: data.name,
+        email: data.email,
       });
+      return
 
       const { success, message, paymentLink } = response.data;
       if (!success || !paymentLink) throw new Error(message);
 
       window.location.href = paymentLink;
     } catch (error) {
+      console.log(error)
       setAlert({
         show: true,
         title: 'Erro!',
@@ -68,8 +76,17 @@ const ShoppingCart = () => {
     }
   };
 
+  useEffect(() => {
+    if (!isFirstRender.current) {
+      if (cartItems.length > 0) setIsCartOpen(true);
+      return;
+    } 
+    
+    isFirstRender.current = false;
+  }, [cartItems]);
+
   return (
-    isCartOpen ? (
+    (isCartOpen && cartItems.length > 0) ? (
       <S.ModalBackdrop onClick={closeCart}>
         <S.ModalContent onClick={(e) => e.stopPropagation()}>
           <S.CloseButton onClick={closeCart}>&times;</S.CloseButton>
@@ -95,7 +112,7 @@ const ShoppingCart = () => {
               ))}
             </S.List>
             <div className="total">
-              <strong>Total:</strong> {ApplicationUtils.formatPrice(getTotal())}
+              Total: <strong>{ApplicationUtils.formatPrice(getTotal())}</strong> 
             </div>
             <S.Inputs>
               <Input
@@ -105,13 +122,23 @@ const ShoppingCart = () => {
                 onChange={value => setData({ ...data, name: value})}
               />
               <Input
-                label="Contato"
-                name="contact"
-                value={data.contact}
-                onChange={value => setData({ ...data, contact: value})}
+                label="Seu email"
+                name="email"
+                value={data.email}
+                onChange={value => setData({ ...data, email: value})}
               />
-            </S.Inputs> <br />
-            <Button onClick={sendPurchaseRequest} text="Enviar Presentes" isLoading={loading} />
+            </S.Inputs>
+
+            <S.WrapperButton>
+              <Button 
+                onClick={sendPurchaseRequest} 
+                text="Enviar Presentes" 
+                maxWidth={380}
+                background="var(--primary-color)"
+                isLoading={loading} 
+                margin="auto"
+              />
+            </S.WrapperButton>
           </S.Cart>
         </S.ModalContent>
       </S.ModalBackdrop>

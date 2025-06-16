@@ -2,6 +2,7 @@ import { useContext, useEffect, useState, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { AdminContext } from 'contexts/Admin';
 import { ApplicationUtils } from 'utils/ApplicationUtils';
+import { CalculationUtils } from 'utils/CalculationUtils';
 import Container from 'components/Container';
 import TitlePage from 'components/TitlePage';
 import UploadImage from 'components/UploadImage';
@@ -9,6 +10,7 @@ import Input from 'components/Input';
 import Button from 'components/Button';
 import Select from 'components/Select';
 import HeaderWithButton from 'components/HeaderWithButton';
+import LoadingLogo from 'components/LoadingLogo';
 import * as S from './style';
 
 const GiftAdd = ({ title }) => {
@@ -21,10 +23,12 @@ const GiftAdd = ({ title }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [categories, setCategories] = useState([]);
   const [imageData, setImageData] = useState(null);
+  const [percentageGift, setPercentageGift] = useState(0);
   const [data, setData] = useState({
     name: '',
     description: '',
     price: '0,00',
+    pricePercentage: 0,
     eventCategoryId: 0,
     active: true,
     image: null,
@@ -38,7 +42,11 @@ const GiftAdd = ({ title }) => {
       if (!success) throw new Error(message);
       if (gift) {
         setIsEditing(true);
-        setData(gift || {});
+        setData({ 
+          ...gift, 
+          pricePercentage: 'R$' + CalculationUtils.addPercentage(percentageGift, gift.price),
+          // price: ApplicationUtils.formatToInputPrice(gift.price)
+        });
       }
     } catch (error) {
       setAlert({
@@ -58,12 +66,30 @@ const GiftAdd = ({ title }) => {
       if (!success) throw new Error(message);
       const categories = eventCategories.map((cat) => ({ title: cat.name, value: cat.id })); 
       setCategories(categories);
+      setData({ ...data, eventCategoryId: categories[0].value });
     } catch (error) {
       setAlert({
         show: true,
         title: 'Erro!',
         icon: 'fa-solid fa-triangle-exclamation',
         text: ApplicationUtils.getErrorMessage(error, 'Erro ao buscar categorias de presentes.'),
+      });
+    }
+  }, [apiService, setAlert]);
+
+  const getPercentageGift = useCallback(async () => {
+    try {
+      const response = await apiService.get(`/admin/settings/percentage-gift`);
+      const { success, message, percentageGift } = response.data;
+
+      if (!success) throw new Error(message);
+      if (percentageGift) setPercentageGift(percentageGift);
+    } catch (error) {
+      setAlert({
+        show: true,
+        title: 'Erro!',
+        icon: 'fa-solid fa-triangle-exclamation',
+        text: ApplicationUtils.getErrorMessage(error, 'Erro ao buscar porcentagem de presente.'),
       });
     }
   }, [apiService, setAlert]);
@@ -176,6 +202,20 @@ const GiftAdd = ({ title }) => {
   };
 
   const changeInput = (name, value) => {
+    if (name === 'price') {
+      setData({ 
+        ...data, 
+        [name]: value,
+        pricePercentage: 'R$' + CalculationUtils.addPercentage(
+          percentageGift, 
+          ApplicationUtils.parsePrice(value)
+        ),
+      });
+      
+      setLog({ ...log, [name]: '' });
+      return;
+    }
+
     setData({ ...data, [name]: value });
     setLog({ ...log, [name]: '' });
   };
@@ -187,9 +227,14 @@ const GiftAdd = ({ title }) => {
   };
 
   useEffect(() => {
-    getCategories();
-    if (id) getGift();
-  }, [getGift, getCategories, id]);
+    const load = async () => {
+      await getCategories();
+      await getPercentageGift();
+      if (id) await getGift();
+    };
+
+    load();
+  }, [getGift, getCategories, getPercentageGift, id]);
 
   return (
     <S.Main>
@@ -245,6 +290,12 @@ const GiftAdd = ({ title }) => {
               onChange={(value) => changeInput('price', ApplicationUtils.formatToInputPrice(value))}
             />
 
+            <Input
+              label={`Preço final - Porcentagem de ${percentageGift}%`}
+              disabled={true}
+              value={data.pricePercentage}
+            />
+
             <Select
               label="Categoria"
               value={data.eventCategoryId}
@@ -280,6 +331,8 @@ const GiftAdd = ({ title }) => {
           </div>
         </S.FormContainer>
       </Container>
+
+      {(loading && data.name == '') && <LoadingLogo />}
     </S.Main>
   );
 };
