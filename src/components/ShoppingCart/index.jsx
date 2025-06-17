@@ -57,7 +57,6 @@ const ShoppingCart = () => {
         name: data.name,
         email: data.email,
       });
-      return
 
       const { success, message, paymentLink } = response.data;
       if (!success || !paymentLink) throw new Error(message);
