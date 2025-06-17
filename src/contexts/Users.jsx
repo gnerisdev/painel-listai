@@ -5,8 +5,6 @@ import Modal from 'components/Modal';
 import LoadingLogo from 'components/LoadingLogo';
 
 export const UsersProvider = (props) => {
-  const alertRef = useRef(false);
-
   const location = useLocation();
   const normalizedPathname = location.pathname.replace(/\/$/, '');
   const isAuthPage = (normalizedPathname === '/login' || normalizedPathname === '/register');
@@ -44,10 +42,6 @@ export const UsersProvider = (props) => {
   useEffect(() => {
     if (authState === 'checking') getUser();
   }, [authState]);
-
-  useEffect(() => {
-
-  }, [alert])
 
   if (authState === 'checking') return <LoadingLogo />;
 

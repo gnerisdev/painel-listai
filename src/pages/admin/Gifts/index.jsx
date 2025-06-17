@@ -1,10 +1,9 @@
-import { useState, useEffect, useContext, useCallback } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import { useNavigate } from 'react-router-dom';
 import { AdminContext } from 'contexts/Admin';
 import { ApplicationUtils } from 'utils/ApplicationUtils';
-import { CalculationUtils } from 'utils/CalculationUtils';
 import Container from 'components/Container';
 import TitlePage from 'components/TitlePage';
 import Table from 'components/Table';
@@ -12,6 +11,7 @@ import Button from 'components/Button';
 import DefaultImage from 'assets/default-image.jpg';
 import HeaderWithButton from 'components/HeaderWithButton';
 import LoadingLogo from 'components/LoadingLogo';
+import LinkGiftToEvent from './LinkGiftToEvent';
 import * as S from './style';
 
 const Gifts = () => {
@@ -20,8 +20,7 @@ const Gifts = () => {
   const { apiService, setAlert } = useContext(AdminContext);
   const [giftsByCategory, setGiftsByCategory] = useState([]);
   const [tables, setTables] = useState({});
-  const [categoriesCurrent, setCategoriesCurrent] = useState({});
-  const [percentageGift, setPercentageGift] = useState(0);
+  const [linkGiftToEvent, setLinkGiftToEvent] = useState({ isOpen: false, gift: null });
 
   const transformGiftList = (gifts) => {
     const dataTable = gifts.map((gift) => ({
@@ -29,7 +28,7 @@ const Gifts = () => {
       name: gift.name,
       description: gift.description,
       price: ApplicationUtils.formatPrice(gift.price),
-      pricePercentage: CalculationUtils.addPercentage(percentageGift, gift.price),
+      pricePercentage: ApplicationUtils.formatPrice(gift.pricePercentage),
       createdAt: ApplicationUtils.formatDate(gift.createdAt),
       updatedAt: ApplicationUtils.formatDate(gift.updatedAt),
     }));
@@ -49,8 +48,6 @@ const Gifts = () => {
       const { giftsByCategory, success, message } = response.data;
 
       if (!success) throw new Error(message);
-
-      getPercentageGift();
 
       if (giftsByCategory?.length > 0) {
         setGiftsByCategory(giftsByCategory);
@@ -75,23 +72,6 @@ const Gifts = () => {
       setLoading(false);
     }
   };
-
-  const getPercentageGift = useCallback(async () => {
-    try {
-      const response = await apiService.get(`/admin/settings/percentage-gift`);
-      const { success, message, percentageGift } = response.data;
-
-      if (!success) throw new Error(message);
-      if (percentageGift) setPercentageGift(percentageGift);
-    } catch (error) {
-      setAlert({
-        show: true,
-        title: 'Erro!',
-        icon: 'fa-solid fa-triangle-exclamation',
-        text: ApplicationUtils.getErrorMessage(error, 'Erro ao buscar porcentagem de presente.'),
-      });
-    }
-  }, [apiService, setAlert]);
 
   useEffect(() => {
     getEventTypesWithCategories();
@@ -155,6 +135,10 @@ const Gifts = () => {
                           label: '<i class="fa-solid fa-pen"></i> Editar Informações', 
                           onClick: (row) => navigate(`/gifts/${row.id}`),
                         },
+                        {
+                          label: '<i class="fa-solid fa-gift"></i> Adicionar a um evento',
+                          onClick: (row) => setLinkGiftToEvent({ gift: row, isOpen: true })
+                        },
                       ]}
                     />
                   </S.WrapperTable>
@@ -164,6 +148,12 @@ const Gifts = () => {
           </S.Details>
         ))}
       </S.Content>
+
+      <LinkGiftToEvent 
+        isOpen={linkGiftToEvent.isOpen}
+        gift={linkGiftToEvent.gift}
+        onClose={() => setLinkGiftToEvent({ gift: null, isOpen: false })}
+      /> 
 
       {loading && <LoadingLogo />}
     </Container>

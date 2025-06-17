@@ -15,7 +15,7 @@ const Modal = ({
   const contentRef = useRef(null);
 
   useEffect(() => {
-    if (active) handleScroll(true);
+    handleScroll(active);
   }, [active]);
 
   const handleScroll = (active) => {

@@ -6,6 +6,7 @@ import Container from 'components/Container';
 import Button from 'components/Button';
 import Input from 'components/Input';
 import Modal from 'components/Modal';
+import NotFoundData from 'components/NotFoundData';
 import * as S from './style';
 
 const Confirmations = () => {
@@ -178,6 +179,12 @@ const Confirmations = () => {
 
           <S.SectionTitle>Convidados Confirmados</S.SectionTitle>
 
+          <NotFoundData
+            active={guests.length === 0}
+            text="Nenhum convidado confirmou presença até agora."
+            icon="fa-solid fa-user-xmark"
+          />
+          
           {guests.map((item) => (
             <S.GuestCard key={item.id}>
               <S.GuestInfo>

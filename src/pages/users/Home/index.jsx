@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UsersContext } from 'contexts/Users';
 import { ApplicationUtils } from 'utils/ApplicationUtils';
@@ -16,9 +16,11 @@ import * as S from './style';
 
 const Home = () => {
   const navigate = useNavigate();
+  const hasFetchedRef = useRef(false);
   const { user, event, apiService, setAlert } = useContext(UsersContext);
   const [profileImage, setProfileImage] = useState(event.avatarUrl || defaultAvatar);
   const [backgroundImage, setBackgroundImage] = useState(event.bannerUrl || defaultBanner);
+  const [totals, setTotals] = useState({ totals: { events: 0, gifts: 0, pendingPayouts: 0 } });
 
   const handleFileUpload = async (e, type) => {
     const file = e.target.files?.[0];
@@ -74,6 +76,30 @@ const Home = () => {
     return url;
   };
 
+  const fetchDashboardTotals = useCallback(async () => {
+    try {
+      const response = await apiService.get(`/users/event/${event.id}/dashboard/retrieve`);
+      const { success, message, totals } = await response.data;
+
+      if (!success) throw new Error(message);
+      if (totals) setTotals(totals);
+    } catch (error) {
+      setAlert({
+        show: true,
+        title: 'Erro!',
+        icon: 'fa-solid fa-triangle-exclamation',
+        text: ApplicationUtils.getErrorMessage(error, 'Erro ao recuperar lista de transações.')
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!hasFetchedRef.current) {
+      fetchDashboardTotals();
+      hasFetchedRef.current = true;
+    }
+  }, [fetchDashboardTotals]);
+
   return (
     <S.Main>
       <S.WrapperBackground>
@@ -123,9 +149,9 @@ const Home = () => {
         <S.Content>
           <div>
             <S.WrapperCards>
-              <BoxNumber number="0" text="pessoas confirmadas" />
-              <BoxNumber number="0" text="presentes recebidos" />
-              <BoxNumber number="0" text="recados recebidos" />
+              <BoxNumber number={totals.guests || 0} text="pessoas confirmadas" />
+              <BoxNumber number={totals.messages || 0} text="recados recebidos" />
+              <BoxNumber number={totals.payout || 0} text="solicitação de repasse" />
             </S.WrapperCards>
 
             <S.Personalize>

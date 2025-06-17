@@ -218,6 +218,7 @@ const Confirmation = ({ event }) => {
             onClick={sendConfirmation}
             isLoading={loading}
             maxWidth={300}
+            margin="auto"
           />
         </S.WrapperForm>
       </Modal>

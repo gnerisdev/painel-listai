@@ -25,7 +25,7 @@ const Register = () => {
 
       const response = await apiService.post('/users/register', data);
       const { success, token, id, message } = response.data;
-
+      
       if (success) {
         localStorage.setItem('userId', JSON.stringify(id));
         localStorage.setItem('userToken', JSON.stringify(token));
@@ -82,7 +82,6 @@ const Register = () => {
         );
 
         const { gifts, slug_available, message } = response.data;
-        console.log(slug_available)
 
         if (!slug_available) {
           setAlert({

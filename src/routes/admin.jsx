@@ -63,6 +63,7 @@ const Main = () => useRoutes([...mainRoutes]);
 
 export const AdminRoutes = () => {
   const { authState } = useContext(AdminContext);
+
   return (
     <>
       {authState === 'checking' && <LoadingLogo />}

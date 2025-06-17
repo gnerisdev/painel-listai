@@ -53,6 +53,7 @@ const Gifts = () => {
       });
 
       setModalSuggestion(false);
+      getGifts();
     } catch (error) {
       setAlert({
         show: true,

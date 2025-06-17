@@ -109,7 +109,7 @@ const Login = () => {
             }}
           />
 
-          <S.ForgetPass href="/">Redefinir senha</S.ForgetPass>
+          {/* <S.ForgetPass href="/">Redefinir senha</S.ForgetPass> */}
         </S.WrapperForm>
 
         <Button text="Entrar" isLoading={loading} onClick={handleSubmit} />

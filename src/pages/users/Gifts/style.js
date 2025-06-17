@@ -17,23 +17,23 @@ export const TitleModal = styled('h2')({
   gap: 8
 });
 
-export const Card = styled.div`
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  padding: 16px;
-  margin: 12px 0;
-  background-color: #fff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-`;
+export const Card = styled('div')({
+  border: '1px solid #ddd',
+  borderRadius: '12px',
+  padding: '16px',
+  margin: '12px 0',
+  backgroundColor: '#fff',
+  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+});
 
-export const Title = styled.h3`
-  margin: 0 0 8px;
-  font-size: 1.2rem;
-  color: #333;
-`;
+export const Title = styled('h3')({
+  margin:'0 0 8px',
+  fontSize: '1.2rem',
+  color: '#333',
+});
 
-export const Description = styled.p`
-  margin: 0;
-  font-size: 1rem;
-  color: #666;
-`;
+export const Description =styled('p')({
+  margin: 0,
+  fontSize: '1rem',
+  color: '#666',
+});

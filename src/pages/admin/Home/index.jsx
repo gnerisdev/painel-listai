@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ApplicationUtils } from 'utils/ApplicationUtils';
 import { useAdmin } from 'contexts/Admin';
 import Container from 'components/Container';
 import BoxNumber from 'components/BoxNumber';
 import CardTitle from 'components/CardTitle';
 import HeaderAdmin from 'components/HeaderAdmin';
 import TitlePage from 'components/TitlePage';
-import { ApplicationUtils } from 'utils/ApplicationUtils';
 import * as S from './style';
 
 const Home = () => {

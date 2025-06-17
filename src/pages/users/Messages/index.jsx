@@ -62,12 +62,11 @@ const Messages = () => {
         />
 
          <S.Content>
-          {messages.length <= 0 && (
-            <NotFoundData 
-              text="Nenhuma messagem para o evento..."  
-              icon="fa-regular fa-folder-open icon"
-            />
-          )}
+          <NotFoundData 
+            active={messages.length <= 0}
+            text="Nenhuma messagem para o evento..."  
+            icon="fa-regular fa-folder-open icon"
+          />
 
           <S.Cards>
             {messages.map((item) => (
