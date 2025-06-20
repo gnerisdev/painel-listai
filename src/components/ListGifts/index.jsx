@@ -21,9 +21,9 @@ const ListGifts = ({ data, selected, getData, mode="add" }) => {
 
             <S.WrapperText>
               <span className="title">{item.name}</span>
-              {/* <span className="price">
+              <span className="price">
                 {item.price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
-              </span> */}
+              </span>
             </S.WrapperText>
 
             <S.Button 

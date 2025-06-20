@@ -45,6 +45,13 @@ const Home = () => {
       link: '/event-types'
     },
     {
+      title: 'Sugestões de Presentes',
+      text: 'Sugestões de presentes criada por usuários',
+      icon: 'fa-solid fa-lightbulb',
+      color: 'var(--primary-color)',
+      link: '/gift-suggestions',
+    },
+    {
       title: 'Serviços',
       text: 'Controle os serviços disponíveis na plataforma',
       icon: 'fa-solid fa-briefcase',
@@ -59,11 +66,25 @@ const Home = () => {
       link: '/payouts',
     },
     {
+      title: 'Transações',
+      text: 'Gerencie todas as transações financeiras',
+      icon: 'fa-solid fa-receipt',
+      color: 'var(--primary-color)',
+      link: '/transactions',
+    },
+    {
       title: 'Configurações',
       text: 'Ajuste configurações gerais',
       icon: 'fa-solid fa-gear',
       color: 'var(--primary-color)',
       link: '/settings',
+    },
+    {
+      title: 'Log de Erros',
+      text: 'Consulte os erros ocorridos na plataforma',
+      icon: 'fa-solid fa-triangle-exclamation',
+      color: 'var(--primary-color)',
+      link: '/error-logs',
     },
     {
       title: 'Sair',
@@ -72,6 +93,49 @@ const Home = () => {
       color: 'var(--primary-color) ',
     },
   ];
+
+  const navigation = async (item) => {
+    if (item.title === 'Sair') {
+      localStorage.removeItem('adminToken');
+      localStorage.removeItem('adminId');
+      window.location.reload();
+      return;
+    }
+
+    if (item.link === '/error-logs') {
+      try {
+        const response = await fetch(`${apiService.getBaseUrl()}/admin/logs/error.txt`, {
+          method: 'GET',
+        });
+
+        if (!response.ok) throw new Error('Erro ao baixar o arquivo de log.');
+
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+
+        a.href = url;
+        a.download = `log-erros.txt`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+
+        window.URL.revokeObjectURL(url);
+      } catch (error) {
+        setAlert({
+          show: true,
+          title: 'Erro ao carregar log',
+          icon: 'fa-solid fa-triangle-exclamation',
+          text: ApplicationUtils.getErrorMessage(error, 'Não foi possível abrir o LOG de erros.')
+        });
+      }
+
+      return;
+    }
+
+
+    navigate(item.link);
+  };
 
   const fetchDashboardTotals = useCallback(async () => {
     try {
@@ -100,7 +164,7 @@ const Home = () => {
   return (
     <S.Main>
       <HeaderAdmin />
-      
+
       <Container>
         <S.Content>
           <TitlePage title="Painel Administrativo" icon="fa-solid fa-gauge" />
@@ -121,16 +185,7 @@ const Home = () => {
                 text={item.text}
                 icon={item.icon}
                 color={item.color}
-                onClick={() => {
-                  if (item.title === 'Sair') {
-                    localStorage.removeItem('adminToken');
-                    localStorage.removeItem('adminId');
-                    window.location.reload();
-                    return;
-                  }
-
-                  navigate(item.link);
-                }}
+                onClick={() => navigation(item)}
               />
             ))}
           </S.WrapperCardsTitle>

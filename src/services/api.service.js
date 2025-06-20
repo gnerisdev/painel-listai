@@ -91,4 +91,8 @@ export class ApiService {
 
     return response;
   }
+
+  getBaseUrl() {
+    return this.#baseUrl;
+  }
 }

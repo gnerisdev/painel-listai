@@ -173,7 +173,7 @@ const GiftsReceived = () => {
                   Total: {ApplicationUtils.formatPrice(gift.userAmount)}
                 </S.TotalPrice>
                 <S.StatusText>
-                  {ApplicationUtils.translateTransitionStatus(gift.status)}
+                  {ApplicationUtils.translateTransactiontatus(gift.status)}
                 </S.StatusText>
               </S.GiftCard>
             ))

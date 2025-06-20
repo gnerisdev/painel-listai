@@ -19,6 +19,8 @@ import EventGiftsReceived from 'pages/admin/EventGiftsReceived';
 import Payouts from 'pages/admin/Payouts';
 import EventServices from 'pages/admin/EventServices';
 import Settings from 'pages/admin/Settings';
+import Transactions from 'pages/admin/Transactions';
+import GiftSuggestions from 'pages/admin/GiftSuggestions';
 
 const authRoutes = [
   {
@@ -50,8 +52,10 @@ const mainRoutes = [
       { path: 'gifts', element: <Gifts /> },
       { path: 'gifts/:id', element: <GiftAdd title="Atualizar Presente" /> },
       { path: 'gifts/create', element: <GiftAdd title="Novo Presente" /> },
+      { path: 'gift-suggestions', element: <GiftSuggestions /> },
       { path: 'event-types', element: <EventTypes /> },
       { path: 'payouts', element: <Payouts /> },
+      { path: 'transactions', element: <Transactions /> },
       { path: 'settings', element: <Settings /> },
     ],
   },

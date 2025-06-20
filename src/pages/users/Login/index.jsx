@@ -129,11 +129,6 @@ const Login = () => {
         </S.TextSmall>
 
         <S.TextSmall> Ambiente Seguro</S.TextSmall>
-
-        <S.TextSmall>
-          Uma empresa do grupo iBabySite & Wegadr  <br />
-          © Listai. Todos os direitos reservados.
-        </S.TextSmall>
       </Container>
     </S.Main>
   );

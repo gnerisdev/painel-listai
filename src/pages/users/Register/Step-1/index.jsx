@@ -49,7 +49,14 @@ const Step1 = ({ data, eventCategories, isLoading, getData, next }) => {
     } else {
       newLog.slug = '';
     }
-    
+
+    if (!data.giftDeliveryPreference) {
+      newLog.giftDeliveryPreference = '* Campo obrigatório';
+      errorCount++;
+    } else {
+      newLog.giftDeliveryPreference = '';
+    }
+
     setLog(newLog);
 
     if (errorCount === 0) next();
@@ -117,10 +124,61 @@ const Step1 = ({ data, eventCategories, isLoading, getData, next }) => {
           onChange={(value) => {
             getData({ slug: value });
             value === ''
-              ? setLog({ ...log, slug:'* O link está em uso, por favor, crie outro' })
+              ? setLog({ ...log, slug: '* O link está em uso, por favor, crie outro' })
               : setLog({ ...log, slug: '' });
           }}
         />
+
+        <Select
+          label="Evento"
+          messageError={log.event}
+          data={getEventCategoriesData(eventCategories)}
+          value={data.event || ''}
+          onChange={(value) => {
+            getData({ event: value });
+            value === ''
+              ? setLog({ ...log, event: '* Campo obrigatório' })
+              : setLog({ ...log, event: '' });
+          }}
+        />
+
+        <div>
+          <S.Label>Escolha a forma mais prática para você receber os presentes:</S.Label>
+          <S.LabelOption htmlFor="deliveryWeek">
+            <S.Checkbox 
+              type="checkbox" 
+              value="weekOfParty" 
+              id="deliveryWeek"
+              checked={data.giftDeliveryPreference === 'weekOfParty'}
+              onChange={(e) => getData({ giftDeliveryPreference: e.target.value })}
+            />
+            Prefiro que os presentes sejam entregues na semana da festa
+          </S.LabelOption>
+
+          <S.LabelOption htmlFor="deliveryAfter">
+            <S.Checkbox 
+              type="checkbox" 
+              value="weekAfterParty"
+              id="deliveryAfter" 
+              checked={data.giftDeliveryPreference === 'weekAfterParty'}
+              onChange={(e) => getData({ giftDeliveryPreference: e.target.value })}
+            />
+            Enviar na semana posterior à festa
+          </S.LabelOption>
+
+          <S.LabelOption htmlFor="cashValue">
+            <S.Checkbox 
+              type="checkbox" 
+              value="cash" 
+              id="cashValue" 
+              checked={data.giftDeliveryPreference === 'cash'}
+              onChange={(e) => getData({ giftDeliveryPreference: e.target.value })}
+            />
+            Prefiro receber o valor dos presentes em dinheiro (resgate)
+          </S.LabelOption>
+
+          {log.giftDeliveryPreference && <S.MessageError>* Campo obrigatório</S.MessageError>}
+        </div>
       </S.WrapperForm>
 
       <Button text="Próximo" onClick={validateFields} isLoading={isLoading} />

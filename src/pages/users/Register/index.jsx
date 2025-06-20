@@ -128,6 +128,13 @@ const Register = () => {
     }
   };
 
+  const handlerClickChangeStep = (step) => {
+    const stepOrder = ['step1', 'step2', 'step3'];
+    const currentIndex = stepOrder.indexOf(stepCurrent);
+    const targetIndex = stepOrder.indexOf(step);
+    if (targetIndex <= currentIndex) setStepCurrent(step);
+  }
+
   useEffect(() => {
     getEventTypes();
   }, []);
@@ -140,17 +147,17 @@ const Register = () => {
         <S.Steps>
           <span
             className={`${stepCurrent === 'step1' ? 'stepCurrent' : ''}`}
-            onClick={() => setStepCurrent('step1')}
+            onClick={() => handlerClickChangeStep('step1')}
           >
           </span>
           <span
             className={`${stepCurrent === 'step2' ? 'stepCurrent' : ''}`}
-            onClick={() => setStepCurrent('step2')}
+            onClick={() => handlerClickChangeStep('step2')}
           >
           </span>
           <span
             className={`${stepCurrent === 'step3' ? 'stepCurrent' : ''}`}
-            onClick={() => setStepCurrent('step3')}
+            onClick={() => handlerClickChangeStep('step3')}
           >
           </span>
         </S.Steps>

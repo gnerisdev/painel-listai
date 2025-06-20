@@ -100,7 +100,7 @@ export class ApplicationUtils {
     return message;
   };
 
-  static translateTransitionStatus(key) {
+  static translateTransactiontatus(key) {
     switch (key.toUpperCase()) {
       case 'APPROVED':
         return 'Aprovado';
