@@ -20,6 +20,19 @@ const Events = () => {
   const [totalPages, setTotalPages] = useState(1);
   const PAGE_LIMIT = 20;
 
+  const translateGiftDeliveryPreference = (value) => {
+    switch (value) {
+      case 'weekOfParty':
+        return 'Entrega na semana da festa';
+      case 'weekAfterParty':
+        return 'Entrega após a festa';
+      case 'cash':
+        return 'Receber em dinheiro';
+      default:
+        return 'Não informado';
+    }
+  };
+
   const onSearch = (filters, pageCurrent = page) => {
     let queryParams = `?page=${pageCurrent}&limit=${PAGE_LIMIT}`;
 
@@ -47,11 +60,12 @@ const Events = () => {
             id: event.id,
             title: event.title,
             slug: '/' + event.slug,
+            giftDeliveryPreference: translateGiftDeliveryPreference(event.giftDeliveryPreference),
             userName: event?.user?.firstName + ' ' + event?.user?.lastName,
             active: event.active ? 'Ativo' : 'Não ativo',
             phoneNumber: event.phoneNumber,
             createdAt: ApplicationUtils.formatDate(event.createdAt),
-            updatedAt: ApplicationUtils.formatDate(event.updatedAt),
+            // updatedAt: ApplicationUtils.formatDate(event.updatedAt),
           }))
         );
       }
@@ -121,9 +135,9 @@ const Events = () => {
               { label: "ID", name: "id" },
               { label: "Criador", name: "userName" },
               { label: "Título", name: "title" },
+              { label: "Forma de Recebimento", name: "giftDeliveryPreference" },
               { label: "Url", name: "slug" },
               { label: "Data de cadastro", name: "createdAt" },
-              { label: "Última atualização", name: "updatedAt" },
               { label: "Status", name: "active" },
             ]}
             actions={[
@@ -131,7 +145,7 @@ const Events = () => {
                 label: "<i class='fa-solid fa-eye'></i> Ver detalhes",
                 onClick: (row) => navigate(`/events/${row.id}`),
               },
-                 {
+              {
                 label: "<i class='fa-solid fa-envelope-open-text'></i> Recados recebido",
                 onClick: (row) => navigate(`/events/${row.id}/messages`),
               },
@@ -142,7 +156,7 @@ const Events = () => {
               {
                 label: "<i class='fa-solid fa-gift'></i> Presentes recebido",
                 onClick: (row) => navigate(`/events/${row.id}/gifts-received`),
-              },           
+              },
               {
                 label: "<i class='fa-solid fa-box-open'></i> Serviços",
                 onClick: (row) => navigate(`/events/${row.id}/services`),
