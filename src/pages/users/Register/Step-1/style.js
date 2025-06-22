@@ -22,16 +22,18 @@ export const Label = styled('label')({
   margin: '0 0 5px',
   display: 'block',
   fontSize: '0.9rem',
-  textAlign: 'left'
+  textAlign: 'left',
 });
 
 export const LabelOption = styled('label')({
-  display: 'flex',
-  alignItems: 'center',
-  gap: '0.6rem',
+  display: 'grid',
+  gridTemplateColumns: '24px 1fr',
+  textAlign: 'start',
+  gap: '0.9rem 0.1rem',
   fontSize: '0.9rem',
   color: 'var(--text-color)',
-  cursor: 'pointer'
+  cursor: 'pointer',
+  marginBottom: 8,
 });
 
 export const Checkbox = styled('input')({
