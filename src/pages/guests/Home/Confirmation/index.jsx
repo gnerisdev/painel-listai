@@ -21,6 +21,7 @@ const Confirmation = ({ event }) => {
     email: '',
     message: '', 
     phoneNumber: '',
+    companions: [],
   });
 
   const formatPhone = (value) => {
@@ -34,6 +35,7 @@ const Confirmation = ({ event }) => {
   const validateFormConfirmation = () => {
     const newLog = { ...log };
     let errorCount = 0;
+    let companionErrorMessages = [];
 
     if (!dataConfirmation.firstName.trim()) {
       newLog.firstName = '* Nome obrigatório';
@@ -69,7 +71,28 @@ const Confirmation = ({ event }) => {
       newLog.phoneNumber = '';
     }
 
+    dataConfirmation.companions.forEach((companion, index) => {
+      if (companion.name.trim() && !companion.age) {
+        companionErrorMessages.push(`* Idade do acompanhante ${index + 1} é obrigatória se o nome for preenchido.`);
+        errorCount++;
+      }
+      if (companion.age && !companion.name.trim()) {
+        companionErrorMessages.push(`* Nome do acompanhante ${index + 1} é obrigatório se a idade for preenchida.`);
+        errorCount++;
+      }
+    });
+
     setLog(newLog);
+
+    if (companionErrorMessages.length > 0) {
+      setAlert({
+        show: true,
+        title: 'Atenção!',
+        icon: "fa-solid fa-triangle-exclamation",
+        text: companionErrorMessages.join('\n'),
+      });
+    }
+
     return errorCount === 0;
   };
 
@@ -79,7 +102,10 @@ const Confirmation = ({ event }) => {
 
       setLoading(true);
 
-      const response = await apiService.post(`/guests/confirmation/${event.id}`, dataConfirmation);
+      const response = await apiService.post(`/guests/confirmation/${event.id}`, {
+        ...dataConfirmation,
+        companions: dataConfirmation.companions.filter(c => c.name.trim() || c.age)
+      });
       const { success, message } = response?.data;
 
       if (!success) throw new Error(message || 'Erro ao confirmar presença.');
@@ -99,6 +125,7 @@ const Confirmation = ({ event }) => {
         email: '',
         phoneNumber: '',
         message: '',
+        companions: [],
       });
     } catch (error) {
       setAlert({
@@ -110,6 +137,28 @@ const Confirmation = ({ event }) => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const addCompanionField = () => {
+    setDataConfirmation(prev => ({
+      ...prev,
+      companions: [...prev.companions, { name: '', age: '' }]
+    }));
+  };
+
+  const removeCompanionField = (index) => {
+    setDataConfirmation(prev => ({
+      ...prev,
+      companions: prev.companions.filter((_, i) => i !== index)
+    }));
+  };
+
+  const handleCompanionChange = (index, field, value) => {
+    setDataConfirmation(prev => {
+      const newCompanions = [...prev.companions];
+      newCompanions[index] = { ...newCompanions[index], [field]: value };
+      return { ...prev, companions: newCompanions };
+    });
   };
 
   return (
@@ -209,6 +258,39 @@ const Confirmation = ({ event }) => {
               }
               setLog({ ...log, phoneNumber: '' });
             }}
+          />
+
+          {dataConfirmation.companions.map((companion, index) => (
+            <S.WrapperCompanions key={index}>
+              <h4>Acompanhante {index + 1}</h4>
+              <div className="content">
+                <Input
+                  label={`Nome`}
+                  value={companion.name}
+                  onChange={(value) => handleCompanionChange(index, 'name', value)}
+                />
+                <Input
+                  label={`Idade`}
+                  type="number"
+                  value={companion.age}
+                  onChange={(value) => handleCompanionChange(index, 'age', value)}
+                />
+                <span 
+                  id="btn-remove"
+                  className="fa-solid fa-xmark" 
+                  onClick={() => removeCompanionField(index)} 
+                />
+              </div>
+            </S.WrapperCompanions>
+          ))}
+
+          <Button
+            text="Add Acompanhante"
+            onClick={addCompanionField}
+            background="var(--secondary-color)"
+            color="#FFFFFF"
+            maxWidth={200}
+            margin="0 auto 16px 0"
           />
 
           <Button

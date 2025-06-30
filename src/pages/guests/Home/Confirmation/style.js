@@ -273,3 +273,31 @@ export const Footer = styled('footer')({
   textAlign: 'center',
   color:  'var(--text-white)',
 });
+
+export const WrapperCompanions = styled.div({
+  position: 'relative',
+  '.content': {
+    display: 'grid',
+    gridTemplateColumns: '1fr 60px 30px',
+    gap: 10, 
+    alignItems: 'center', 
+    marginBottom: '8px',
+    background: '#eeeeee',
+    padding: '16px 8px',
+    borderRadius: 4,
+  },
+  '#btn-remove': {
+    width: 30,
+    height: 30,
+    display: 'flex',  
+    justifyContent: 'center',
+    alignItems: 'center',
+    cursor: 'pointer',
+    borderRadius: '50%',
+    position: 'absolute',
+    bottom: 32,
+    right: '8px',
+    border: '1px solid red',
+    color: 'red'
+  }
+});
