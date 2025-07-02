@@ -183,7 +183,7 @@ const EventCreate = () => {
                     onClick={() => setData({ ...data, eventType: item.id })}
                     className={`${item.id === data?.eventType ? 'selected' : ''}`}
                   >
-                    <img src={item.image_url || imageDefault} alt={item.title} />
+                    <img src={item.imageUrl || imageDefault} alt={item.title} />
                     <small>{item.name}</small>
                   </S.ItemEventTypes>
                 ))}
