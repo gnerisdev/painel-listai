@@ -65,7 +65,7 @@ const Step1 = ({ data, eventCategories, isLoading, getData, next }) => {
   return (
     <div>
       <S.Subtitle>Lista de Presentes</S.Subtitle>
-
+      
       <S.WrapperForm>
         {eventCategories && (
           <Select
@@ -125,7 +125,7 @@ const Step1 = ({ data, eventCategories, isLoading, getData, next }) => {
         />
 
         <div>
-          <S.Label>Escolha a forma mais prática para você receber os presentes:</S.Label>
+          <S.Label>Forma de recebimento dos presentes:</S.Label>
           <S.LabelOption htmlFor="deliveryWeek">
             <S.Checkbox 
               type="checkbox" 
@@ -134,7 +134,7 @@ const Step1 = ({ data, eventCategories, isLoading, getData, next }) => {
               checked={data.giftDeliveryPreference === 'weekOfParty'}
               onChange={(e) => getData({ giftDeliveryPreference: e.target.value })}
             />
-            Prefiro que os presentes sejam entregues na semana da festa
+            Presentes entregues na semana da festa
           </S.LabelOption>
 
           <S.LabelOption htmlFor="deliveryAfter">
@@ -156,7 +156,7 @@ const Step1 = ({ data, eventCategories, isLoading, getData, next }) => {
               checked={data.giftDeliveryPreference === 'cash'}
               onChange={(e) => getData({ giftDeliveryPreference: e.target.value })}
             />
-            Prefiro receber o valor dos presentes em dinheiro (resgate)
+            Recebimento do valor em dinheiro (resgate)
           </S.LabelOption>
 
           {log.giftDeliveryPreference && <S.MessageError>* Campo obrigatório</S.MessageError>}

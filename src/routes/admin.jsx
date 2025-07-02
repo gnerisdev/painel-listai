@@ -21,6 +21,7 @@ import EventServices from 'pages/admin/EventServices';
 import Settings from 'pages/admin/Settings';
 import Transactions from 'pages/admin/Transactions';
 import GiftSuggestions from 'pages/admin/GiftSuggestions';
+import EventCreate from 'pages/admin/EventCreate';
 
 const authRoutes = [
   {
@@ -41,6 +42,7 @@ const mainRoutes = [
       { path: '', element: <Home /> },
       { path: 'users', element: <ManageUsers /> },
       { path: 'events', element: <Events /> },
+      { path: 'events/create', element: <EventCreate /> },
       { path: 'events/:id', element: <EventUpdate /> },
       { path: 'events/:id/messages', element: <EventMessages /> },
       { path: 'events/:id/guests', element: <EventGuestConfirmations /> },

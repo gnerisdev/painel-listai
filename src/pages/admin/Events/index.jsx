@@ -8,6 +8,8 @@ import Table from "components/Table";
 import Filter from "components/Filter";
 import Pagination from "components/Pagination";
 import LoadingLogo from "components/LoadingLogo";
+import Button from "components/Button";
+import HeaderWithButton from "components/HeaderWithButton";
 import * as S from "./style";
 
 const Events = () => {
@@ -91,7 +93,14 @@ const Events = () => {
 
   return (
     <Container>
-      <TitlePage title="Eventos" icon="fa-solid fa-calendar-days" />
+      <HeaderWithButton>
+        <TitlePage title="Eventos" icon="fa-solid fa-calendar-days" />
+        <Button
+          text="Novo evento" 
+          maxWidth="200px" 
+          onClick={() => navigate('/events/create')} 
+        />
+      </HeaderWithButton>
 
       <S.Content>
         <S.WrapperFilter>
