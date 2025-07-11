@@ -10,7 +10,7 @@ import * as S from './style';
 
 const Confirmation = ({ event }) => {
   const { apiService, setAlert } = useContext(GuestsContext);
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const phoneRegex = /^\(\d{2}\) \d{5}-\d{4}$/;
   const [log, setLog] = useState({});
   const [loading, setLoading] = useState(false);
@@ -54,7 +54,7 @@ const Confirmation = ({ event }) => {
     if (!dataConfirmation.email.trim()) {
       newLog.email = '* E-mail obrigatório';
       errorCount++;
-    } else if (!emailRegex.test(dataConfirmation.email)) {
+    } else if (!EMAIL_REGEX.test(dataConfirmation.email)) {
       newLog.email = '* E-mail inválido';
       errorCount++;
     } else {
@@ -236,7 +236,7 @@ const Confirmation = ({ event }) => {
             check={log.email === ''}
             onChange={(value) => {
               setDataConfirmation({ ...dataConfirmation, email: value });
-              if (!emailRegex.test(value)) {
+              if (!EMAIL_REGEX.test(value)) {
                 setLog({ ...log, email: '* E-mail inválido' });
                 return;
               }

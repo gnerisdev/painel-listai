@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useAdmin } from 'contexts/Admin';
 import { ApplicationUtils } from 'utils/ApplicationUtils';
 import Container from 'components/Container';
@@ -13,6 +13,8 @@ import * as S from './style';
 
 const EventCreate = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const state = location.state;
 
   const { apiService, setAlert } = useAdmin();
   const [loading, setLoading] = useState(false);
@@ -20,7 +22,7 @@ const EventCreate = () => {
   const [data, setData] = useState({});
   const [eventTypes, setEventTypes] = useState([]);
   const [eventCategories, setEventCategories] = useState([]);
-  const [gifts, setGifts] = useState([]);
+  const [giftList, setGiftList] = useState([]);
 
   const submit = async (e) => {
     try {
@@ -53,7 +55,7 @@ const EventCreate = () => {
 
   const nextStep = async () => {
     if (stepCurrent === 'step-event-types') {
-      if (!data?.eventType) {
+      if (!data?.eventTypeId) {
         setAlert({
           show: true,
           title: 'Atenção',
@@ -65,7 +67,7 @@ const EventCreate = () => {
 
       try {
         setLoading(true);
-        const response = await apiService.get(`/users/event-categories?event_type_id=${data.eventType}`, data);
+        const response = await apiService.get(`/users/event-categories?event_type_id=${data.eventTypeId}`, data);
 
         setEventCategories(response.data);
         setStepCurrent('step1');
@@ -81,7 +83,7 @@ const EventCreate = () => {
         setLoading(true);
 
         const response = await apiService.get(
-          `/users/fetch-gifts-slug?event_category_id=${data.event}&slug=${data.slug}`,
+          `/users/fetch-gifts-slug?event_category_id=${data.eventCategoryId}&slug=${data.slug}`,
           data
         );
 
@@ -97,7 +99,7 @@ const EventCreate = () => {
         }
 
         if (gifts) {
-          setGifts(gifts);
+          setGiftList(gifts);
           setStepCurrent('step2');
         } else {
           throw new Error('Gift não encontrado');
@@ -145,6 +147,8 @@ const EventCreate = () => {
   };
 
   useEffect(() => {
+    console.log(state)
+    if (state) setData({ ...data, ...state });
     getEventTypes();
   }, []);
 
@@ -158,18 +162,15 @@ const EventCreate = () => {
             <span
               className={`${stepCurrent === 'step1' ? 'stepCurrent' : ''}`}
               onClick={() => handlerClickChangeStep('step1')}
-            >
-            </span>
+            />
             <span
               className={`${stepCurrent === 'step2' ? 'stepCurrent' : ''}`}
               onClick={() => handlerClickChangeStep('step2')}
-            >
-            </span>
+            />
             <span
               className={`${stepCurrent === 'step3' ? 'stepCurrent' : ''}`}
               onClick={() => handlerClickChangeStep('step3')}
-            >
-            </span>
+            />
           </S.Steps>
 
           {stepCurrent === 'step-event-types' && (
@@ -180,8 +181,8 @@ const EventCreate = () => {
                 {eventTypes?.map(item => (
                   <S.ItemEventTypes
                     key={item.name}
-                    onClick={() => setData({ ...data, eventType: item.id })}
-                    className={`${item.id === data?.eventType ? 'selected' : ''}`}
+                    onClick={() => setData({ ...data, eventTypeId: item.id })}
+                    className={`${item.id === data?.eventTypeId ? 'selected' : ''}`}
                   >
                     <img src={item.imageUrl || imageDefault} alt={item.title} />
                     <small>{item.name}</small>
@@ -206,7 +207,7 @@ const EventCreate = () => {
           {stepCurrent === 'step2' && (
             <Step2
               data={data}
-              gifts={gifts}
+              giftList={giftList}
               isLoading={loading}
               getData={(v) => setData({ ...data, ...v })}
               next={() => nextStep()}

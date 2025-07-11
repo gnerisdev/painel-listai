@@ -3,11 +3,11 @@ import Button from 'components/Button';
 import ListGifts from 'components/ListGifts';
 import * as S from './style';
 
-const Step2 = ({ data, isLoading, getData, next, gifts }) => {
+const Step2 = ({ data, isLoading, getData, next, giftList }) => {
   const { setAlert } = useAdmin();
 
   const validateFields = () => {
-    if (data?.giftList?.length >= 4) {
+    if (data?.gifts?.length >= 4) {
       next();
     } else {
       setAlert({
@@ -19,25 +19,25 @@ const Step2 = ({ data, isLoading, getData, next, gifts }) => {
   };
 
   return (
-    gifts && (
+    giftList && (
       <div>
         <S.Subtitle>
           Lista de Presentes
-          {data?.giftList?.length > 0 && <S.ListNumber>{data.giftList.length}</S.ListNumber>}
+          {data?.gifts?.length > 0 && <S.ListNumber>{data.gifts.length}</S.ListNumber>}
         </S.Subtitle>
 
         {/* List */}
         <ListGifts
-          data={gifts}
-          selected={data.giftList || []}
+          data={giftList}
+          selected={data.gifts || []}
           getData={(value) => {
             const list = [];
-            if (data?.giftList) list.push(...data.giftList);
+            if (data?.gifts) list.push(...data.gifts);
 
             if (list.includes(value)) {
-              getData({ giftList: list.filter((item) => item !== value) });
+              getData({ gifts: list.filter((item) => item !== value) });
             } else {
-              getData({ giftList: [...list, value] });
+              getData({ gifts: [...list, value] });
             }
           }}
         />

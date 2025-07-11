@@ -33,7 +33,6 @@ export const WrapperForm = styled('div')({
   flexDirection: 'column',
   gap: '1.2rem',
   margin: '1.6rem 0',
-  padding: '0 6px'
 });
 
 export const Line = styled('div')({

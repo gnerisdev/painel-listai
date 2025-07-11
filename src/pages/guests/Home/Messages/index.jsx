@@ -10,7 +10,7 @@ import * as S from './style';
 
 const Messages = ({ event }) => {
   const { apiService, setAlert } = useGuests();
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const [log, setLog] = useState({});
   const [loading, setLoading] = useState(false);
   const [modalFormMessage, setModalFormMessage] = useState(false);
@@ -42,7 +42,7 @@ const Messages = ({ event }) => {
     if (!dataMessage.email.trim()) {
       newLog.email = '* E-mail obrigatório';
       errorCount++;
-    } else if (!emailRegex.test(dataMessage.email)) {
+    } else if (!EMAIL_REGEX.test(dataMessage.email)) {
       newLog.email = '* E-mail inválido';
       errorCount++;
     } else {
@@ -167,7 +167,7 @@ const Messages = ({ event }) => {
           check={log.email === ''}
           onChange={(value) => {
             setDataMessage({ ...dataMessage, email: value });
-            if (!emailRegex.test(value)) {
+            if (!EMAIL_REGEX.test(value)) {
               setLog({ ...log, email: '* E-mail inválido' });
               return;
             }

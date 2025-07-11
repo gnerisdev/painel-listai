@@ -19,7 +19,7 @@ const Confirmations = () => {
   const [loading, setLoading] = useState(false);
   const [editId, setEditId] = useState(null);
 
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const phoneRegex = /^\(\d{2}\) \d{5}-\d{4}$/;
   const color = event.color;
 
@@ -76,7 +76,7 @@ const Confirmations = () => {
     if (!data.email.trim()) {
       newLog.email = '* E-mail obrigatório';
       errorCount++;
-    } else if (!emailRegex.test(data.email)) {
+    } else if (!EMAIL_REGEX.test(data.email)) {
       newLog.email = '* E-mail inválido';
       errorCount++;
     } else {
@@ -358,7 +358,7 @@ const Confirmations = () => {
             check={log.email === ''}
             onChange={(value) => {
               setData({ ...data, email: value });
-              if (!emailRegex.test(value)) {
+              if (!EMAIL_REGEX.test(value)) {
                 setLog({ ...log, email: '* E-mail inválido' });
                 return;
               }

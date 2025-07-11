@@ -1,12 +1,5 @@
 import styled from 'styled-components';
 
-export const Subtitle = styled('h2')({ });
-
-export const Text = styled('p')({
-  fontSize: '0.9rem',
-  color: 'gray'
-});
-
 export const WrapperForm = styled('div')({
   display: 'flex',
   flexDirection: 'column',

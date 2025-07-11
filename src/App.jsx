@@ -1,10 +1,9 @@
-import { UsersProvider } from 'contexts/Users';
 import { AdminProvider } from 'contexts/Admin';
 import { AdminRoutes } from 'routes/admin';
-import { UsersRoutes } from 'routes/users';
 import { GuestsRoutes } from 'routes/guests';
 import { GuestsProvider } from 'contexts/Guests';
 import ScrollToTop from 'pages/admin/ScrollToTop';
+import { UsersRouter } from 'routes/users';
 
 const AdminRoutesProvider = () => {
   return (
@@ -12,15 +11,6 @@ const AdminRoutesProvider = () => {
       <ScrollToTop />
       <AdminRoutes />
     </AdminProvider>
-  );
-};
-
-const UsersRoutesProvider = () => {
-  return (
-    <UsersProvider>
-      <ScrollToTop />
-      <UsersRoutes />
-    </UsersProvider>
   );
 };
 
@@ -39,10 +29,8 @@ const App = () => {
   const isGuest = hostname.startsWith('site.');
 
   if (isAdmin) return <AdminRoutesProvider />;
-  if (isUsers) return <UsersRoutesProvider />
+  if (isUsers) return <UsersRouter />
   if (isGuest) return <GuestsRoutesProvider />;
-
-  return <div>Página não encontrada</div>;
 };
 
 export default App;

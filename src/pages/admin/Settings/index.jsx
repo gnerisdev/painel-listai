@@ -16,8 +16,9 @@ const Settings = () => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState({
     percentageGift: 0,
-    color: '',
+    listCreationFee: 0,
     colorSecondary: '',
+    color: '',
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [password, setPassword] = useState('');
@@ -79,6 +80,18 @@ const Settings = () => {
   }
 
   const save = async () => {
+    const listCreationFee = ApplicationUtils.parsePrice(data.listCreationFee);
+    if (typeof listCreationFee !== 'number' || listCreationFee < 0) {
+      setAlert({
+        show: true,
+        title: 'Atenção!',
+        text: 'Preço inválido para a taxa de criação',
+        icon: 'fa-solid fa-triangle-exclamation',
+      });
+
+      return;
+    }
+
     if (data.percentageGift < 1 || data.percentageGift > 100) {
       setAlert({
         show: true,
@@ -104,7 +117,14 @@ const Settings = () => {
     try {
       setLoading(true);
 
-      const response = await apiService.put(`/admin/settings`, data);
+      const response = await apiService.put(
+        `/admin/settings`, 
+        { 
+          ...data, 
+          listCreationFee: ApplicationUtils.parsePrice(data.listCreationFee)
+        }
+      );
+      
       const { success, message } = response.data;
 
       if (!success) throw new Error(message);
@@ -138,7 +158,12 @@ const Settings = () => {
       const { success, message, settings } = response.data;
 
       if (!success) throw new Error(message);
-      if (settings) setData(settings);
+      if (settings) {
+        console.log(settings.listCreationFee)
+        settings.listCreationFee = ApplicationUtils
+          .formatToInputPrice(`${settings.listCreationFee?.toFixed(2)}`);
+        setData(settings);
+      }
     } catch (error) {
       setAlert({
         show: true,
@@ -166,7 +191,15 @@ const Settings = () => {
             label="Porcentagem total sobre presente (%)"
             value={data.percentageGift}
             onChange={value => setData({ ...data, percentageGift: value })}
-            onBlur={() => { }}
+          />
+
+          <Input
+            label="Taxa de criação da lista"
+            value={data.listCreationFee}
+            onChange={value => setData({ 
+              ...data, 
+              listCreationFee: ApplicationUtils.formatToInputPrice(value) 
+            })}
           />
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 100px', gap: 8, alignItems: 'end' }}>

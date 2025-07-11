@@ -15,7 +15,7 @@ const FormConfirmationModal = ({ eventId, open, onClose, onGuestUpdated, guestTo
   const [editId, setEditId] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const phoneRegex = /^\(\d{2}\) \d{5}-\d{4}$/;
 
   const validateForm = () => {
@@ -39,7 +39,7 @@ const FormConfirmationModal = ({ eventId, open, onClose, onGuestUpdated, guestTo
     if (!data.email.trim()) {
       newLog.email = '* E-mail obrigatório';
       errorCount++;
-    } else if (!emailRegex.test(data.email)) {
+    } else if (!EMAIL_REGEX.test(data.email)) {
       newLog.email = '* E-mail inválido';
       errorCount++;
     } else {
@@ -70,7 +70,7 @@ const FormConfirmationModal = ({ eventId, open, onClose, onGuestUpdated, guestTo
         errorMessage = value.trim() === '' ? '* Campo obrigatório' : '';
         break;
       case 'email':
-        errorMessage = value.trim() === '' ? '* E-mail obrigatório' : !emailRegex.test(value) ? '* E-mail inválido' : '';
+        errorMessage = value.trim() === '' ? '* E-mail obrigatório' : !EMAIL_REGEX.test(value) ? '* E-mail inválido' : '';
         break;
       case 'phoneNumber':
         const formattedValue = ApplicationUtils.formatToInputPhone(value);

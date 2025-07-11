@@ -1,16 +1,23 @@
 import styled from 'styled-components';
 
-export const Subtitle = styled('h2')({ });
-
-export const Text = styled('p')({
-  fontSize: '0.9rem',
-  color: 'gray'
+export const Main = styled('main')({
+  maxWidth: 640,
+  margin: '0 auto',
+  textAlign: 'center',
+  width: '100%',
+  padding: '8px 0'
 });
 
-export const TextSmall = styled('p')({
-  fontSize: '0.8rem',
-  color: 'gray',
-  margin: '16px 0 0'
+export const ContentInfo = styled('div')({
+  maxWidth: 640,
+  margin: '32px auto 0',
+  textAlign: 'start',
+  width: '100%',
+});
+
+export const Logo = styled('img')({
+  width: 200,
+  margin: '0 auto'
 });
 
 export const WrapperForm = styled('div')({
@@ -18,18 +25,16 @@ export const WrapperForm = styled('div')({
   flexDirection: 'column',
   gap: '0.8rem',
   margin: '1.6rem 0',
-  padding: '0 6px'
 });
 
-export const Row = styled('div')({
-  display: 'grid',
-  gridTemplateColumns: '1fr 1fr',
-  '> :nth-child(1)': {
-    marginRight: 8,
-  },
-  '> :nth-child(2)': {
-    marginLeft: 8,
-  }
+export const Label = styled('label')({
+  color:  'var(--text-color)',
+  width: '100%', 
+  fontWeight: 'bolder',
+  margin: '0 0 5px',
+  display: 'block',
+  fontSize: '0.9rem',
+  textAlign: 'left',
 });
 
 export const LabelOption = styled('label')({

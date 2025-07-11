@@ -1,18 +1,11 @@
-import { createContext, useEffect, useState, useMemo, useRef } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { ApiService } from 'services/api.service';
 import Modal from 'components/Modal';
 import LoadingLogo from 'components/LoadingLogo';
 
+const apiService = new ApiService({ module: 'users', auth: true });
 export const UsersProvider = (props) => {
-  const location = useLocation();
-  const normalizedPathname = location.pathname.replace(/\/$/, '');
-  const isAuthPage = (normalizedPathname === '/login' || normalizedPathname === '/register');
-  const apiService = useMemo(
-    () => new ApiService({ module: 'users', auth: !isAuthPage }),
-    [isAuthPage],
-  );
-
   const [user, setUser] = useState({});
   const [event, setEvent] = useState({});
   const [token, setToken] = useState(localStorage.getItem('userToken') || '');

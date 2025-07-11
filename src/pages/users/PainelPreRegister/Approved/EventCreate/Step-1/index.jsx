@@ -1,61 +1,36 @@
 import { useState } from 'react';
 import Input from 'components/Input';
 import Select from 'components/Select';
-import InputUrl from 'components/InputUrl';
 import Button from 'components/Button';
 import * as S from './style';
 
 const Step1 = ({ data, eventCategories, isLoading, getData, next }) => {
-  const [log, setLog] = useState({
-    eventCategoryId: null,
-    title: null,
-    subtitle: null,
-    slug: null,
-    source: null,
+  const [log, setLog] = useState({ 
+    eventCategoryId: null, 
+    title: null, 
+    giftDeliveryPreference: null 
   });
 
-  const getEventCategoriesData = () => {
-    return eventCategories.map((item) => ({ title: item.name, value: item.id }));
-  };
+  const getEventCategoriesData = () => eventCategories.map((item) => ({ 
+    title: item.name, value: item.id 
+  }));
 
   const validateFields = () => {
     let newLog = {};
     let errorCount = 0;
 
-    if (!data.eventCategoryId) {
-      newLog.event = '* Campo obrigatório';
-      errorCount++;
-    } else {
-      newLog.event = '';
+    const newError = (key, isError) => {
+      if (isError) {
+        newLog[key] = '* Campo obrigatório';
+        errorCount++;
+      } else {
+        newLog[key] = '';
+      }
     }
 
-    if (!data.title) {
-      newLog.title = '* Campo obrigatório';
-      errorCount++;
-    } else {
-      newLog.title = '';
-    }
-
-    if (!data.subtitle) {
-      newLog.subtitle = '* Campo obrigatório';
-      errorCount++;
-    } else {
-      newLog.subtitle = '';
-    }
-
-    if (!data.slug) {
-      newLog.slug = '* Campo obrigatório';
-      errorCount++;
-    } else {
-      newLog.slug = '';
-    }
-
-    if (!data.giftDeliveryPreference) {
-      newLog.giftDeliveryPreference = '* Campo obrigatório';
-      errorCount++;
-    } else {
-      newLog.giftDeliveryPreference = '';
-    }
+    if (!data.eventCategoryId) newError('eventCategoryId', true);
+    if (!data.title) newError('title', true);
+    if (!data.giftDeliveryPreference) newError('giftDeliveryPreference', true);
 
     setLog(newLog);
 
@@ -71,15 +46,13 @@ const Step1 = ({ data, eventCategories, isLoading, getData, next }) => {
 
   return (
     <div>
-      <S.Subtitle>Lista de Presentes</S.Subtitle>
-      
       <S.WrapperForm>
         {eventCategories && (
           <Select
             label="Evento"
-            messageError={log.eventCategoryId}
+            messageError={log.event}
             data={getEventCategoriesData(eventCategories)}
-            value={data.eventCategoryId || ''}
+            value={data.eventCategoryId || ""}
             onChange={(value) => handleInput('eventCategoryId', value)}
           />
         )}
@@ -93,31 +66,12 @@ const Step1 = ({ data, eventCategories, isLoading, getData, next }) => {
           onChange={(value) => handleInput('title', value)}
         />
 
-        <Input
-          label="Subtítulo"
-          type="text"
-          messageError={log.subtitle}
-          check={log.subtitle === ''}
-          value={data.subtitle}
-          onChange={(value) => handleInput('subtitle', value)}
-        />
-
-        <InputUrl
-          label="URL - Link do seu site"
-          url="https://listai.com.br/"
-          messageError={log.slug}
-          check={log.slug === ''}
-          value={data.slug}
-          onChange={(value) => handleInput('slug', value)}
-        />
-
         <div>
           <S.Label>Forma de recebimento dos presentes:</S.Label>
           <S.LabelOption htmlFor="deliveryWeek">
             <S.Checkbox 
               type="checkbox" 
               value="weekOfParty" 
-              id="deliveryWeek"
               checked={data.giftDeliveryPreference === 'weekOfParty'}
               onChange={(e) => getData({ giftDeliveryPreference: e.target.value })}
             />
@@ -128,7 +82,6 @@ const Step1 = ({ data, eventCategories, isLoading, getData, next }) => {
             <S.Checkbox 
               type="checkbox" 
               value="weekAfterParty"
-              id="deliveryAfter" 
               checked={data.giftDeliveryPreference === 'weekAfterParty'}
               onChange={(e) => getData({ giftDeliveryPreference: e.target.value })}
             />
@@ -139,7 +92,6 @@ const Step1 = ({ data, eventCategories, isLoading, getData, next }) => {
             <S.Checkbox 
               type="checkbox" 
               value="cash" 
-              id="cashValue" 
               checked={data.giftDeliveryPreference === 'cash'}
               onChange={(e) => getData({ giftDeliveryPreference: e.target.value })}
             />

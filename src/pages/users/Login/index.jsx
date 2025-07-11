@@ -1,14 +1,17 @@
-import { useContext, useState } from 'react';
-import { UsersContext } from 'contexts/Users';
+import { useState } from 'react';
+import { useGlobal } from 'contexts/Global';
+import { PublicApiService } from 'services/api.public.service';
 import Container from 'components/Container';
 import Input from 'components/Input';
 import Button from 'components/Button';
 import logo from 'assets/logo-2.png';
 import * as S from './style';
 
+const publicApi = new PublicApiService();
+
 const Login = () => {  
-  const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-  const { apiService, setAlert } = useContext(UsersContext);
+  const EMAIL_REGEX = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+  const { setAlert } = useGlobal();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState({ email: '', password: '' });
   const [log, setLog] = useState({ email: null, password: null });
@@ -20,7 +23,7 @@ const Login = () => {
       if (!data.email || !data.password) throw new Error('Preencha os dados corretamente!');
       if (!validateFields()) throw new Error('Preencha os dados corretamente!');
 
-      const response = await apiService.post('/users/login', data);
+      const response = await publicApi.post('/users/login', data);
       const { success, message, token, id } = response.data;
 
       if (!success) {
@@ -47,7 +50,7 @@ const Login = () => {
     if (!data.email) {
       newLog.email = '* Campo obrigatório';
       errorCount++;
-    } else if (!emailRegex.test(data.email)) {
+    } else if (!EMAIL_REGEX.test(data.email)) {
       newLog.email = '* Formato de e-mail inválido';
       errorCount++;
     } else {
@@ -85,7 +88,7 @@ const Login = () => {
             check={log.email === ''}
             onChange={(value) => {
               setData({ ...data, email: value });
-              if (!emailRegex.test(value)) {
+              if (!EMAIL_REGEX.test(value)) {
                 setLog({ ...log, email: '* E-mail inválido' });
                 return;
               }

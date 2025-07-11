@@ -1,13 +1,11 @@
 import { useState } from 'react';
+import { ApplicationUtils } from 'utils/ApplicationUtils';
+import { EMAIL_REGEX, PASSWORD_REGEX, PHONE_NUMBER_REGEX } from 'constants/Regexs';
 import Input from 'components/Input';
 import Button from 'components/Button';
 import * as S from './style';
 
 const Step3 = ({ data, isLoading, getData, next }) => {
-  const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
-  const phoneRegex = /^\(\d{2}\) \d{5}-\d{4}$/;
-
   const [log, setLog] = useState({
     firstName: null,
     lastName: null,
@@ -17,12 +15,30 @@ const Step3 = ({ data, isLoading, getData, next }) => {
     sourceSocialMedia: null,
   });
 
-  const formatPhone = (value) => {
-    return value
-      .replace(/\D/g, '')
-      .replace(/^(\d{2})(\d)/, '($1) $2')
-      .replace(/(\d{5})(\d{1,4})/, '$1-$2')
-      .substring(0, 15);
+  const handleInput = (name, value) => {
+    if (name === 'phoneNumber') value = ApplicationUtils.formatPhone(value);
+    
+    getData({ ...data, [name]: value });
+    
+    if (name === 'email') {
+      !EMAIL_REGEX.test(value)
+        ? setLog({ ...log, email: '* E-mail inválido' })
+        : setLog({ ...log, email: '' });
+    } else  if (name === 'phoneNumber') {
+      !PHONE_NUMBER_REGEX.test(ApplicationUtils.formatPhone(value))
+        ? setLog({ ...log, phoneNumber: '* Número inválido' })
+        : setLog({ ...log, phoneNumber: '' });
+      return;
+    } else if (name === 'confirmPassword') {
+      value !== data?.password
+        ? setLog({ ...log, confirmPassword: '* As senhas não coincidem' })
+        : setLog({ ...log, confirmPassword: '' });
+      return;
+    } else {
+      value === ''
+        ? setLog({ ...log, [name]: '* Campo obrigatório' })
+        : setLog({ ...log, [name]: '' });
+    }
   };
 
   const validateFields = () => {
@@ -46,7 +62,7 @@ const Step3 = ({ data, isLoading, getData, next }) => {
     if (!data.phoneNumber) {
       newLog.phoneNumber = '* Campo obrigatório';
       errorCount++;
-    } else if (!phoneRegex.test(data.phoneNumber)) {
+    } else if (!PHONE_NUMBER_REGEX.test(data.phoneNumber)) {
       newLog.phoneNumber = '* Formato de telefone inválido';
       errorCount++;
     } else {
@@ -56,27 +72,27 @@ const Step3 = ({ data, isLoading, getData, next }) => {
     if (!data.email) {
       newLog.email = '* Campo obrigatório';
       errorCount++;
-    } else if (!emailRegex.test(data.email)) {
+    } else if (!EMAIL_REGEX.test(data.email)) {
       newLog.email = '* Formato de e-mail inválido';
       errorCount++;
     } else {
       newLog.email = '';
     }
 
-    if (!data.password) {
+    if (!data.password && !data.useUserPassword) {      
       newLog.password = '* Campo obrigatório';
       errorCount++;
-    } else if (!passwordRegex.test(data.password)) {
+    } else if (!PASSWORD_REGEX.test(data.password) && !data.useUserPassword) {
       newLog.password = '* A senha precisa ter no mínimo 8 caracteres, pelo menos uma letra e um número.';
       errorCount++;
     } else {
       newLog.password = '';
     }
 
-    if (!data.confirmPassword) {
+    if (!data.confirmPassword && !data.useUserPassword) {
       newLog.confirmPassword = '* Campo obrigatório';
       errorCount++;
-    } else if (data.confirmPassword !== data.password) {
+    } else if (data.confirmPassword !== data.password && !data.useUserPassword) {
       newLog.confirmPassword = '* As senhas não coincidem';
       errorCount++;
     } else {
@@ -84,7 +100,7 @@ const Step3 = ({ data, isLoading, getData, next }) => {
     }
 
     setLog(newLog);
-    
+
     if (errorCount === 0) next();
   };
 
@@ -99,12 +115,7 @@ const Step3 = ({ data, isLoading, getData, next }) => {
             value={data.firstName}
             check={log.firstName === ''}
             messageError={log.firstName}
-            onChange={(value) => {
-              getData({ firstName: value });
-              value === ''
-                ? setLog({ ...log, firstName: '* Campo obrigatório' })
-                : setLog({ ...log, firstName: '' });
-            }}
+            onChange={(value) => handleInput('firstName', value)}
           />
 
           <Input
@@ -112,12 +123,7 @@ const Step3 = ({ data, isLoading, getData, next }) => {
             value={data.lastName}
             check={log.lastName === ''}
             messageError={log.lastName}
-            onChange={(value) => {
-              getData({ lastName: value });
-              value === ''
-                ? setLog({ ...log, lastName: '* Campo obrigatório' })
-                : setLog({ ...log, lastName: '' });
-            }}
+            onChange={(value) => handleInput('lastName', value)}
           />
         </S.Row>
 
@@ -127,14 +133,7 @@ const Step3 = ({ data, isLoading, getData, next }) => {
           value={data.phoneNumber}
           messageError={log.phoneNumber}
           check={log.phoneNumber === ''}
-          onChange={(value) => {
-            getData({ ...data, phoneNumber: formatPhone(value) });
-            if (!phoneRegex.test(formatPhone(value))) {
-              setLog({ ...log, phoneNumber: '* Número inválido' });
-              return;
-            }
-            setLog({ ...log, phoneNumber: '' });
-          }}
+          onChange={(value) => handleInput('phoneNumber', value)}
         />
 
         <Input
@@ -143,47 +142,41 @@ const Step3 = ({ data, isLoading, getData, next }) => {
           value={data.email}
           messageError={log.email}
           check={log.email === ''}
-          onChange={(value) => {
-            getData({ email: value });
-            if (!emailRegex.test(value)) {
-              setLog({ ...log, email: '* E-mail inválido' });
-              return;
-            }
-            setLog({ ...log, email: '' });
-          }}
+          onChange={(value) => handleInput('email', value)}
         />
 
-        <S.Row style={{ display: 'grid' }}>
-          <Input
-            label="Senha"
-            type="password"
-            value={data.password}
-            check={log.password === ''}
-            messageError={log.password}
-            onChange={(value) => {
-              getData({ password: value });
-              value === ''
-                ? setLog({ ...log, password: '* Campo obrigatório' })
-                : setLog({ ...log, password: '' });
-            }}
-          />
+        {!data.useUserPassword && (
+          <S.Row style={{ display: 'grid' }}>
+            <Input
+              label="Senha"
+              type="password"
+              value={data.password}
+              check={log.password === ''}
+              messageError={log.password}
+              onChange={(value) => handleInput('password', value)}
+            />
 
-          <Input
-            label="Confirmar senha"
-            type="password"
-            value={data.confirmPassword}
-            check={log.confirmPassword === ''}
-            messageError={log.confirmPassword}
-            onChange={(value) => {
-              getData({ confirmPassword: value });
-              if (value !== data?.password) {
-                setLog({ ...log, confirmPassword: '* As senhas não coincidem' });
-              } else {
-                setLog({ ...log, confirmPassword: '' });
-              }
-            }}
-          />
-        </S.Row>
+            <Input
+              label="Confirmar senha"
+              type="password"
+              value={data.confirmPassword}
+              check={log.confirmPassword === ''}
+              messageError={log.confirmPassword}
+              onChange={(value) => handleInput('confirmPassword', value)}
+            />
+          </S.Row>
+        )}
+
+        {data.preUserRequestId && (
+          <S.LabelOption>
+            <S.Checkbox 
+              type="checkbox" 
+              checked={data.useUserPassword}
+              onChange={(e) => getData({ useUserPassword: e.target.checked })}
+            />
+            Utilizar a senha cadastrada pelo usuário
+          </S.LabelOption>
+        )}
       </S.WrapperForm>
 
       <Button text="Finalizar" onClick={validateFields} isLoading={isLoading} />

@@ -22,6 +22,7 @@ import Settings from 'pages/admin/Settings';
 import Transactions from 'pages/admin/Transactions';
 import GiftSuggestions from 'pages/admin/GiftSuggestions';
 import EventCreate from 'pages/admin/EventCreate';
+import EventRequests from 'pages/admin/EventRequests';
 
 const authRoutes = [
   {
@@ -48,6 +49,7 @@ const mainRoutes = [
       { path: 'events/:id/guests', element: <EventGuestConfirmations /> },
       { path: 'events/:id/gifts-received', element: <EventGiftsReceived /> },
       { path: 'events/:id/services', element: <EventServices /> },      
+      { path: 'event-requests', element: <EventRequests /> },      
       { path: 'services', element: <Services /> },
       { path: 'services/:id', element: <ServiceAdd title="Atualizar Serviço" /> },
       { path: 'services/add', element: <ServiceAdd title="Novo Serviço" /> },

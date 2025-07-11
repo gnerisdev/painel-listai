@@ -8,7 +8,7 @@ import FormContainer from 'components/FormContainer';
 import * as S from './style';
 
 const Login = () => {
-  const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+  const EMAIL_REGEX = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
   const { apiService, setAlert } = useContext(AdminContext);
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState({ email: '', password: '' });
@@ -50,7 +50,7 @@ const Login = () => {
     if (!data.email) {
       newLog.email = '* Campo obrigatório';
       errorCount++;
-    } else if (!emailRegex.test(data.email)) {
+    } else if (!EMAIL_REGEX.test(data.email)) {
       newLog.email = '* Formato de e-mail inválido';
       errorCount++;
     } else {
@@ -86,7 +86,7 @@ const Login = () => {
               check={log.email === ''}
               onChange={(value) => {
                 setData({ ...data, email: value });
-                if (!emailRegex.test(value)) {
+                if (!EMAIL_REGEX.test(value)) {
                   setLog({ ...log, email: '* E-mail inválido' });
                   return;
                 }

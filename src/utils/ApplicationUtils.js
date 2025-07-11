@@ -1,4 +1,12 @@
 export class ApplicationUtils {
+  static formatPhone(value) {
+    return value
+      .replace(/\D/g, '')
+      .replace(/^(\d{2})(\d)/, '($1) $2')
+      .replace(/(\d{5})(\d{1,4})/, '$1-$2')
+      .substring(0, 15);
+  };
+
   static formatPrice(price) {
     if (!price) return;
 
@@ -95,7 +103,7 @@ export class ApplicationUtils {
     if (message === 'Request failed with status code 404') {
       message = 'Algo deu errado. Tente novamente mais tarde!';
     }
-    if (message === 'Network Error') message = 'Erro de rede!';
+    if (message === 'Network Error') message = 'Erro ao se comunicar com o servidor!';
 
     return message;
   };

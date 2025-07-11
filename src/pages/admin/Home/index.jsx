@@ -31,6 +31,13 @@ const Home = () => {
       link: '/events',
     },
     {
+      title: 'Solicitação de Eventos',
+      text: 'Gerencie as solicitações de criação de eventos',
+      icon: 'fa-solid fa-envelope-open-text',
+      color: 'var(--primary-color)',
+      link: '/event-requests',
+    },
+    {
       title: 'Lista de Presente',
       text: 'Gerencie as listas de presentes dos eventos',
       icon: 'fa-solid fa-gift',
