@@ -39,6 +39,7 @@ const AddGift = () => {
     setSelectedItemId('');
     setSelectedImage(null);
   };
+
   const handleSubmit = async () => {
     try {
       if (!name || !value || !selectedItemId || !selectedImage) {
@@ -52,8 +53,8 @@ const AddGift = () => {
         categoryId: selectedItemId,
         image: selectedImage,
       };
-      const reponse = await apiService.post('Caminho', data);
-      if (!reponse.data.success) {
+      const response = await apiService.post('/admin/gifts', data);
+      if (!response.data.success) {
         cleanFields();
         setAlert({ show: true, title: 'Sucesso', text: 'Presente adicionado com sucesso!' });
       }
